@@ -18,11 +18,13 @@ public class FiskalyHttpClient {
 
     public init(apiKey: String, apiSecret: String, baseUrl: String) throws {
         
+        // version is hardcorded because using versionNumber from header file strips patch number
+        
         let contextRequestParams: [String: String] = [
             "api_key": apiKey,
             "api_secret": apiSecret,
             "base_url": baseUrl,
-            "sdk_version": "iOS SDK 1.1.300"
+            "sdk_version": "iOS SDK 1.1.301"
         ]
         
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
