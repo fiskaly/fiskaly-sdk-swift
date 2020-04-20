@@ -22,7 +22,7 @@ public class FiskalyHttpClient {
             "api_key": apiKey,
             "api_secret": apiSecret,
             "base_url": baseUrl,
-            "sdk_version": "iOS SDK " + String(FiskalySDKVersionNumber)
+            "sdk_version": "iOS SDK 1.1.300"
         ]
         
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
@@ -169,7 +169,7 @@ public class FiskalyHttpClient {
         if(response.result == nil) {
             completion(.failure(response.error!))
         } else {
-            self.context = response.result!.context
+            self.context = response.result!.context!
             completion(.success(response.result!))
         }
         

@@ -4,7 +4,7 @@ public class JsonRpcError: Error, Codable {
     
     public var code: Int
     public var message: String
-    public var data: String
+    public var data: ResultRequest?
     
     private enum CodingKeys : String, CodingKey {
         case code       = "code"
@@ -18,7 +18,10 @@ public class JsonRpcError: Error, Codable {
         
         self.code       = try container.decode(Int.self, forKey: .code)
         self.message    = try container.decode(String.self, forKey: .message)
-        self.data       = try container.decode(String.self, forKey: .data)
+        
+        if let data     = try container.decodeIfPresent(ResultRequest.self, forKey: .data) {
+            self.data = data
+        }
         
     }
     

@@ -50,7 +50,7 @@ public class Config : Codable {
 
 public class ResultRequest : Codable {
     public var response: HttpResponse
-    public var context: String
+    public var context: String?
 }
 
 public class HttpResponse : Codable {
