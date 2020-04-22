@@ -20,6 +20,36 @@ The fiskaly SDK includes an HTTP client that is needed<sup>[1](#fn1)</sup> for a
 github "fiskaly/fiskaly-sdk-swift" "master"
 ```
 
+Run the following command to fetch the SDKs source code and build the `FiskalySDK.framework`:
+
+```bash
+$ carthage update
+```
+
+Afterwards you will find following files in your project folder:
+
+```
+.
+├── Cartfile
+├── Cartfile.resolved
+└── Carthage
+    └── Build
+        └── iOS
+            ├── FiskalyClient.framework
+            └── Static
+                └── FiskalySDK.framework
+```
+
+In order to use the fiskaly SDK you must include both, `FiskalySDK.framework` and `FiskalyClient.framework` in your Xcode project as can be seen in the following screenshot:
+
+![screenshot-xcode-frameworks-integration](../media/screenshot-xcode-frameworks-integration.png?raw=true)
+
+Finally, the SDK can be imported using:
+
+```swift
+import FiskalySDK
+```
+
 ## Usage
 
 ### Creating a Client Instance 
