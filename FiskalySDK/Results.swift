@@ -25,7 +25,6 @@ public class ClientVersion : Codable {
 
 public class SMAERSVersion : Codable {
     public var version: String
-    public var commit_hash: String
 }
 
 /*
