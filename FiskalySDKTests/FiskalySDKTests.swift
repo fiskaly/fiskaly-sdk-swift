@@ -40,7 +40,6 @@ class FiskalySDKTests: XCTestCase {
                         XCTAssertNotEqual(response.client.source_hash, "")
                         XCTAssertNotEqual(response.client.commit_hash, "")
                         XCTAssertNotEqual(response.smaers.version, "")
-                        XCTAssertNotEqual(response.smaers.commit_hash, "")
                         break;
                     case .failure(let error):
                         print("JsonRpcError: \(error.code) \(error.message)")
