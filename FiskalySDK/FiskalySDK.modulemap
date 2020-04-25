@@ -1,0 +1,9 @@
+framework module FiskalySDK {
+    umbrella header "FiskalySDK.h"
+
+    explicit module Client {
+        private header "FiskalyClient.h"
+    }
+
+    export *
+}

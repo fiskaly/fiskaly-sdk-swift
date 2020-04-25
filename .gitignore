@@ -72,3 +72,4 @@ docs
 .DS_Store
 Frameworks/
 Cartfile.resolved
+*.a
