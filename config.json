@@ -1,0 +1,22 @@
+{
+  "replace": {
+    "client_version": "1.1.500",
+
+    "sdk_version": "1.1.500"
+  },
+
+  "files": [
+    {
+      "input": "Cartfile.template",
+      "output": "Cartfile"
+    },
+    {
+      "input": "FiskalySDK/FiskalyHttpClient.swift.template",
+      "output": "FiskalySDK/FiskalyHttpClient.swift"
+    },
+    {
+      "input": "FiskalySDK.xcodeproj/project.pbxproj.template",
+      "output": "FiskalySDK.xcodeproj/project.pbxproj"
+    }
+  ]
+}

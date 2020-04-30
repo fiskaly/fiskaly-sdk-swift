@@ -1,0 +1,1 @@
+binary "https://storage.googleapis.com/fiskaly-cdn/clients/com.fiskaly.client-ios-all-v{{.CLIENT_VERSION}}.carthage.json" == {{.SDK_VERSION}}
