@@ -41,7 +41,7 @@ class FiskalyAPITests: XCTestCase {
             
             // create TSS
             
-            let tssUUID = UUID().uuidString.lowercased()
+            let tssUUID = UUID().uuidString
             
             let tssBody = [
                 "description": "iOS Test TSS",
@@ -68,7 +68,7 @@ class FiskalyAPITests: XCTestCase {
             
             // create Client
             
-            let clientUUID = UUID().uuidString.lowercased()
+            let clientUUID = UUID().uuidString
             
             let clientBody = [
                 "serial_number": "iOS Test Client Serial"
@@ -94,7 +94,7 @@ class FiskalyAPITests: XCTestCase {
             
             // create Transaction
             
-            let transactionUUID = UUID().uuidString.lowercased()
+            let transactionUUID = UUID().uuidString
             
             let transactionBody = [
                 "state": "ACTIVE",
