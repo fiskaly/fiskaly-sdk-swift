@@ -39,6 +39,4 @@ jobs:
                   -project FiskalySDK.xcodeproj \
                   -scheme FiskalySDK \
                   -destination "platform=iOS Simulator,name=iPhone 11 Pro" \
-                  -skip-testing FiskalySDKTests/FiskalySDKTests/testRequest \
-                  -skip-testing FiskalySDKTests/FiskalySDKTests/testTransactionRequest
-
+                  -skip-testing FiskalySDKTests/FiskalyAPITests
