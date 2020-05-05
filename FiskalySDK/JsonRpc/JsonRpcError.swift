@@ -7,9 +7,9 @@ public class JsonRpcError: Error, Codable {
     public var data: ResultRequest?
 
     private enum CodingKeys: String, CodingKey {
-        case code       = "code"
-        case message    = "message"
-        case data       = "data"
+        case code
+        case message
+        case data
     }
 
     public required init(from decoder: Decoder) throws {

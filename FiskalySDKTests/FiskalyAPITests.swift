@@ -17,16 +17,12 @@ class FiskalyAPITests: XCTestCase {
                     switch result {
                     case .success(let response):
                         XCTAssertEqual(response.response.status, 200)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
                     }
             })
         } catch {
-            print("Error while performing: \(error).")
-            XCTFail()
+            XCTFail("Error while performing request: \(error).")
         }
     }
 
@@ -58,11 +54,8 @@ class FiskalyAPITests: XCTestCase {
                     switch result {
                     case .success(let response):
                         XCTAssertEqual(response.response.status, 200)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
                     }
             })
 
@@ -84,11 +77,8 @@ class FiskalyAPITests: XCTestCase {
                     switch result {
                     case .success(let response):
                         XCTAssertEqual(response.response.status, 200)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
                     }
             })
 
@@ -111,11 +101,8 @@ class FiskalyAPITests: XCTestCase {
                     switch result {
                     case .success(let response):
                         XCTAssertEqual(response.response.status, 200)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
                     }
             })
 
@@ -126,12 +113,15 @@ class FiskalyAPITests: XCTestCase {
                 "client_id": clientUUID,
                 "schema": [
                     "standard_v1": [
-
-                        "other": [
-                            "process_type": "SonstigerVorgang",
-                            "process_data": "S2Fzc2VuYW5tZWxkdW5nDQpLYXNzZW5iZWRpZW5lciBOci46IDENCkthc3NlbmJlZGllbmVyOiBhbGxnZW1laW4="
+                        "receipt": [
+                            "receipt_type": "RECEIPT",
+                            "amounts_per_vat_rate": [
+                                ["vat_rate": "19", "amount": "14.28"]
+                            ],
+                            "amounts_per_payment_type": [
+                                ["payment_type": "NON_CASH", "amount": "14.28"]
+                            ]
                         ]
-
                     ]
                 ]
             ]
@@ -147,17 +137,13 @@ class FiskalyAPITests: XCTestCase {
                     switch result {
                     case .success(let response):
                         XCTAssertEqual(response.response.status, 200)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
                     }
             })
 
         } catch {
-            print("Error while performing request: \(error).")
-            XCTFail()
+            XCTFail("Error while performing request: \(error).")
         }
 
     }

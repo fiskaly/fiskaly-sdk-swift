@@ -18,16 +18,12 @@ class FiskalyClientTests: XCTestCase {
                         XCTAssertNotEqual(response.client.source_hash, "")
                         XCTAssertNotEqual(response.client.commit_hash, "")
                         XCTAssertNotEqual(response.smaers.version, "")
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message)")
                     }
             })
         } catch {
-            print("Error while getting version from client: \(error).")
-            XCTFail()
+            XCTFail("Error while getting version from client: \(error).")
         }
     }
 
@@ -50,16 +46,12 @@ class FiskalyClientTests: XCTestCase {
                         XCTAssertEqual(response.config.debug_file, "tmp/tmp.log")
                         XCTAssertEqual(response.config.client_timeout, 1500)
                         XCTAssertEqual(response.config.smaers_timeout, 1500)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message)")
                     }
             })
         } catch {
-            print("Error while setting config: \(error).")
-            XCTFail()
+            XCTFail("Error while setting config: \(error).")
         }
     }
 
@@ -70,23 +62,19 @@ class FiskalyClientTests: XCTestCase {
                 apiSecret: "API_SECRET",
                 baseUrl: "https://kassensichv.io/api/v1/"
             )
-            let testUTF8String = "/wuhu/this/is/my/path/äöü+#*'_-?ß!§$%&/()=<>|😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 🥰 😗 😙 😚 ☺️ 🙂 🤗 🤩 🤔 🤨 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 😛 😜 😝 🤤 😒 😓 😔 😕 🙃 🤑 😲 ☹️ 🙁 😖 😞 😟 😤 😢 😭 😦 😧 😨 😩 🤯 😬 😰 😱 🥵 🥶 😳 🤪 😵 😡 😠 🤬 😷 🤒"
+            let testUTF8String = "/wuhu/this/is/my/path/äöü+#*'_-?ß!§$%&/()=<>|"
             try client.echo(
                 data: testUTF8String,
                 completion: { (result) in
                     switch result {
                     case .success(let response):
                         XCTAssertEqual(response, testUTF8String)
-                        break
                     case .failure(let error):
-                        print("JsonRpcError: \(error.code) \(error.message)")
-                        XCTFail()
-                        break
+                        XCTFail("JsonRpcError: \(error.code) \(error.message)")
                     }
             })
         } catch {
-            print("Error while getting echo from client: \(error).")
-            XCTFail()
+            XCTFail("Error while getting echo from client: \(error).")
         }
     }
 

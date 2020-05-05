@@ -1,3 +1,12 @@
 excluded:
   - Examples/*
-  
+function_parameter_count: 
+  - 10
+function_body_length:
+  - 100
+identifier_name:
+  excluded:
+    - id
+    - FiskalyClientInvoke(_:)
+  allowed_symbols:
+    - _

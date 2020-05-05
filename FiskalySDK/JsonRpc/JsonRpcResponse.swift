@@ -8,10 +8,10 @@ public class JsonRpcResponse<T: Codable>: Codable {
     public var error: JsonRpcError?
 
     private enum CodingKeys: String, CodingKey {
-        case jsonrpc    = "jsonrpc"
-        case id         = "id"
-        case result     = "result"
-        case error      = "error"
+        case jsonrpc
+        case id
+        case result
+        case error
     }
 
     public required init(from decoder: Decoder) throws {

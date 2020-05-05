@@ -18,8 +18,7 @@ class FiskalySDKTests: XCTestCase {
                 baseUrl: "https://kassensichv.io/api/v1/"
             )
         } catch {
-            print("Error while creating client: \(error).")
-            XCTFail()
+            XCTFail("Error while creating client: \(error).")
         }
 
         XCTAssert(true)
