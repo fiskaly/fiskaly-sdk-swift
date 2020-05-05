@@ -2,7 +2,7 @@
 
 ## Bugs
 
-We use [GitHub Issues](https://github.com/fiskaly/fiskaly-sdk-swift/issues) for our public bugs. If you would like to report a problem, take a look around and see if someone already opened an issue about it. If you are certain this is a new, unreported bug, you can submit a [bug report](#reporting-new-issues).
+We use [GitHub Issues](https://github.com/fiskaly/fiskaly-sdk-swift/issues) for our bugs. If you would like to report a problem, take a look around and see if someone already opened an issue about it. If you are certain this is a new, unreported bug, you can submit a [bug report](#reporting-new-issues).
 
 ## Reporting New Issues
 
@@ -10,9 +10,8 @@ When [opening a new issue](https://github.com/fiskaly/fiskaly-sdk-swift/issues/n
 
 - **One issue, one bug:** Please report a single bug per issue.
 - **Provide reproduction steps:** List all the steps necessary to reproduce the issue. The person reading your bug report should be able to follow these steps to reproduce your issue with minimal effort.
-Optional:
-- **Add a log-file:** If your problem has to do with the client, make sure to enable the Debug-Mode and attach the generated log-file to your issue.
-- **Add a request-id:** If you are having a problem with one of our APIs and you are receiving a response from said API, make sure to add the Request-ID from the headers so we can check out the request easily without the need to search for it.
+- **Optional: Add a log-file:** If your problem has to do with the client, make sure to enable the Debug-Mode and attach the generated log-file to your issue.
+- **Optional: Add a request-id:** If you are having a problem with one of our APIs and you are receiving a response from said API, make sure to add the Request-ID from the headers so we can check out the request easily without the need to search for it.
 
 ## Pull Requests
 
@@ -43,6 +42,8 @@ A good test plan adds various tests to the repository to ensure that the newly a
 
 Currently tests that involve authentication with our APIs will not be tested automatically with Github-Actions, because of the way Github handles secrets. If your test-plan include such tests, make sure to mention them in the pull request and test them locally. 
 Add these tests to the `skip-testing`-flag in the github-workflow, so the workflow does not fail because of that.
+
+We may close pull request with failing tests immediately, with or without comment, so make sure that the tests are running successfully.
 
 #### Breaking Changes
 
