@@ -1,4 +1,4 @@
-name: CI || fiskaly Swift SDK 
+name: xcodebuild || fiskaly Swift SDK 
 
 on: 
   push:
