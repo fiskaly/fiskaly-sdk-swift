@@ -31,6 +31,7 @@ Please make sure the following is done when submitting a pull request:
 2. Mention that you are working on something directly in the issue. This way we can ensure that no more than one person is working on an issue.
 3. Describe your [**test plan**](#test-plan) in your pull request description. 
 4. Make sure to test your changes locally as not all tests are run in the github-workflow.
+5. [**Lint**](#linter) your changes and make sure to address warnings and errors.
 
 All pull requests should be opened against the `master` branch.
 
@@ -61,6 +62,10 @@ When adding a new breaking change, follow this template in your pull request:
 
 - **Most important: Look around.** Match the style you see used in the rest of the project. This includes formatting, naming files, naming things in code, naming things in documentation.
 - "Attractive"
+
+## Linter
+
+`fiskaly-sdk-swift` uses [SwiftLint](https://github.com/realm/SwiftLint) to check for Swift coding conventions. The linter runs in every pull request as well as every commit pushed to master. Before submitting a new pull request make sure you let the linter run locally on the files you have changed.
 
 ## License
 
