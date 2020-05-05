@@ -8,7 +8,7 @@ on:
       - '**/*.swift'
 
 jobs:
-  SwiftLint:
+  lint:
 
     runs-on: ubuntu-latest
 
