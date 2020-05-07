@@ -104,11 +104,10 @@ try client.config(
 
 Please note:
 
-- the fiskaly client currently only allows UUIDs in lowercase
 - the body sent in requests needs to be base64 encoded 
 
 ```swift
-let transactionUUID = UUID().uuidString.lowercased()
+let transactionUUID = UUID().uuidString
 
 let transactionBody = [
     "state": "ACTIVE",
