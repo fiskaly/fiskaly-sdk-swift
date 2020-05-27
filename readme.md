@@ -17,7 +17,7 @@ The fiskaly SDK includes an HTTP client that is needed<sup>[1](#fn1)</sup> for a
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate the fiskaly SDK into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "fiskaly/fiskaly-sdk-swift" "master"
+github "fiskaly/fiskaly-sdk-swift" ~> 1.1.600
 ```
 
 Run the following command to fetch the SDKs source code and build the `FiskalySDK.framework`:
