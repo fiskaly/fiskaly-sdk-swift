@@ -1,12 +1,4 @@
 import Foundation
-import FiskalyClient
-
-func FiskalyClientInvoke(_ request: String) -> String {
-    let resultRaw = _fiskaly_client_invoke(request)
-    let result = String(cString: resultRaw!)
-    _fiskaly_client_free(resultRaw)
-    return result
-}
 
 public class FiskalyHttpClient {
 
@@ -28,7 +20,7 @@ public class FiskalyHttpClient {
         ]
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
-        let jsonData = FiskalyClientInvoke(String(describing: request))
+        let jsonData = fiskalyClientInvoke(String(describing: request))
         let data = jsonData.data(using: .utf8)
         let response = try JSONDecoder().decode(JsonRpcResponse<ResultCreateContext>.self, from: data!)
 
@@ -47,7 +39,7 @@ public class FiskalyHttpClient {
     public func version(completion: @escaping (Result<ResultVersion, JsonRpcError>) -> Void) throws {
 
         let request = JsonRpcRequest(method: "version", params: "")
-        let jsonData = FiskalyClientInvoke(String(describing: request))
+        let jsonData = fiskalyClientInvoke(String(describing: request))
         let data = jsonData.data(using: .utf8)
         let response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data!)
 
@@ -80,7 +72,7 @@ public class FiskalyHttpClient {
         ]
 
         let request = JsonRpcRequest(method: "config", params: configRequestParams)
-        let jsonData = FiskalyClientInvoke(String(describing: request))
+        let jsonData = fiskalyClientInvoke(String(describing: request))
         let data = jsonData.data(using: .utf8)
         let response = try JSONDecoder().decode(JsonRpcResponse<ResultConfig>.self, from: data!)
 
@@ -101,7 +93,7 @@ public class FiskalyHttpClient {
                         completion: @escaping (Result<String, JsonRpcError>) -> Void) throws {
 
         let request = JsonRpcRequest(method: "echo", params: data)
-        let jsonData = FiskalyClientInvoke(String(describing: request))
+        let jsonData = fiskalyClientInvoke(String(describing: request))
         let data = jsonData.data(using: .utf8)
         let response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data!)
 
@@ -164,7 +156,7 @@ public class FiskalyHttpClient {
         ]
 
         let request = JsonRpcRequest(method: "request", params: requestRequestParams)
-        let jsonData = FiskalyClientInvoke(String(describing: request))
+        let jsonData = fiskalyClientInvoke(String(describing: request))
         let data = jsonData.data(using: .utf8)
         let response = try JSONDecoder().decode(JsonRpcResponse<ResultRequest>.self, from: data!)
 
