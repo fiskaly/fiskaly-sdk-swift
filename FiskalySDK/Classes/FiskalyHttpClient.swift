@@ -31,7 +31,7 @@ public class FiskalyHttpClient {
                 self.context = response.result!.context
             }
         } else {
-            throw FiskalyError.DefaultError
+            throw FiskalyError.sdkError(message: "")
         }
 
     }
@@ -45,15 +45,15 @@ public class FiskalyHttpClient {
         let request = JsonRpcRequest(method: "version", params: "")
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
-            
+
             let response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data)
-            
+
             if response.result == nil {
                 completion(.failure(response.error!))
             } else {
                 completion(.success(response.result!))
             }
-            
+
         }
 
     }
@@ -81,7 +81,7 @@ public class FiskalyHttpClient {
         let request = JsonRpcRequest(method: "config", params: configRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
-            
+
             let response = try JSONDecoder().decode(JsonRpcResponse<ResultConfig>.self, from: data)
 
             if response.result == nil {
@@ -91,7 +91,6 @@ public class FiskalyHttpClient {
                 completion(.success(response.result!))
             }
         }
-
 
     }
 
@@ -105,7 +104,7 @@ public class FiskalyHttpClient {
         let request = JsonRpcRequest(method: "echo", params: data)
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
-            
+
             let response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data)
 
             if response.result == nil {
@@ -114,7 +113,6 @@ public class FiskalyHttpClient {
                 completion(.success(response.result!))
             }
         }
-
 
     }
 
