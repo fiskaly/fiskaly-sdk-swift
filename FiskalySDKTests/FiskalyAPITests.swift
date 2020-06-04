@@ -10,17 +10,10 @@ class FiskalyAPITests: XCTestCase {
                 apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
                 baseUrl: "https://kassensichv.io/api/v1/"
             )
-            try client.request(
+            let response = try client.request(
                 method: "GET",
-                path: "/tss",
-                completion: { (result) in
-                    switch result {
-                    case .success(let response):
-                        XCTAssertEqual(response.response.status, 200)
-                    case .failure(let error):
-                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                    }
-            })
+                path: "/tss")
+            XCTAssertEqual(response.response.status, 200)
         } catch {
             XCTFail("Error while performing request: \(error).")
         }
@@ -46,18 +39,11 @@ class FiskalyAPITests: XCTestCase {
             let tssBodyData = try? JSONSerialization.data(withJSONObject: tssBody)
             let tssBodyEncoded = tssBodyData?.base64EncodedString()
 
-            try client.request(
+            let responseCreateTSS = try client.request(
                 method: "PUT",
                 path: "tss/\(tssUUID)",
-                body: tssBodyEncoded!,
-                completion: { (result) in
-                    switch result {
-                    case .success(let response):
-                        XCTAssertEqual(response.response.status, 200)
-                    case .failure(let error):
-                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                    }
-            })
+                body: tssBodyEncoded!)
+            XCTAssertEqual(responseCreateTSS.response.status, 200)
 
             // create Client
 
@@ -69,18 +55,11 @@ class FiskalyAPITests: XCTestCase {
             let clientBodyData = try? JSONSerialization.data(withJSONObject: clientBody)
             let clientBodyEncoded = clientBodyData?.base64EncodedString()
 
-            try client.request(
+            let responseCreateClient = try client.request(
                 method: "PUT",
                 path: "tss/\(tssUUID)/client/\(clientUUID)",
-                body: clientBodyEncoded!,
-                completion: { (result) in
-                    switch result {
-                    case .success(let response):
-                        XCTAssertEqual(response.response.status, 200)
-                    case .failure(let error):
-                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                    }
-            })
+                body: clientBodyEncoded!)
+            XCTAssertEqual(responseCreateClient.response.status, 200)
 
             // create Transaction
 
@@ -93,18 +72,11 @@ class FiskalyAPITests: XCTestCase {
             let transactionBodyData = try? JSONSerialization.data(withJSONObject: transactionBody)
             let transactionBodyEncoded = transactionBodyData?.base64EncodedString()
 
-            try client.request(
+            let responseCreateTransaction = try client.request(
                 method: "PUT",
                 path: "tss/\(tssUUID)/tx/\(transactionUUID)",
-                body: transactionBodyEncoded!,
-                completion: { (result) in
-                    switch result {
-                    case .success(let response):
-                        XCTAssertEqual(response.response.status, 200)
-                    case .failure(let error):
-                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                    }
-            })
+                body: transactionBodyEncoded!)
+            XCTAssertEqual(responseCreateTransaction.response.status, 200)
 
             // finish Transaction
 
@@ -128,19 +100,12 @@ class FiskalyAPITests: XCTestCase {
             let transactionFinishBodyData = try? JSONSerialization.data(withJSONObject: transactionFinishBody)
             let transactionFinishBodyEncoded = transactionFinishBodyData?.base64EncodedString()
 
-            try client.request(
+            let responseFinishTransaction = try client.request(
                 method: "PUT",
                 path: "tss/\(tssUUID)/tx/\(transactionUUID)",
                 query: ["last_revision": "1"],
-                body: transactionFinishBodyEncoded!,
-                completion: { (result) in
-                    switch result {
-                    case .success(let response):
-                        XCTAssertEqual(response.response.status, 200)
-                    case .failure(let error):
-                        XCTFail("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-                    }
-            })
+                body: transactionFinishBodyEncoded!)
+            XCTAssertEqual(responseFinishTransaction.response.status, 200)
 
         } catch {
             XCTFail("Error while performing request: \(error).")

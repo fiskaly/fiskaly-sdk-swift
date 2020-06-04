@@ -21,17 +21,27 @@ public class FiskalyHttpClient {
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
+
         if let data = jsonData.data(using: .utf8) {
 
-            let response = try JSONDecoder().decode(JsonRpcResponse<ResultCreateContext>.self, from: data)
-
-            if response.result == nil {
-                throw response.error!
-            } else {
-                self.context = response.result!.context
+            let response: JsonRpcResponse<ResultCreateContext>
+            
+            do {
+                response = try JSONDecoder().decode(JsonRpcResponse<ResultCreateContext>.self, from: data)
+            } catch {
+                throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
+            
+            if let result = response.result {
+                self.context = result.context
+            } else if let error = response.error {
+                throw getError(error: error)
+            } else {
+                throw FiskalyError.sdkError(message: "Client error not readable.")
+            }
+
         } else {
-            throw FiskalyError.sdkError(message: "")
+            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
 
     }
@@ -40,20 +50,30 @@ public class FiskalyHttpClient {
      Method: Version
      */
 
-    public func version(completion: @escaping (Result<ResultVersion, JsonRpcError>) -> Void) throws {
+    public func version() throws -> ResultVersion {
 
         let request = JsonRpcRequest(method: "version", params: "")
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
 
-            let response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data)
-
-            if response.result == nil {
-                completion(.failure(response.error!))
+            let response: JsonRpcResponse<ResultVersion>
+            
+            do {
+                response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data)
+            } catch {
+                throw FiskalyError.sdkError(message: "Client response not decodable into class.")
+            }
+            
+            if let result = response.result {
+                return result
+            } else if let error = response.error {
+                throw getError(error: error)
             } else {
-                completion(.success(response.result!))
+                throw FiskalyError.sdkError(message: "Client error not readable.")
             }
 
+        } else {
+            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
 
     }
@@ -62,11 +82,7 @@ public class FiskalyHttpClient {
      Method: Config
      */
 
-    public func config( debugLevel: Int?,
-                        debugFile: String?,
-                        clientTimeout: Int?,
-                        smaersTimeout: Int?,
-                        completion: @escaping (Result<ResultConfig, JsonRpcError>) -> Void) throws {
+    public func config(debugLevel: Int?, debugFile: String?, clientTimeout: Int?, smaersTimeout: Int?) throws -> ResultConfig {
 
         let configRequestParams: [String: Any] = [
             "context": self.context,
@@ -81,15 +97,26 @@ public class FiskalyHttpClient {
         let request = JsonRpcRequest(method: "config", params: configRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
+            
+            let response: JsonRpcResponse<ResultConfig>
 
-            let response = try JSONDecoder().decode(JsonRpcResponse<ResultConfig>.self, from: data)
-
-            if response.result == nil {
-                completion(.failure(response.error!))
-            } else {
-                self.context = response.result!.context
-                completion(.success(response.result!))
+            do {
+                response = try JSONDecoder().decode(JsonRpcResponse<ResultConfig>.self, from: data)
+            } catch {
+                throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
+            
+            if let result = response.result {
+                self.context = result.context
+                return result
+            } else if let error = response.error {
+                throw getError(error: error)
+            } else {
+                throw FiskalyError.sdkError(message: "Client error not readable.")
+            }
+            
+        } else {
+            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
 
     }
@@ -98,20 +125,30 @@ public class FiskalyHttpClient {
      Method: Echo
      */
 
-    public func echo(   data: String,
-                        completion: @escaping (Result<String, JsonRpcError>) -> Void) throws {
+    public func echo(data: String) throws -> String {
 
         let request = JsonRpcRequest(method: "echo", params: data)
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
 
-            let response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data)
-
-            if response.result == nil {
-                completion(.failure(response.error!))
-            } else {
-                completion(.success(response.result!))
+            let response: JsonRpcResponse<String>
+            
+            do {
+                response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data)
+            } catch {
+                throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
+            
+            if let result = response.result {
+                return result
+            } else if let error = response.error {
+                throw getError(error: error)
+            } else {
+                throw FiskalyError.sdkError(message: "Client error not readable.")
+            }
+            
+        } else {
+            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
 
     }
@@ -121,39 +158,34 @@ public class FiskalyHttpClient {
      */
 
     public func request( method: String,
+                         path: String?) throws -> ResultRequest {
+        return try self.request(method: method, path: path, query: nil, headers: nil, body: "")
+    }
+
+    public func request( method: String,
                          path: String?,
-                         completion: @escaping (Result<ResultRequest, JsonRpcError>) -> Void) throws {
-        try self.request(method: method, path: path, query: nil, headers: nil, body: "", completion: completion)
+                         query: [String: String]?) throws -> ResultRequest {
+        return try self.request(method: method, path: path, query: query, headers: nil, body: "")
+    }
+
+    public func request( method: String,
+                         path: String?,
+                         body: String) throws -> ResultRequest {
+        return try self.request(method: method, path: path, query: nil, headers: nil, body: body)
     }
 
     public func request( method: String,
                          path: String?,
                          query: [String: String]?,
-                         completion: @escaping (Result<ResultRequest, JsonRpcError>) -> Void) throws {
-        try self.request(method: method, path: path, query: query, headers: nil, body: "", completion: completion)
-    }
-
-    public func request( method: String,
-                         path: String?,
-                         body: String,
-                         completion: @escaping (Result<ResultRequest, JsonRpcError>) -> Void) throws {
-        try self.request(method: method, path: path, query: nil, headers: nil, body: body, completion: completion)
-    }
-
-    public func request( method: String,
-                         path: String?,
-                         query: [String: String]?,
-                         body: String,
-                         completion: @escaping (Result<ResultRequest, JsonRpcError>) -> Void) throws {
-        try self.request(method: method, path: path, query: query, headers: nil, body: body, completion: completion)
+                         body: String) throws -> ResultRequest {
+        return try self.request(method: method, path: path, query: query, headers: nil, body: body)
     }
 
     public func request( method: String,
                          path: String?,
                          query: [String: String]?,
                          headers: [String: String]?,
-                         body: String,
-                         completion: @escaping (Result<ResultRequest, JsonRpcError>) -> Void) throws {
+                         body: String) throws -> ResultRequest {
 
         let requestRequestParams: [String: Any] = [
             "context": self.context,
@@ -170,14 +202,29 @@ public class FiskalyHttpClient {
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
 
-            let response = try JSONDecoder().decode(JsonRpcResponse<ResultRequest>.self, from: data)
-
-            if response.result == nil {
-                completion(.failure(response.error!))
-            } else {
-                self.context = response.result!.context!
-                completion(.success(response.result!))
+            let response: JsonRpcResponse<ResultRequest>
+            
+            do {
+                response = try JSONDecoder().decode(JsonRpcResponse<ResultRequest>.self, from: data)
+            } catch {
+                throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
+            
+            if let result = response.result {
+                if let context = result.context {
+                    self.context = context
+                    return result
+                } else {
+                    throw FiskalyError.sdkError(message: "Client did not respond with a proper response.")
+                }
+            } else if let error = response.error {
+                throw getError(error: error)
+            } else {
+                throw FiskalyError.sdkError(message: "Client error not readable.")
+            }
+            
+        } else {
+            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
 
     }
