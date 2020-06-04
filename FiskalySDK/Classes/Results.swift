@@ -19,8 +19,15 @@ public class ResultVersion: Codable {
 
 public class ClientVersion: Codable {
     public var version: String
-    public var source_hash: String
-    public var commit_hash: String
+    public var sourceHash: String
+    public var commitHash: String
+
+    enum CodingKeys: String, CodingKey {
+        case version
+        case sourceHash = "source_hash"
+        case commitHash = "commit_hash"
+    }
+
 }
 
 public class SMAERSVersion: Codable {
@@ -37,10 +44,18 @@ public class ResultConfig: Codable {
 }
 
 public class Config: Codable {
-    public var debug_level: Int
-    public var debug_file: String
-    public var client_timeout: Int
-    public var smaers_timeout: Int
+    public var debugLevel: Int
+    public var debugFile: String
+    public var clientTimeout: Int
+    public var smaersTimeout: Int
+
+    enum CodingKeys: String, CodingKey {
+        case debugLevel =       "debug_level"
+        case debugFile  =       "debug_file"
+        case clientTimeout =    "client_timeout"
+        case smaersTimeout =    "smaers_timeout"
+    }
+
 }
 
 /*

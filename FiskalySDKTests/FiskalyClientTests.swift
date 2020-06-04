@@ -15,8 +15,8 @@ class FiskalyClientTests: XCTestCase {
                     switch result {
                     case .success(let response):
                         XCTAssertNotEqual(response.client.version, "")
-                        XCTAssertNotEqual(response.client.source_hash, "")
-                        XCTAssertNotEqual(response.client.commit_hash, "")
+                        XCTAssertNotEqual(response.client.sourceHash, "")
+                        XCTAssertNotEqual(response.client.commitHash, "")
                         XCTAssertNotEqual(response.smaers.version, "")
                     case .failure(let error):
                         XCTFail("JsonRpcError: \(error.code) \(error.message)")
@@ -42,10 +42,10 @@ class FiskalyClientTests: XCTestCase {
                 completion: { (result) in
                     switch result {
                     case .success(let response):
-                        XCTAssertEqual(response.config.debug_level, -1)
-                        XCTAssertEqual(response.config.debug_file, "tmp/tmp.log")
-                        XCTAssertEqual(response.config.client_timeout, 1500)
-                        XCTAssertEqual(response.config.smaers_timeout, 1500)
+                        XCTAssertEqual(response.config.debugLevel, -1)
+                        XCTAssertEqual(response.config.debugFile, "tmp/tmp.log")
+                        XCTAssertEqual(response.config.clientTimeout, 1500)
+                        XCTAssertEqual(response.config.smaersTimeout, 1500)
                     case .failure(let error):
                         XCTFail("JsonRpcError: \(error.code) \(error.message)")
                     }
