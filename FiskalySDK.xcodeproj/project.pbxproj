@@ -16,6 +16,7 @@
 		6AEFEB3D24879BA700021EAC /* FiskalyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEB3C24879BA700021EAC /* FiskalyClient.swift */; };
 		6AEFEB4024879E6400021EAC /* FiskalyClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AEFEB3E24879CAD00021EAC /* FiskalyClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6AEFEB462487A43C00021EAC /* com.fiskaly.client-ios-all-v1.1.600.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AEFEB452487A43B00021EAC /* com.fiskaly.client-ios-all-v1.1.600.a */; };
+		6AEFEB482488DCE200021EAC /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEB472488DCE200021EAC /* Errors.swift */; };
 		D9BFF5BF244629610032D061 /* FiskalySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BFF5B5244629610032D061 /* FiskalySDK.framework */; };
 		D9BFF5C4244629610032D061 /* FiskalySDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BFF5C3244629610032D061 /* FiskalySDKTests.swift */; };
 		D9BFF5C6244629610032D061 /* FiskalySDK.h in Headers */ = {isa = PBXBuildFile; fileRef = D9BFF5B8244629610032D061 /* FiskalySDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -43,6 +44,7 @@
 		6AEFEB3E24879CAD00021EAC /* FiskalyClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiskalyClient.h; sourceTree = "<group>"; };
 		6AEFEB3F24879D3400021EAC /* FiskalySDK.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = FiskalySDK.modulemap; sourceTree = "<group>"; };
 		6AEFEB452487A43B00021EAC /* com.fiskaly.client-ios-all-v1.1.600.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "com.fiskaly.client-ios-all-v1.1.600.a"; path = "../../../WorkspaceGITHUB/client/dist/client/com.fiskaly.client-ios-all-v1.1.600.a"; sourceTree = "<group>"; };
+		6AEFEB472488DCE200021EAC /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		D9BFF5B5244629610032D061 /* FiskalySDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FiskalySDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9BFF5B8244629610032D061 /* FiskalySDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiskalySDK.h; sourceTree = "<group>"; };
 		D9BFF5B9244629610032D061 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				6AD8BBED24486AD2000D47BD /* JsonRpc */,
 				D9F90FEE24478702002057D3 /* FiskalyHttpClient.swift */,
 				6AD8BBFC24488E91000D47BD /* Results.swift */,
+				6AEFEB472488DCE200021EAC /* Errors.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 				D9F90FEF24478702002057D3 /* FiskalyHttpClient.swift in Sources */,
 				6AD8BBFB24488C82000D47BD /* JsonRpcError.swift in Sources */,
 				6AD8BBF024486B18000D47BD /* JsonRpcRequest.swift in Sources */,
+				6AEFEB482488DCE200021EAC /* Errors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

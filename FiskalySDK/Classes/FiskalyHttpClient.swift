@@ -21,13 +21,17 @@ public class FiskalyHttpClient {
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
-        let data = jsonData.data(using: .utf8)
-        let response = try JSONDecoder().decode(JsonRpcResponse<ResultCreateContext>.self, from: data!)
+        if let data = jsonData.data(using: .utf8) {
 
-        if response.result == nil {
-            throw response.error!
+            let response = try JSONDecoder().decode(JsonRpcResponse<ResultCreateContext>.self, from: data)
+
+            if response.result == nil {
+                throw response.error!
+            } else {
+                self.context = response.result!.context
+            }
         } else {
-            self.context = response.result!.context
+            throw FiskalyError.DefaultError
         }
 
     }
@@ -40,13 +44,16 @@ public class FiskalyHttpClient {
 
         let request = JsonRpcRequest(method: "version", params: "")
         let jsonData = fiskalyClientInvoke(String(describing: request))
-        let data = jsonData.data(using: .utf8)
-        let response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data!)
-
-        if response.result == nil {
-            completion(.failure(response.error!))
-        } else {
-            completion(.success(response.result!))
+        if let data = jsonData.data(using: .utf8) {
+            
+            let response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data)
+            
+            if response.result == nil {
+                completion(.failure(response.error!))
+            } else {
+                completion(.success(response.result!))
+            }
+            
         }
 
     }
@@ -73,15 +80,18 @@ public class FiskalyHttpClient {
 
         let request = JsonRpcRequest(method: "config", params: configRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
-        let data = jsonData.data(using: .utf8)
-        let response = try JSONDecoder().decode(JsonRpcResponse<ResultConfig>.self, from: data!)
+        if let data = jsonData.data(using: .utf8) {
+            
+            let response = try JSONDecoder().decode(JsonRpcResponse<ResultConfig>.self, from: data)
 
-        if response.result == nil {
-            completion(.failure(response.error!))
-        } else {
-            self.context = response.result!.context
-            completion(.success(response.result!))
+            if response.result == nil {
+                completion(.failure(response.error!))
+            } else {
+                self.context = response.result!.context
+                completion(.success(response.result!))
+            }
         }
+
 
     }
 
@@ -94,14 +104,17 @@ public class FiskalyHttpClient {
 
         let request = JsonRpcRequest(method: "echo", params: data)
         let jsonData = fiskalyClientInvoke(String(describing: request))
-        let data = jsonData.data(using: .utf8)
-        let response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data!)
+        if let data = jsonData.data(using: .utf8) {
+            
+            let response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data)
 
-        if response.result == nil {
-            completion(.failure(response.error!))
-        } else {
-            completion(.success(response.result!))
+            if response.result == nil {
+                completion(.failure(response.error!))
+            } else {
+                completion(.success(response.result!))
+            }
         }
+
 
     }
 
@@ -157,14 +170,16 @@ public class FiskalyHttpClient {
 
         let request = JsonRpcRequest(method: "request", params: requestRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
-        let data = jsonData.data(using: .utf8)
-        let response = try JSONDecoder().decode(JsonRpcResponse<ResultRequest>.self, from: data!)
+        if let data = jsonData.data(using: .utf8) {
 
-        if response.result == nil {
-            completion(.failure(response.error!))
-        } else {
-            self.context = response.result!.context!
-            completion(.success(response.result!))
+            let response = try JSONDecoder().decode(JsonRpcResponse<ResultRequest>.self, from: data)
+
+            if response.result == nil {
+                completion(.failure(response.error!))
+            } else {
+                self.context = response.result!.context!
+                completion(.success(response.result!))
+            }
         }
 
     }
