@@ -15,9 +15,6 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v1
 
-      - name: Carthage Update
-        run: carthage update
-
       - name: Force Xcode 11.3
         run: |
           sudo xcode-select \
