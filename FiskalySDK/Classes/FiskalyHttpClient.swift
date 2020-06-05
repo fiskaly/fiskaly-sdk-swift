@@ -25,13 +25,13 @@ public class FiskalyHttpClient {
         if let data = jsonData.data(using: .utf8) {
 
             let response: JsonRpcResponse<ResultCreateContext>
-            
+
             do {
                 response = try JSONDecoder().decode(JsonRpcResponse<ResultCreateContext>.self, from: data)
             } catch {
                 throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
-            
+
             if let result = response.result {
                 self.context = result.context
             } else if let error = response.error {
@@ -57,13 +57,13 @@ public class FiskalyHttpClient {
         if let data = jsonData.data(using: .utf8) {
 
             let response: JsonRpcResponse<ResultVersion>
-            
+
             do {
                 response = try JSONDecoder().decode(JsonRpcResponse<ResultVersion>.self, from: data)
             } catch {
                 throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
-            
+
             if let result = response.result {
                 return result
             } else if let error = response.error {
@@ -97,7 +97,7 @@ public class FiskalyHttpClient {
         let request = JsonRpcRequest(method: "config", params: configRequestParams)
         let jsonData = fiskalyClientInvoke(String(describing: request))
         if let data = jsonData.data(using: .utf8) {
-            
+
             let response: JsonRpcResponse<ResultConfig>
 
             do {
@@ -105,7 +105,7 @@ public class FiskalyHttpClient {
             } catch {
                 throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
-            
+
             if let result = response.result {
                 self.context = result.context
                 return result.config
@@ -114,7 +114,7 @@ public class FiskalyHttpClient {
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
-            
+
         } else {
             throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
@@ -132,13 +132,13 @@ public class FiskalyHttpClient {
         if let data = jsonData.data(using: .utf8) {
 
             let response: JsonRpcResponse<String>
-            
+
             do {
                 response = try JSONDecoder().decode(JsonRpcResponse<String>.self, from: data)
             } catch {
                 throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
-            
+
             if let result = response.result {
                 return result
             } else if let error = response.error {
@@ -146,7 +146,7 @@ public class FiskalyHttpClient {
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
-            
+
         } else {
             throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
@@ -203,13 +203,13 @@ public class FiskalyHttpClient {
         if let data = jsonData.data(using: .utf8) {
 
             let response: JsonRpcResponse<ResultRequest>
-            
+
             do {
                 response = try JSONDecoder().decode(JsonRpcResponse<ResultRequest>.self, from: data)
             } catch {
                 throw FiskalyError.sdkError(message: "Client response not decodable into class.")
             }
-            
+
             if let result = response.result {
                 if let context = result.context {
                     self.context = context
@@ -222,7 +222,7 @@ public class FiskalyHttpClient {
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
-            
+
         } else {
             throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
