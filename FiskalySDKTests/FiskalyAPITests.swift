@@ -13,7 +13,7 @@ class FiskalyAPITests: XCTestCase {
             let response = try client.request(
                 method: "GET",
                 path: "/tss")
-            XCTAssertEqual(response.response.status, 200)
+            XCTAssertEqual(response.status, 200)
         } catch {
             XCTFail("Error while performing request: \(error).")
         }
@@ -43,7 +43,7 @@ class FiskalyAPITests: XCTestCase {
                 method: "PUT",
                 path: "tss/\(tssUUID)",
                 body: tssBodyEncoded!)
-            XCTAssertEqual(responseCreateTSS.response.status, 200)
+            XCTAssertEqual(responseCreateTSS.status, 200)
 
             // create Client
 
@@ -59,7 +59,7 @@ class FiskalyAPITests: XCTestCase {
                 method: "PUT",
                 path: "tss/\(tssUUID)/client/\(clientUUID)",
                 body: clientBodyEncoded!)
-            XCTAssertEqual(responseCreateClient.response.status, 200)
+            XCTAssertEqual(responseCreateClient.status, 200)
 
             // create Transaction
 
@@ -76,7 +76,7 @@ class FiskalyAPITests: XCTestCase {
                 method: "PUT",
                 path: "tss/\(tssUUID)/tx/\(transactionUUID)",
                 body: transactionBodyEncoded!)
-            XCTAssertEqual(responseCreateTransaction.response.status, 200)
+            XCTAssertEqual(responseCreateTransaction.status, 200)
 
             // finish Transaction
 
@@ -105,7 +105,7 @@ class FiskalyAPITests: XCTestCase {
                 path: "tss/\(tssUUID)/tx/\(transactionUUID)",
                 query: ["last_revision": "1"],
                 body: transactionFinishBodyEncoded!)
-            XCTAssertEqual(responseFinishTransaction.response.status, 200)
+            XCTAssertEqual(responseFinishTransaction.status, 200)
 
         } catch {
             XCTFail("Error while performing request: \(error).")

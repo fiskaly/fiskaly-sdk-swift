@@ -32,10 +32,10 @@ class FiskalyClientTests: XCTestCase {
                 debugFile: "tmp/tmp.log",
                 clientTimeout: 1500,
                 smaersTimeout: 1500)
-            XCTAssertEqual(response.config.debugLevel, -1)
-            XCTAssertEqual(response.config.debugFile, "tmp/tmp.log")
-            XCTAssertEqual(response.config.clientTimeout, 1500)
-            XCTAssertEqual(response.config.smaersTimeout, 1500)
+            XCTAssertEqual(response.debugLevel, -1)
+            XCTAssertEqual(response.debugFile, "tmp/tmp.log")
+            XCTAssertEqual(response.clientTimeout, 1500)
+            XCTAssertEqual(response.smaersTimeout, 1500)
         } catch {
             XCTFail("Error while setting config: \(error).")
         }

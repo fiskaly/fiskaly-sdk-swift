@@ -82,7 +82,7 @@ public class FiskalyHttpClient {
      Method: Config
      */
 
-    public func config(debugLevel: Int?, debugFile: String?, clientTimeout: Int?, smaersTimeout: Int?) throws -> ResultConfig {
+    public func config(debugLevel: Int?, debugFile: String?, clientTimeout: Int?, smaersTimeout: Int?) throws -> Config {
 
         let configRequestParams: [String: Any] = [
             "context": self.context,
@@ -108,7 +108,7 @@ public class FiskalyHttpClient {
             
             if let result = response.result {
                 self.context = result.context
-                return result
+                return result.config
             } else if let error = response.error {
                 throw getError(error: error)
             } else {
@@ -158,26 +158,26 @@ public class FiskalyHttpClient {
      */
 
     public func request( method: String,
-                         path: String?) throws -> ResultRequest {
+                         path: String?) throws -> HttpResponse {
         return try self.request(method: method, path: path, query: nil, headers: nil, body: "")
     }
 
     public func request( method: String,
                          path: String?,
-                         query: [String: String]?) throws -> ResultRequest {
+                         query: [String: String]?) throws -> HttpResponse {
         return try self.request(method: method, path: path, query: query, headers: nil, body: "")
     }
 
     public func request( method: String,
                          path: String?,
-                         body: String) throws -> ResultRequest {
+                         body: String) throws -> HttpResponse {
         return try self.request(method: method, path: path, query: nil, headers: nil, body: body)
     }
 
     public func request( method: String,
                          path: String?,
                          query: [String: String]?,
-                         body: String) throws -> ResultRequest {
+                         body: String) throws -> HttpResponse {
         return try self.request(method: method, path: path, query: query, headers: nil, body: body)
     }
 
@@ -185,7 +185,7 @@ public class FiskalyHttpClient {
                          path: String?,
                          query: [String: String]?,
                          headers: [String: String]?,
-                         body: String) throws -> ResultRequest {
+                         body: String) throws -> HttpResponse {
 
         let requestRequestParams: [String: Any] = [
             "context": self.context,
@@ -213,7 +213,7 @@ public class FiskalyHttpClient {
             if let result = response.result {
                 if let context = result.context {
                     self.context = context
-                    return result
+                    return result.response
                 } else {
                     throw FiskalyError.sdkError(message: "Client did not respond with a proper response.")
                 }
