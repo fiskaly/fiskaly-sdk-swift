@@ -9,9 +9,9 @@ public class FiskalyHttpClient {
      */
 
     public init(apiKey: String, apiSecret: String, baseUrl: String) throws {
-        
+
         // this needs to be done because xcode cries that self.context is used before be initialized
-        
+
         self.context = ""
 
         // version is hardcorded because using versionNumber from header file strips patch number
@@ -137,10 +137,10 @@ public class FiskalyHttpClient {
         }
 
     }
-    
+
     func performJsonRpcRequest<T: Codable>(request: JsonRpcRequest, _ type: T.Type) throws -> JsonRpcResponse<T> {
-        
-        let jsonData = fiskalyClientInvoke(String(describing: request))
+
+        let jsonData = try fiskalyClientInvoke(String(describing: request))
         guard let data = jsonData.data(using: .utf8) else {
             throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
@@ -155,12 +155,12 @@ public class FiskalyHttpClient {
             throw FiskalyError.sdkError(message: "Client response not decodable into class.")
         }
 
-        if let _ = response.result {
+        if response.result != nil {
             return response
         } else {
             throw FiskalyError.sdkError(message: "Client error not readable.")
         }
-        
+
     }
 
 }
