@@ -35,7 +35,7 @@ public class FiskalyHttpClient {
             if let result = response.result {
                 self.context = result.context
             } else if let error = response.error {
-                throw getError(error: error)
+                throw error
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
@@ -67,7 +67,7 @@ public class FiskalyHttpClient {
             if let result = response.result {
                 return result
             } else if let error = response.error {
-                throw getError(error: error)
+                throw error
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
@@ -110,7 +110,7 @@ public class FiskalyHttpClient {
                 self.context = result.context
                 return result.config
             } else if let error = response.error {
-                throw getError(error: error)
+                throw error
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
@@ -142,7 +142,7 @@ public class FiskalyHttpClient {
             if let result = response.result {
                 return result
             } else if let error = response.error {
-                throw getError(error: error)
+                throw error
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
@@ -194,7 +194,7 @@ public class FiskalyHttpClient {
                     throw FiskalyError.sdkError(message: "Client did not respond with a proper response.")
                 }
             } else if let error = response.error {
-                throw getError(error: error)
+                throw error
             } else {
                 throw FiskalyError.sdkError(message: "Client error not readable.")
             }
