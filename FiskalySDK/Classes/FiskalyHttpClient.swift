@@ -3,12 +3,14 @@ import Foundation
 public class FiskalyHttpClient {
 
     private var context: String
+    private let client: RequestClient
 
     /*
      Initializer
      */
 
-    public init(apiKey: String, apiSecret: String, baseUrl: String) throws {
+    public init(apiKey: String, apiSecret: String, baseUrl: String, client: RequestClient = FiskalyRequestClient()) throws {
+        self.client = client
 
         // this needs to be done because xcode cries that self.context is used before be initialized
 
@@ -140,7 +142,7 @@ public class FiskalyHttpClient {
 
     func performJsonRpcRequest<T: Codable>(request: JsonRpcRequest, _ type: T.Type) throws -> JsonRpcResponse<T> {
 
-        let jsonData = try fiskalyClientInvoke(String(describing: request))
+        let jsonData = try client.invoke(request: request)
         guard let data = jsonData.data(using: .utf8) else {
             throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
