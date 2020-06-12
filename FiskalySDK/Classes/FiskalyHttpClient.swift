@@ -157,20 +157,20 @@ public class FiskalyHttpClient {
      Method: Request
      */
 
-    public func request( method:    String,
-                         path:      String = "",
-                         query:     [String: String]? = nil,
-                         headers:   [String: String]? = nil,
-                         body:      String = "") throws -> HttpResponse {
+    public func request( method: String,
+                         path: String = "",
+                         query: [String: String]? = nil,
+                         headers: [String: String]? = nil,
+                         body: String = "") throws -> HttpResponse {
 
         let requestRequestParams: [String: Any] = [
             "context": self.context,
             "request": [
-                "method":   method,
-                "path":     path,
-                "body":     body as Any,
-                "query":    query as Any,
-                "headers":  headers as Any
+                "method": method,
+                "path": path,
+                "body": body as Any,
+                "query": query as Any,
+                "headers": headers as Any
             ]
         ]
 
