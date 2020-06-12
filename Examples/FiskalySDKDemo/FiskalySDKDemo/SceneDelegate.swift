@@ -21,19 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 apiSecret: "API_SECRET",
                 baseUrl: "https://kassensichv.io/api/v1/"
             )
-            try client.version(
-                completion: { (result) in
-                    switch result {
-                    case .success(let response):
-                        let text =
-                        "Client Version: \(response.client.version) \nwith \nSMAERS Version: \(response.smaers.version)"
-                        contentView = ContentView(text: text)
-                        break;
-                    case .failure(let error):
-                        print("Error: \(error)")
-                        break;
-                    }
-            })
+            let response = try client.version()
+            let text =
+            "Client Version: \(response.client.version) \nwith \nSMAERS Version: \(response.smaers.version)"
+            contentView = ContentView(text: text)
         } catch {
             print("Error while getting version: \(error).")
         }

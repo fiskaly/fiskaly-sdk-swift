@@ -14,7 +14,6 @@
 		D9BFF58624461BC70032D061 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9BFF58524461BC70032D061 /* Preview Assets.xcassets */; };
 		D9BFF58924461BC70032D061 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9BFF58724461BC70032D061 /* LaunchScreen.storyboard */; };
 		D9BFF59124461BE70032D061 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = D9BFF59024461BE70032D061 /* Cartfile */; };
-		D9BFF59524461CDE0032D061 /* FiskalyClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BFF59424461CDE0032D061 /* FiskalyClient.framework */; };
 		D9BFF59724461CE40032D061 /* FiskalySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9BFF59624461CE40032D061 /* FiskalySDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		D9BFF58824461BC70032D061 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9BFF58A24461BC70032D061 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9BFF59024461BE70032D061 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
-		D9BFF59424461CDE0032D061 /* FiskalyClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FiskalyClient.framework; path = Carthage/Build/iOS/FiskalyClient.framework; sourceTree = "<group>"; };
 		D9BFF59624461CE40032D061 /* FiskalySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FiskalySDK.framework; path = Carthage/Build/iOS/Static/FiskalySDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -37,7 +35,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9BFF59524461CDE0032D061 /* FiskalyClient.framework in Frameworks */,
 				D9BFF59724461CE40032D061 /* FiskalySDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,7 +48,6 @@
 				D9BFF57B24461BC50032D061 /* FiskalySDKDemo */,
 				D9BFF57A24461BC50032D061 /* Products */,
 				D9BFF59024461BE70032D061 /* Cartfile */,
-				D9BFF59424461CDE0032D061 /* FiskalyClient.framework */,
 				D9BFF59624461CE40032D061 /* FiskalySDK.framework */,
 			);
 			sourceTree = "<group>";
@@ -96,6 +92,7 @@
 				D9BFF57524461BC50032D061 /* Sources */,
 				D9BFF57624461BC50032D061 /* Frameworks */,
 				D9BFF57724461BC50032D061 /* Resources */,
+				6A88FA262490CCD000E26BB0 /* Copy Carthage Frameworks */,
 			);
 			buildRules = (
 			);
@@ -152,6 +149,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6A88FA262490CCD000E26BB0 /* Copy Carthage Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/FiskalySDK.framework",
+			);
+			name = "Copy Carthage Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FiskalySDK.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D9BFF57524461BC50032D061 /* Sources */ = {
@@ -302,7 +322,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = FiskalySDKDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -326,7 +345,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = FiskalySDKDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -35,12 +35,10 @@ Afterwards you will find following files in your project folder:
 └── Carthage
     └── Build
         └── iOS
-            ├── FiskalyClient.framework
-            └── Static
-                └── FiskalySDK.framework
+            └── FiskalySDK.framework
 ```
 
-In order to use the fiskaly SDK you must include both, `FiskalySDK.framework` and `FiskalyClient.framework` in your Xcode project as can be seen in the following screenshot:
+In order to use the fiskaly SDK you must include `FiskalySDK.framework` in your Xcode project as can be seen in the following screenshot:
 
 ![screenshot-xcode-frameworks-integration](../media/screenshot-xcode-frameworks-integration.png?raw=true)
 
@@ -65,18 +63,12 @@ let client = try FiskalyHttpClient (
 ### Retrieving the Version of the Client and the SMAERS
 
 ```swift
-try client.version(
-    completion: { (result) in
-        switch result {
-        case .success(let response):
-            print(response.client.version)
-            print(response.smaers.version)
-            break;
-        case .failure(let error):
-            print("JsonRpcError: \(error.code) \(error.message)")
-            break;
-        }
-})
+do {
+    let response = try client.version()
+    print(response)
+} catch {
+    print("Error while retrieving version: \(error)")
+}
 ```
 
 ### Client Configuration
@@ -84,20 +76,18 @@ try client.version(
 The SDK is built on the [fiskaly Client](https://developer.fiskaly.com/en/docs/client-documentation) which can be [configured](https://developer.fiskaly.com/en/docs/client-documentation#configuration) through the SDK.
 
 ```swift
-try client.config(
-    debugLevel: 3,
-    debugFile: "tmp/tmp.log",
-    clientTimeout: 1500,
-    smaersTimeout: 1500,
-    completion: { (result) in
-        switch result {
-        case .success(let _):
-            break;
-        case .failure(let error):
-            print("JsonRpcError: \(error.code) \(error.message)")
-            break;
-        }
-})
+do {
+    let response = 
+        try client.config(
+                    debugLevel: -1,
+                    debugFile: "tmp/tmp.log",
+                    clientTimeout: 1500,
+                    smaersTimeout: 1500)
+    print(response)
+} catch {
+    print("Error while setting config: \(error)")
+}
+
 ```
 
 ### Sending HTTP Requests
@@ -109,28 +99,30 @@ Please note:
 ```swift
 let transactionUUID = UUID().uuidString
 
-let transactionBody = [
-    "state": "ACTIVE",
-    "client_id": clientUUID
-]
-let transactionBodyData = try? JSONSerialization.data(withJSONObject: transactionBody)
-let transactionBodyEncoded = transactionBodyData?.base64EncodedString()
+do {
 
-try client.request(
-    method: "PUT",
-    path: "tss/\(tssUUID)/tx/\(transactionUUID)",
-    body: transactionBodyEncoded!,
-    completion: { (result) in
-        switch result {
-        case .success(let response):
-            print(response.response.status)
-            print(response.response.body)
-            break;
-        case .failure(let error):
-            print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-            break;
-        }
-})
+    // start Transaction
+
+    let transactionBody = [
+        "state": "ACTIVE",
+        "client_id": clientUUID
+    ]
+
+    let transactionBodyData = try? JSONSerialization.data(withJSONObject: transactionBody)
+    let transactionBodyEncoded = transactionBodyData?.base64EncodedString()
+
+    let responseCreateTransaction = try client.request(
+        method: "PUT",
+        path: "tss/\(tssUUID)/tx/\(transactionUUID)",
+        body: transactionBodyEncoded!)
+
+    print(responseCreateTransaction)
+
+} catch {
+    print("Error while starting transaction: \(error)")
+}
+
+
 
 // finish Transaction
 
@@ -153,25 +145,26 @@ let transactionFinishBody: [String: Any] = [
         ]
     ]
 ]
-let transactionFinishBodyData = try? JSONSerialization.data(withJSONObject: transactionFinishBody)
-let transactionFinishBodyEncoded = transactionFinishBodyData?.base64EncodedString()
 
-try client.request(
-    method: "PUT",
-    path: "tss/\(tssUUID)/tx/\(transactionUUID)",
-    query: ["last_revision": "1"],
-    body: transactionFinishBodyEncoded!,
-    completion: { (result) in
-        switch result {
-        case .success(let response):
-            print(response.response.status)
-            print(response.response.body)
-            break;
-        case .failure(let error):
-            print("JsonRpcError: \(error.code) \(error.message) \(error.data!.response.body)")
-            break;
-        }
-})
+do {
+
+    let transactionFinishBodyData = try? JSONSerialization.data(withJSONObject: transactionFinishBody)
+    let transactionFinishBodyEncoded = transactionFinishBodyData?.base64EncodedString()
+
+    let responseFinishTransaction = try client.request(
+        method: "PUT",
+        path: "tss/\(tssUUID)/tx/\(transactionUUID)",
+        query: ["last_revision": "1"],
+        body: transactionFinishBodyEncoded!)
+
+    print(responseFinishTransaction)
+
+} catch {
+    print("Error while finishing transaction: \(error)")
+}
+
+
+
 ```
 
 ## Related

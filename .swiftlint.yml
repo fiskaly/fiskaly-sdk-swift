@@ -7,6 +7,3 @@ function_body_length:
 identifier_name:
   excluded:
     - id
-    - FiskalyClientInvoke(_:)
-  allowed_symbols:
-    - _
