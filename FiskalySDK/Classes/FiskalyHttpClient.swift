@@ -157,11 +157,7 @@ public class FiskalyHttpClient {
             throw FiskalyError.sdkError(message: "Client response not decodable into class.")
         }
 
-        if response.result != nil {
-            return response
-        } else {
-            throw FiskalyError.sdkError(message: "Client error not readable.")
-        }
+        return response
 
     }
 
