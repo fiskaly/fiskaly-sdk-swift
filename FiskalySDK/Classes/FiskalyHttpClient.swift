@@ -166,7 +166,6 @@ public class FiskalyHttpClient {
     func performJsonRpcRequest<T: Codable>(request: JsonRpcRequest, _ type: T.Type) throws -> JsonRpcResponse<T> {
 
         let jsonData = try client.invoke(request: request)
-        print(jsonData)
         guard let data = jsonData.data(using: .utf8) else {
             throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
         }
