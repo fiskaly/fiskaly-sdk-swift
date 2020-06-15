@@ -15,7 +15,7 @@ class FiskalyClientTests: XCTestCase {
         XCTAssertNotEqual(response.client.commitHash, "")
         XCTAssertNotEqual(response.smaers.version, "")
     }
-    
+
     func testSelfTest() throws {
         let client = try FiskalyHttpClient(
             apiKey: "API_KEY",

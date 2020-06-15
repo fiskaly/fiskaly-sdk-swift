@@ -464,7 +464,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACH_O_TYPE = mh_dylib;
-				MARKETING_VERSION = 1.1.600;
+				MARKETING_VERSION = 1.2.000;
 				"MODULEMAP_FILE[sdk=*]" = $SRCROOT/FiskalySDK/FiskalySDK.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.FiskalySDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -502,7 +502,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACH_O_TYPE = mh_dylib;
-				MARKETING_VERSION = 1.1.600;
+				MARKETING_VERSION = 1.2.000;
 				"MODULEMAP_FILE[sdk=*]" = $SRCROOT/FiskalySDK/FiskalySDK.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.FiskalySDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
