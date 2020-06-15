@@ -28,6 +28,16 @@ public class SMAERSVersion: Codable {
 }
 
 /*
+ HealthCheck
+ */
+
+public class ResultSelfTest: Codable {
+    public var proxy: String
+    public var backend: String
+    public var smaers: String
+}
+
+/*
  Config
  */
 
@@ -41,6 +51,7 @@ public class Config: Codable {
     public var debugFile: String
     public var clientTimeout: Int
     public var smaersTimeout: Int
+    public var httpProxy: String
 }
 
 /*
