@@ -22,7 +22,7 @@ public class FiskalyHttpClient {
             "api_key": apiKey,
             "api_secret": apiSecret,
             "base_url": baseUrl,
-            "sdk_version": "iOS SDK 1.1.600"
+            "sdk_version": "iOS SDK 1.2.000"
         ]
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
@@ -56,10 +56,32 @@ public class FiskalyHttpClient {
     }
 
     /*
+     Method: HealthCheck
+     */
+
+    public func selfTest() throws -> ResultSelfTest {
+
+        let selfTestRequestParams: [String: Any] = [
+            "context": self.context
+        ]
+
+        let request = JsonRpcRequest(method: "self-test", params: selfTestRequestParams)
+        let response = try performJsonRpcRequest(request: request, ResultSelfTest.self)
+        if let result = response.result {
+            return result
+        } else if let error = response.error {
+            throw error
+        } else {
+            throw FiskalyError.sdkError(message: "Client error not readable.")
+        }
+
+    }
+
+    /*
      Method: Config
      */
 
-    public func config(debugLevel: Int?, debugFile: String?, clientTimeout: Int?, smaersTimeout: Int?) throws -> Config {
+    public func config(debugLevel: Int?, debugFile: String?, clientTimeout: Int?, smaersTimeout: Int?, httpProxy: String?) throws -> Config {
 
         let configRequestParams: [String: Any] = [
             "context": self.context,
@@ -67,7 +89,8 @@ public class FiskalyHttpClient {
                 "debug_level": debugLevel ?? -1,
                 "debug_file": debugFile ?? "",
                 "client_timeout": clientTimeout ?? 0,
-                "smaers_timeout": smaersTimeout ?? 0
+                "smaers_timeout": smaersTimeout ?? 0,
+                "http_proxy": httpProxy ?? ""
             ]
         ]
 

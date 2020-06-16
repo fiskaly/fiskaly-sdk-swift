@@ -16,6 +16,17 @@ class FiskalyClientTests: XCTestCase {
         XCTAssertNotEqual(response.smaers.version, "")
     }
 
+    func testSelfTest() throws {
+        let client = try FiskalyHttpClient(
+            apiKey: "API_KEY",
+            apiSecret: "API_SECRET",
+            baseUrl: "https://kassensichv.io/api/v1/"
+        )
+        let response = try client.selfTest()
+        XCTAssertNotEqual(response.backend, "")
+        XCTAssertNotEqual(response.smaers, "")
+    }
+
     func testConfig() throws {
         let client = try FiskalyHttpClient(
             apiKey: "API_KEY",
@@ -26,11 +37,13 @@ class FiskalyClientTests: XCTestCase {
             debugLevel: -1,
             debugFile: "tmp/tmp.log",
             clientTimeout: 1500,
-            smaersTimeout: 1500)
+            smaersTimeout: 1500,
+            httpProxy: "")
         XCTAssertEqual(response.debugLevel, -1)
         XCTAssertEqual(response.debugFile, "tmp/tmp.log")
         XCTAssertEqual(response.clientTimeout, 1500)
         XCTAssertEqual(response.smaersTimeout, 1500)
+        XCTAssertEqual(response.httpProxy, "")
     }
 
     func testEcho() throws {
