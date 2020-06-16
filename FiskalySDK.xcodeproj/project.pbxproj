@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1FA3FA8E2491671A00348FDE /* FiskalyRequestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA3FA8D2491671A00348FDE /* FiskalyRequestClient.swift */; };
-		6A88FA2B24975EE100E26BB0 /* com.fiskaly.client-ios-all-v1.2.000.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A88FA2A24975ED700E26BB0 /* com.fiskaly.client-ios-all-v1.2.000.a */; };
 		6AAD637224606FEF00D2E36A /* FiskalyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAD637124606FEF00D2E36A /* FiskalyClientTests.swift */; };
 		6AAD63742460700B00D2E36A /* FiskalyAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAD63732460700B00D2E36A /* FiskalyAPITests.swift */; };
 		6AD8BBF024486B18000D47BD /* JsonRpcRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD8BBEF24486B18000D47BD /* JsonRpcRequest.swift */; };
@@ -35,7 +34,6 @@
 
 /* Begin PBXFileReference section */
 		1FA3FA8D2491671A00348FDE /* FiskalyRequestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyRequestClient.swift; sourceTree = "<group>"; };
-		6A88FA2A24975ED700E26BB0 /* com.fiskaly.client-ios-all-v1.2.000.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "com.fiskaly.client-ios-all-v1.2.000.a"; sourceTree = SOURCE_ROOT; };
 		6AAD637124606FEF00D2E36A /* FiskalyClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyClientTests.swift; sourceTree = "<group>"; };
 		6AAD63732460700B00D2E36A /* FiskalyAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyAPITests.swift; sourceTree = "<group>"; };
 		6AD8BBEF24486B18000D47BD /* JsonRpcRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonRpcRequest.swift; sourceTree = "<group>"; };
@@ -60,7 +58,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A88FA2B24975EE100E26BB0 /* com.fiskaly.client-ios-all-v1.2.000.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,7 +148,6 @@
 		D9BFF5D624464D1B0032D061 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6A88FA2A24975ED700E26BB0 /* com.fiskaly.client-ios-all-v1.2.000.a */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -175,7 +171,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D9BFF5C9244629610032D061 /* Build configuration list for PBXNativeTarget "FiskalySDK" */;
 			buildPhases = (
-				6AEFEB422487A03E00021EAC /* Fetch Client Library */,
 				D9BFF5B0244629610032D061 /* Headers */,
 				D9BFF5B1244629610032D061 /* Sources */,
 				D9BFF5B2244629610032D061 /* Frameworks */,
@@ -262,27 +257,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		6AEFEB422487A03E00021EAC /* Fetch Client Library */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Fetch Client Library";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "CLIENT=com.fiskaly.client-ios-all-v1.2.000.a\n\nif [ ! -f $CLIENT ];\nthen \ncurl -s -o $CLIENT https://storage.googleapis.com/fiskaly-cdn/clients/$CLIENT\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D9BFF5B1244629610032D061 /* Sources */ = {
@@ -465,6 +439,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				MACH_O_TYPE = mh_dylib;
 				MARKETING_VERSION = 1.2.000;
@@ -508,6 +483,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				MACH_O_TYPE = mh_dylib;
 				MARKETING_VERSION = 1.2.000;
