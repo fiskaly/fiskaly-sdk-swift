@@ -73,4 +73,5 @@ docs
 Frameworks/
 Cartfile.resolved
 *.a
+*.zip
 
