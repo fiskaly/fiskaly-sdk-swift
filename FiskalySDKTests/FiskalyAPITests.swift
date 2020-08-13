@@ -14,7 +14,7 @@ class FiskalyAPITests: XCTestCase {
             path: "/tss")
         XCTAssertEqual(response.status, 200)
     }
-    
+
     func testManagementRequest() throws {
         let client = try FiskalyHttpClient(
             apiKey: "",
@@ -115,18 +115,18 @@ class FiskalyAPITests: XCTestCase {
             body: transactionFinishBodyEncoded!)
         XCTAssertEqual(responseFinishTransaction.status, 200)
     }
-    
+
     func testQueryArray() throws {
         let client = try FiskalyHttpClient(
             apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
             apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
             baseUrl: "https://kassensichv.io/api/v1/"
         )
-        
+
         let query: [String: Any] = [
             "states": ["INITIALIZED", "DISABLED"]
         ]
-        
+
         let response = try client.request(
             method: "GET",
             path: "/tss",

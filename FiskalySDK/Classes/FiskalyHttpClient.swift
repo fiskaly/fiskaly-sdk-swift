@@ -32,7 +32,7 @@ public class FiskalyHttpClient {
             "email": email as Any,
             "password": password as Any,
             "organization_id": organizationId as Any,
-            "environment": environment as Any, 
+            "environment": environment as Any,
             "sdk_version": "iOS SDK 1.2.100"
         ]
 
@@ -92,7 +92,12 @@ public class FiskalyHttpClient {
      Method: Config
      */
 
-    public func config(debugLevel: Int?, debugFile: String?, clientTimeout: Int?, smaersTimeout: Int?, httpProxy: String?) throws -> Config {
+    public func config( debugLevel: Int?,
+                        debugFile: String?,
+                        clientTimeout: Int?,
+                        smaersTimeout: Int?,
+                        httpProxy: String?)
+        throws -> Config {
 
         let configRequestParams: [String: Any] = [
             "context": self.context,
