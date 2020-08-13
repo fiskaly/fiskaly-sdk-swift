@@ -9,7 +9,14 @@ public class FiskalyHttpClient {
      Initializer
      */
 
-    public init(apiKey: String, apiSecret: String, baseUrl: String, client: RequestClient = FiskalyRequestClient()) throws {
+    public init(    apiKey: String? = "",
+                    apiSecret: String? = "",
+                    baseUrl: String,
+                    email: String? = "",
+                    password: String? = "",
+                    organizationId: String? = "",
+                    environment: String? = "",
+                    client: RequestClient = FiskalyRequestClient()) throws {
         self.client = client
 
         // this needs to be done because xcode cries that self.context is used before be initialized
@@ -18,11 +25,15 @@ public class FiskalyHttpClient {
 
         // version is hardcorded because using versionNumber from header file strips patch number
 
-        let contextRequestParams: [String: String] = [
-            "api_key": apiKey,
-            "api_secret": apiSecret,
+        let contextRequestParams: [String: Any] = [
+            "api_key": apiKey as Any,
+            "api_secret": apiSecret as Any,
             "base_url": baseUrl,
-            "sdk_version": "iOS SDK 1.2.001"
+            "email": email as Any,
+            "password": password as Any,
+            "organization_id": organizationId as Any,
+            "environment": environment as Any, 
+            "sdk_version": "iOS SDK 1.2.100"
         ]
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
@@ -56,7 +67,7 @@ public class FiskalyHttpClient {
     }
 
     /*
-     Method: HealthCheck
+     Method: SelfTest
      */
 
     public func selfTest() throws -> ResultSelfTest {
@@ -131,7 +142,7 @@ public class FiskalyHttpClient {
 
     public func request( method: String,
                          path: String = "",
-                         query: [String: String]? = nil,
+                         query: [String: Any]? = nil,
                          headers: [String: String]? = nil,
                          body: String = "") throws -> HttpResponse {
 
@@ -180,6 +191,7 @@ public class FiskalyHttpClient {
             throw FiskalyError.sdkError(message: "Client response not decodable into class.")
         }
 
+        print(response.error?.data?.response.body ?? "NO ERROR")
         return response
 
     }

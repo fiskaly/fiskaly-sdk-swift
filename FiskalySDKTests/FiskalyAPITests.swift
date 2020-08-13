@@ -3,7 +3,7 @@ import XCTest
 
 class FiskalyAPITests: XCTestCase {
 
-    func testRequest() throws {
+    func testKassensichvRequest() throws {
         let client = try FiskalyHttpClient(
             apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
             apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
@@ -12,6 +12,20 @@ class FiskalyAPITests: XCTestCase {
         let response = try client.request(
             method: "GET",
             path: "/tss")
+        XCTAssertEqual(response.status, 200)
+    }
+    
+    func testManagementRequest() throws {
+        let client = try FiskalyHttpClient(
+            apiKey: "",
+            apiSecret: "",
+            baseUrl: "https://dashboard.fiskaly.com/api/v0/",
+            email: ProcessInfo.processInfo.environment["EMAIL"]!,
+            password: ProcessInfo.processInfo.environment["PASSWORD"]!
+        )
+        let response = try client.request(
+            method: "GET",
+            path: "/organizations")
         XCTAssertEqual(response.status, 200)
     }
 
@@ -75,7 +89,7 @@ class FiskalyAPITests: XCTestCase {
         // finish Transaction
 
         let transactionFinishBody: [String: Any] = [
-            "state": "ACTIVE",
+            "state": "FINISHED",
             "client_id": clientUUID,
             "schema": [
                 "standard_v1": [
@@ -100,6 +114,25 @@ class FiskalyAPITests: XCTestCase {
             query: ["last_revision": "1"],
             body: transactionFinishBodyEncoded!)
         XCTAssertEqual(responseFinishTransaction.status, 200)
+    }
+    
+    func testQueryArray() throws {
+        let client = try FiskalyHttpClient(
+            apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
+            apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
+            baseUrl: "https://kassensichv.io/api/v1/"
+        )
+        
+        let query: [String: Any] = [
+            "states": ["INITIALIZED", "DISABLED"]
+        ]
+        
+        let response = try client.request(
+            method: "GET",
+            path: "/tss",
+            query: query)
+        XCTAssertEqual(response.status, 200)
+
     }
 
 }
