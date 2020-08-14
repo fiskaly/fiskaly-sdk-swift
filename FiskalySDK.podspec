@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "FiskalySDK"
-  spec.version      = "1.2.001"
+  spec.version      = "1.2.100"
   spec.summary      = "FiskalySDK creates a bridge between native Swift and the fiskaly Client."
   spec.description  = <<-DESC
                     The FiskalySDK helps integrators work with the fiskaly Client using native Swift functions. This SDK provides a 
