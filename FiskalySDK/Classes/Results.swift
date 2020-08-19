@@ -28,7 +28,7 @@ public class SMAERSVersion: Codable {
 }
 
 /*
- HealthCheck
+ SelfTest
  */
 
 public class ResultSelfTest: Codable {
