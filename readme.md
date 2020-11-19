@@ -139,7 +139,7 @@ do {
 // finish Transaction
 
 let transactionFinishBody: [String: Any] = [
-    "state": "ACTIVE",
+    "state": "FINISHED",
     "client_id": clientUUID,
     "schema": [
         "standard_v1": [
