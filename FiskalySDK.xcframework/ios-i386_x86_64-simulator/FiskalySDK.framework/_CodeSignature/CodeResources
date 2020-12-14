@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/FiskalySDK-Swift.h</key>
 		<data>
-		lIDSQSy6E1yvv9C25F4lKAC8gLU=
+		gI54sO1dh/fBHo/fJVWVP2NszeY=
 		</data>
 		<key>Headers/FiskalySDK.h</key>
 		<data>
@@ -18,55 +18,55 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		uG2o/586jEzoujG/SEO5OeoWJlA=
+		tvbWVE8sagjYgLFXTO6TKQfffzM=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/i386-apple-ios-simulator.swiftdoc</key>
 		<data>
-		E8tSLk8VBWH8jYLToQQMmihwu30=
+		DjTVaIZ538kQtGfFPNiP4+IIQ5Y=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/i386-apple-ios-simulator.swiftinterface</key>
 		<data>
-		Y4wJKu9WU56Byb+10CxPssZbFXU=
+		4KM2MD/aqckvteElj5zZwNKQ/RE=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
 		<data>
-		e1jCbqWYdx9vStLRwynK3p9KCdI=
+		qFIFnrJY56ykHfd8iXauRbxyFZU=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/i386.swiftdoc</key>
 		<data>
-		E8tSLk8VBWH8jYLToQQMmihwu30=
+		DjTVaIZ538kQtGfFPNiP4+IIQ5Y=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/i386.swiftinterface</key>
 		<data>
-		Y4wJKu9WU56Byb+10CxPssZbFXU=
+		4KM2MD/aqckvteElj5zZwNKQ/RE=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/i386.swiftmodule</key>
 		<data>
-		e1jCbqWYdx9vStLRwynK3p9KCdI=
+		qFIFnrJY56ykHfd8iXauRbxyFZU=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		1K8Zw9npOzz6tZPwVp0Po78FuhE=
+		CBUL7RuJypaYoQ3Pa0xBJpL05tk=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		G13629GhSzECSp0boDg28yaDl4k=
+		yV1qj0iRjd5NN8GmBhaIFhknRK4=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		aVfE8JwLCcbMIiGWXEsvEUbUAUs=
+		sJC3qSXXneMG4J317ypxyxeHluE=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64.swiftdoc</key>
 		<data>
-		1K8Zw9npOzz6tZPwVp0Po78FuhE=
+		CBUL7RuJypaYoQ3Pa0xBJpL05tk=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64.swiftinterface</key>
 		<data>
-		G13629GhSzECSp0boDg28yaDl4k=
+		yV1qj0iRjd5NN8GmBhaIFhknRK4=
 		</data>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		aVfE8JwLCcbMIiGWXEsvEUbUAUs=
+		sJC3qSXXneMG4J317ypxyxeHluE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -90,11 +90,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			lIDSQSy6E1yvv9C25F4lKAC8gLU=
+			gI54sO1dh/fBHo/fJVWVP2NszeY=
 			</data>
 			<key>hash2</key>
 			<data>
-			8+Yj+UI/IVvgCsoRJJSWNeXmB9q6F5XhblA+ORN/gcg=
+			6xJ1akO3z2j8srtEk0kbLvjwA0ytnEYcrc7OLPSwyJ4=
 			</data>
 		</dict>
 		<key>Headers/FiskalySDK.h</key>
@@ -112,132 +112,132 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			E8tSLk8VBWH8jYLToQQMmihwu30=
+			DjTVaIZ538kQtGfFPNiP4+IIQ5Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			+cjE0jumpiVUkRtUJHW8anc2SpeicGZfb29E4rGJbnE=
+			Qk5j6JRFkeD5tneatx9/Z+/KPmryFFrHkwp1/7Fb6GE=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/i386-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Y4wJKu9WU56Byb+10CxPssZbFXU=
+			4KM2MD/aqckvteElj5zZwNKQ/RE=
 			</data>
 			<key>hash2</key>
 			<data>
-			sx4P/GusYeCdRfyqSohaBKEvRegZ7uJ7VGQi0Bcx26A=
+			PZiF2NHbDlkdFyyXTh4YEXTQesrEkBBu0IC9X/0+Flk=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/i386-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			e1jCbqWYdx9vStLRwynK3p9KCdI=
+			qFIFnrJY56ykHfd8iXauRbxyFZU=
 			</data>
 			<key>hash2</key>
 			<data>
-			AW2t9cw+6AjPyVcpWWXatlwUeuyFEop7p0sDFYj8rtQ=
+			IJp+LvA35WqLxapw+GQCYUMQKr9bNq7BtywfOIcx6vQ=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/i386.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			E8tSLk8VBWH8jYLToQQMmihwu30=
+			DjTVaIZ538kQtGfFPNiP4+IIQ5Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			+cjE0jumpiVUkRtUJHW8anc2SpeicGZfb29E4rGJbnE=
+			Qk5j6JRFkeD5tneatx9/Z+/KPmryFFrHkwp1/7Fb6GE=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/i386.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Y4wJKu9WU56Byb+10CxPssZbFXU=
+			4KM2MD/aqckvteElj5zZwNKQ/RE=
 			</data>
 			<key>hash2</key>
 			<data>
-			sx4P/GusYeCdRfyqSohaBKEvRegZ7uJ7VGQi0Bcx26A=
+			PZiF2NHbDlkdFyyXTh4YEXTQesrEkBBu0IC9X/0+Flk=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/i386.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			e1jCbqWYdx9vStLRwynK3p9KCdI=
+			qFIFnrJY56ykHfd8iXauRbxyFZU=
 			</data>
 			<key>hash2</key>
 			<data>
-			AW2t9cw+6AjPyVcpWWXatlwUeuyFEop7p0sDFYj8rtQ=
+			IJp+LvA35WqLxapw+GQCYUMQKr9bNq7BtywfOIcx6vQ=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			1K8Zw9npOzz6tZPwVp0Po78FuhE=
+			CBUL7RuJypaYoQ3Pa0xBJpL05tk=
 			</data>
 			<key>hash2</key>
 			<data>
-			AcXOBGC+lGQ+PX1AHE2QZAKOqRCa0roIif7n/BoUy68=
+			UJF5S7sACsOfSdnhuc4/wfgRiWvefY4hopHGKS8kacg=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			G13629GhSzECSp0boDg28yaDl4k=
+			yV1qj0iRjd5NN8GmBhaIFhknRK4=
 			</data>
 			<key>hash2</key>
 			<data>
-			08cok4GfnTcLyxsIUOo2n08foCyFpMgtXKvtAm8dWaI=
+			aFlgULwuUwOZtNtufvgvOKyEOUdlIibbW0pYwKW9z7c=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			aVfE8JwLCcbMIiGWXEsvEUbUAUs=
+			sJC3qSXXneMG4J317ypxyxeHluE=
 			</data>
 			<key>hash2</key>
 			<data>
-			j1T980rXM3UPpT8IgYVRptYJYeMP28arTY/6bt3kh9s=
+			kQiBFwGkswkCea+lZJ+xfGvCE2WqC1RgyInCmH+pwS8=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			1K8Zw9npOzz6tZPwVp0Po78FuhE=
+			CBUL7RuJypaYoQ3Pa0xBJpL05tk=
 			</data>
 			<key>hash2</key>
 			<data>
-			AcXOBGC+lGQ+PX1AHE2QZAKOqRCa0roIif7n/BoUy68=
+			UJF5S7sACsOfSdnhuc4/wfgRiWvefY4hopHGKS8kacg=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			G13629GhSzECSp0boDg28yaDl4k=
+			yV1qj0iRjd5NN8GmBhaIFhknRK4=
 			</data>
 			<key>hash2</key>
 			<data>
-			08cok4GfnTcLyxsIUOo2n08foCyFpMgtXKvtAm8dWaI=
+			aFlgULwuUwOZtNtufvgvOKyEOUdlIibbW0pYwKW9z7c=
 			</data>
 		</dict>
 		<key>Modules/FiskalySDK.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			aVfE8JwLCcbMIiGWXEsvEUbUAUs=
+			sJC3qSXXneMG4J317ypxyxeHluE=
 			</data>
 			<key>hash2</key>
 			<data>
-			j1T980rXM3UPpT8IgYVRptYJYeMP28arTY/6bt3kh9s=
+			kQiBFwGkswkCea+lZJ+xfGvCE2WqC1RgyInCmH+pwS8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
