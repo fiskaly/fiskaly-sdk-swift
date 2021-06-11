@@ -33,7 +33,7 @@ public class SMAERSVersion: Codable {
 
 public class ResultSelfTest: Codable {
     public var proxy: String
-    public var backend: String
+    public var backend: [String:String]
     public var smaers: String
 }
 

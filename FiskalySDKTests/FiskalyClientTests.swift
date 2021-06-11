@@ -23,7 +23,7 @@ class FiskalyClientTests: XCTestCase {
             baseUrl: "https://kassensichv.io/api/v1/"
         )
         let response = try client.selfTest()
-        XCTAssertNotEqual(response.backend, "")
+        XCTAssertNotEqual(response.backend, [:])
         XCTAssertNotEqual(response.smaers, "")
     }
 

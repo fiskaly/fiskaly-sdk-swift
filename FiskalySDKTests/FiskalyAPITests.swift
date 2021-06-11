@@ -16,6 +16,7 @@ class FiskalyAPITests: XCTestCase {
     }
 
     func testManagementRequest() throws {
+        do {
         let client = try FiskalyHttpClient(
             apiKey: "",
             apiSecret: "",
@@ -26,7 +27,11 @@ class FiskalyAPITests: XCTestCase {
         let response = try client.request(
             method: "GET",
             path: "/organizations")
-        XCTAssertEqual(response.status, 200)
+            XCTAssertEqual(response.status, 200)
+        } catch let error {
+            print("Unexpected error: \(error).")
+            throw error
+        }
     }
 
     func testTransactionRequest() throws {
