@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,8 +20,8 @@
 		D9BFF5C4244629610032D061 /* FiskalySDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9BFF5C3244629610032D061 /* FiskalySDKTests.swift */; };
 		D9BFF5C6244629610032D061 /* FiskalySDK.h in Headers */ = {isa = PBXBuildFile; fileRef = D9BFF5B8244629610032D061 /* FiskalySDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D9F90FEF24478702002057D3 /* FiskalyHttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F90FEE24478702002057D3 /* FiskalyHttpClient.swift */; };
-		E9807174266FAB5A00A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E980716E266A1C8400A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a */; };
-		E9807175266FAB5B00A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E980716E266A1C8400A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a */; };
+		E99EA8502678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E99EA84F2678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework */; };
+		E99EA8512678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E99EA84F2678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +55,7 @@
 		D9F90FF424478A8C002057D3 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
 		E980716E266A1C8400A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "com.fiskaly.client-ios-all-v1.2.200.a"; sourceTree = "<group>"; };
 		E9807171266FA5FE00A099C2 /* com.fiskaly.client-darwin-arm64-v1.2.100.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "com.fiskaly.client-darwin-arm64-v1.2.100.dylib"; sourceTree = "<group>"; };
+		E99EA84F2678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "com.fiskaly.client-ios-all-v1.2.200.xcframework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9807174266FAB5A00A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a in Frameworks */,
+				E99EA8502678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9BFF5BF244629610032D061 /* FiskalySDK.framework in Frameworks */,
-				E9807175266FAB5B00A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a in Frameworks */,
+				E99EA8512678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +155,7 @@
 		D9BFF5D624464D1B0032D061 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E99EA84F2678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework */,
 				E9807171266FA5FE00A099C2 /* com.fiskaly.client-darwin-arm64-v1.2.100.dylib */,
 				E980716E266A1C8400A099C2 /* com.fiskaly.client-ios-all-v1.2.200.a */,
 			);
