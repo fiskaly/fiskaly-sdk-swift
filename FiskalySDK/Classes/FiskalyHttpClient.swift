@@ -193,7 +193,7 @@ public class FiskalyHttpClient {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             response = try decoder.decode(JsonRpcResponse<T>.self, from: data)
         } catch {
-            throw FiskalyError.sdkError(message: "Client response not decodable into class. \(error), data = \(jsonData.data)")
+            throw FiskalyError.sdkError(message: "Client response not decodable into class. \(error), data = \(jsonData)")
         }
 
         print(response.error?.data?.response.body ?? "NO ERROR")
