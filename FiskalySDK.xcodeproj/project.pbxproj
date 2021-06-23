@@ -6,6 +6,20 @@
 	objectVersion = 52;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		E9A6830E26833E2F000605EF /* FiskalySDK-framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E9A6830F26833E2F000605EF /* Build configuration list for PBXAggregateTarget "FiskalySDK-framework" */;
+			buildPhases = (
+				E9A6831226833E86000605EF /* Make XCFramework */,
+			);
+			dependencies = (
+			);
+			name = "FiskalySDK-framework";
+			productName = "FiskalySDK-framework";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1FA3FA8E2491671A00348FDE /* FiskalyRequestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA3FA8D2491671A00348FDE /* FiskalyRequestClient.swift */; };
 		6AAD637224606FEF00D2E36A /* FiskalyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAD637124606FEF00D2E36A /* FiskalyClientTests.swift */; };
@@ -53,6 +67,7 @@
 		D9BFF5C5244629610032D061 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9F90FEE24478702002057D3 /* FiskalyHttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyHttpClient.swift; sourceTree = "<group>"; };
 		D9F90FF424478A8C002057D3 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		E951483C268233DC0026A559 /* build_xcframework.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_xcframework.sh; sourceTree = "<group>"; };
 		E99EA84F2678968A00B04017 /* com.fiskaly.client-ios-all-v1.2.200.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "com.fiskaly.client-ios-all-v1.2.200.xcframework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				D9F90FF424478A8C002057D3 /* readme.md */,
+				E951483C268233DC0026A559 /* build_xcframework.sh */,
 				D9BFF5B7244629610032D061 /* FiskalySDK */,
 				D9BFF5C2244629610032D061 /* FiskalySDKTests */,
 				D9BFF5B6244629610032D061 /* Products */,
@@ -227,6 +243,9 @@
 					D9BFF5BD244629610032D061 = {
 						CreatedOnToolsVersion = 11.4;
 					};
+					E9A6830E26833E2F000605EF = {
+						CreatedOnToolsVersion = 12.5;
+					};
 				};
 			};
 			buildConfigurationList = D9BFF5AF244629610032D061 /* Build configuration list for PBXProject "FiskalySDK" */;
@@ -244,6 +263,7 @@
 			targets = (
 				D9BFF5B4244629610032D061 /* FiskalySDK */,
 				D9BFF5BD244629610032D061 /* FiskalySDKTests */,
+				E9A6830E26833E2F000605EF /* FiskalySDK-framework */,
 			);
 		};
 /* End PBXProject section */
@@ -283,6 +303,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "CLIENT=com.fiskaly.client-ios-all-v1.2.100.a\n\nif [ ! -f $CLIENT ];\nthen \ncurl -s -o $CLIENT https://storage.googleapis.com/fiskaly-cdn/clients/$CLIENT\nfi\n";
+		};
+		E9A6831226833E86000605EF /* Make XCFramework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Make XCFramework";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$SRCROOT/build_xcframework.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -466,7 +504,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				INFOPLIST_FILE = FiskalySDK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_NO_PIE = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -509,7 +546,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				INFOPLIST_FILE = FiskalySDK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_NO_PIE = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -592,6 +628,24 @@
 			};
 			name = Release;
 		};
+		E9A6831026833E2F000605EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BM8FD7M6C6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E9A6831126833E2F000605EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BM8FD7M6C6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -618,6 +672,15 @@
 			buildConfigurations = (
 				D9BFF5CD244629610032D061 /* Debug */,
 				D9BFF5CE244629610032D061 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9A6830F26833E2F000605EF /* Build configuration list for PBXAggregateTarget "FiskalySDK-framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9A6831026833E2F000605EF /* Debug */,
+				E9A6831126833E2F000605EF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
