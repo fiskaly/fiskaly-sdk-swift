@@ -8,26 +8,35 @@
 import Foundation
 import FiskalySDK
 
+struct RequestResponse {
+    var response:String?
+    var status:Int
+    init(_ httpResponse:FiskalySDK.HttpResponse) {
+        status = httpResponse.status
+        response = httpResponse.body.base64Decoded
+    }
+}
+
 class Fiskalyzer : ObservableObject {
     private var client:FiskalyHttpClient?
     private var v2client:FiskalyHttpClient?
     @Published var version:String?
     @Published var error:String?
-    @Published var KSVStatus:Int?
-    @Published var KSVResponse:String?
     @Published var tssUUID:String?
-    @Published var createTSSStatus:Int?
-    @Published var createTSSResponse:String?
+    @Published var createTSSResponse:RequestResponse?
+    @Published var tssUUIDV2:String?
+    @Published var createTSSResponseV2:RequestResponse?
     @Published var clientUUID:String?
-    @Published var createClientStatus:Int?
-    @Published var createClientResponse:String?
+    @Published var createClientResponse:RequestResponse?
+    @Published var clientUUIDV2:String?
+    @Published var createClientResponseV2:RequestResponse?
     @Published var transactionUUID:String?
-    @Published var createTransactionStatus:Int?
-    @Published var createTransactionResponse:String?
-    @Published var finishTransactionStatus:Int?
-    @Published var finishTransactionResponse:String?
-    @Published var authenticateStatus:Int?
-    @Published var authenticateResponse:String?
+    @Published var createTransactionResponse:RequestResponse?
+    @Published var transactionUUIDV2:String?
+    @Published var createTransactionResponseV2:RequestResponse?
+    @Published var finishTransactionResponse:RequestResponse?
+    @Published var finishTransactionResponseV2:RequestResponse?
+    @Published var authenticateResponse:RequestResponse?
     static var apiKeyVariableName = "API_KEY"
     static var apiSecretVariableName = "API_SECRET"
     init() {
@@ -108,8 +117,19 @@ class Fiskalyzer : ObservableObject {
             method: "PUT",
             path: "tss/\(newTssUUID)",
             body: tssBody) {
-            createTSSStatus = responseCreateTSS.status
-            createTSSResponse = responseCreateTSS.body.base64Decoded
+            createTSSResponse = RequestResponse(responseCreateTSS)
+        }
+    }
+    
+    //V2 does not need the state
+    func createTSSV2() {
+        let newTssUUID = UUID().uuidString
+        self.tssUUIDV2 = newTssUUID
+
+        if let responseCreateTSS = clientRequest(
+            method: "PUT",
+            path: "tss/\(newTssUUID)",client: v2client) {
+            createTSSResponseV2 = RequestResponse(responseCreateTSS)
         }
     }
     
@@ -129,8 +149,29 @@ class Fiskalyzer : ObservableObject {
             method: "PUT",
             path: "tss/\(tssID)/client/\(newClientUUID)",
             body: clientBody) {
-            createClientStatus = responseCreateClient.status
-            createClientResponse = responseCreateClient.body.base64Decoded
+            createClientResponse = RequestResponse(responseCreateClient)
+        }
+
+    }
+    
+    //this is the same as V1
+    func createClientV2() {
+        guard let tssID = tssUUIDV2 else {
+            error = "Can't create client before creating TSS"
+            return
+        }
+        let newClientUUID = UUID().uuidString
+        clientUUIDV2 = newClientUUID
+
+        let clientBody = [
+            "serial_number": "iOS Test Client Serial"
+        ]
+
+        if let responseCreateClient = clientRequest(
+            method: "PUT",
+            path: "tss/\(tssID)/client/\(newClientUUID)",
+            body: clientBody,client: v2client) {
+            createClientResponseV2 = RequestResponse(responseCreateClient)
         }
 
     }
@@ -152,8 +193,29 @@ class Fiskalyzer : ObservableObject {
             method: "PUT",
             path: "tss/\(tssID)/tx/\(newTransactionUUID)",
             body: transactionBody) {
-            createTransactionStatus = responseCreateTransaction.status
-            createTransactionResponse = responseCreateTransaction.body.base64Decoded
+            createTransactionResponse = RequestResponse(responseCreateTransaction)
+        }
+    }
+    
+    //this is the same as V1
+    func createTransactionV2() {
+        guard let tssID = tssUUIDV2 else {
+            error = "Can't create transaction before creating TSS"
+            return
+        }
+        let newTransactionUUID = UUID().uuidString
+        transactionUUID = newTransactionUUID
+
+        let transactionBody = [
+            "state": "ACTIVE",
+            "client_id": clientUUIDV2
+        ]
+
+        if let responseCreateTransaction = clientRequest(
+            method: "PUT",
+            path: "tss/\(tssID)/tx/\(newTransactionUUID)",
+            body: transactionBody,client: v2client) {
+            createTransactionResponseV2 = RequestResponse(responseCreateTransaction)
         }
     }
     
@@ -185,8 +247,40 @@ class Fiskalyzer : ObservableObject {
             path: "tss/\(tssID)/tx/\(transactionID)",
             query: ["last_revision": "1"],
             body: transactionFinishBody) {
-            finishTransactionStatus = responseFinishTransaction.status
-            finishTransactionResponse = responseFinishTransaction.body.base64Decoded
+            finishTransactionResponse = RequestResponse(responseFinishTransaction)
+        }
+    }
+    
+    //this is the same as V1
+    func finishTransactionV2() {
+        guard let clientID = clientUUIDV2, let tssID = tssUUIDV2, let transactionID=transactionUUIDV2 else {
+            error = "Can't finish transaction before creating client, TSS, and transaction"
+            return
+        }
+        let transactionFinishBody: [String: Any] = [
+            "state": "FINISHED",
+            "client_id": clientID,
+            "schema": [
+                "standard_v1": [
+                    "receipt": [
+                        "receipt_type": "RECEIPT",
+                        "amounts_per_vat_rate": [
+                            ["vat_rate": "19", "amount": "14.28"]
+                        ],
+                        "amounts_per_payment_type": [
+                            ["payment_type": "NON_CASH", "amount": "14.28"]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+        if let responseFinishTransaction = clientRequest(
+            method: "PUT",
+            path: "tss/\(tssID)/tx/\(transactionID)",
+            query: ["last_revision": "1"],
+            body: transactionFinishBody,client: v2client) {
+            finishTransactionResponseV2 = RequestResponse(responseFinishTransaction)
         }
     }
     
@@ -201,8 +295,7 @@ class Fiskalyzer : ObservableObject {
             path: "auth",
             body: authenticateBody,
             client: v2client) {
-            authenticateStatus = responseAuthenticate.status
-            authenticateResponse = responseAuthenticate.body.base64Decoded
+            authenticateResponse = RequestResponse(responseAuthenticate)
         }
     }
 }

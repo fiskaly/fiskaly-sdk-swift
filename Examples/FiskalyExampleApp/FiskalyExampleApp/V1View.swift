@@ -29,7 +29,7 @@ struct V1View: View {
                 expandTSS = true
             }
             UUIDView(uuid: $fiskalyzer.tssUUID, name: "TSS")
-            ResponseView(status: $fiskalyzer.createTSSStatus, response: $fiskalyzer.createTSSResponse, expanded: $expandTSS, name: "Create TSS")
+            ResponseView(response: $fiskalyzer.createTSSResponse, expanded: $expandTSS, name: "Create TSS")
         }
         Group {
             Button("Create Client") {
@@ -37,7 +37,7 @@ struct V1View: View {
                 expandClient = true
             }.disabled(fiskalyzer.tssUUID == nil)
             UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
-            ResponseView(status: $fiskalyzer.createClientStatus, response: $fiskalyzer.createClientResponse, expanded: $expandClient, name: "Create Client")
+            ResponseView(response: $fiskalyzer.createClientResponse, expanded: $expandClient, name: "Create Client")
         }
         
         Group {
@@ -46,7 +46,7 @@ struct V1View: View {
                 expandTransaction = true
             }.disabled(fiskalyzer.tssUUID == nil)
             UUIDView(uuid: $fiskalyzer.transactionUUID, name: "Transaction")
-            ResponseView(status: $fiskalyzer.createTransactionStatus, response: $fiskalyzer.createTransactionResponse, expanded: $expandTransaction, name: "Create Transaction")
+            ResponseView(response: $fiskalyzer.createTransactionResponse, expanded: $expandTransaction, name: "Create Transaction")
         }
         
         Group {
@@ -54,7 +54,7 @@ struct V1View: View {
                 fiskalyzer.finishTransaction()
                 expandFinishTransaction = true
             }.disabled(fiskalyzer.transactionUUID == nil)
-            ResponseView(status: $fiskalyzer.finishTransactionStatus, response: $fiskalyzer.finishTransactionResponse, expanded: $expandFinishTransaction, name: "Finish Transaction")
+            ResponseView(response: $fiskalyzer.finishTransactionResponse, expanded: $expandFinishTransaction, name: "Finish Transaction")
         }
         
         }
