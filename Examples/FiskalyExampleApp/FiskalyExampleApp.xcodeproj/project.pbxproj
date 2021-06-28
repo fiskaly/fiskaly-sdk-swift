@@ -1,0 +1,651 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E9A6A6742680E5AB00B3AE55 /* FiskalyExampleAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6A6732680E5AB00B3AE55 /* FiskalyExampleAppApp.swift */; };
+		E9A6A6762680E5AB00B3AE55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6A6752680E5AB00B3AE55 /* ContentView.swift */; };
+		E9A6A6782680E5AC00B3AE55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9A6A6772680E5AC00B3AE55 /* Assets.xcassets */; };
+		E9A6A67B2680E5AC00B3AE55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9A6A67A2680E5AC00B3AE55 /* Preview Assets.xcassets */; };
+		E9A6A6862680E5AC00B3AE55 /* FiskalyExampleAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6A6852680E5AC00B3AE55 /* FiskalyExampleAppTests.swift */; };
+		E9A6A6912680E5AC00B3AE55 /* FiskalyExampleAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6A6902680E5AC00B3AE55 /* FiskalyExampleAppUITests.swift */; };
+		E9E65D8526835F3800181AE4 /* FiskalySDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9A6831326834FCC000605EF /* FiskalySDK.xcframework */; };
+		E9E65D8626835F3800181AE4 /* FiskalySDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9A6831326834FCC000605EF /* FiskalySDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E9E65D892683759A00181AE4 /* Fiskalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E65D882683759A00181AE4 /* Fiskalyzer.swift */; };
+		E9E65D8C26847B4500181AE4 /* String+base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E65D8B26847B4500181AE4 /* String+base64.swift */; };
+		E9E65D8E2684839900181AE4 /* ResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E65D8D2684839900181AE4 /* ResponseView.swift */; };
+		E9E65D902684935F00181AE4 /* UUIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E65D8F2684935F00181AE4 /* UUIDView.swift */; };
+		E9E65D922684BA3500181AE4 /* V1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E65D912684BA3500181AE4 /* V1View.swift */; };
+		E9E65D942684BA5300181AE4 /* V2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E65D932684BA5300181AE4 /* V2View.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E9A6A6822680E5AC00B3AE55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E9A6A6682680E5AB00B3AE55 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E9A6A66F2680E5AB00B3AE55;
+			remoteInfo = FiskalyExampleApp;
+		};
+		E9A6A68D2680E5AC00B3AE55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E9A6A6682680E5AB00B3AE55 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E9A6A66F2680E5AB00B3AE55;
+			remoteInfo = FiskalyExampleApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E9E65D8726835F3800181AE4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E9E65D8626835F3800181AE4 /* FiskalySDK.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E9A6831326834FCC000605EF /* FiskalySDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FiskalySDK.xcframework; sourceTree = "<group>"; };
+		E9A6A6702680E5AB00B3AE55 /* FiskalyExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiskalyExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9A6A6732680E5AB00B3AE55 /* FiskalyExampleAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyExampleAppApp.swift; sourceTree = "<group>"; };
+		E9A6A6752680E5AB00B3AE55 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E9A6A6772680E5AC00B3AE55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E9A6A67A2680E5AC00B3AE55 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E9A6A67C2680E5AC00B3AE55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9A6A6812680E5AC00B3AE55 /* FiskalyExampleAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FiskalyExampleAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9A6A6852680E5AC00B3AE55 /* FiskalyExampleAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyExampleAppTests.swift; sourceTree = "<group>"; };
+		E9A6A6872680E5AC00B3AE55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9A6A68C2680E5AC00B3AE55 /* FiskalyExampleAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FiskalyExampleAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9A6A6902680E5AC00B3AE55 /* FiskalyExampleAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyExampleAppUITests.swift; sourceTree = "<group>"; };
+		E9A6A6922680E5AC00B3AE55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9E65D882683759A00181AE4 /* Fiskalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fiskalyzer.swift; sourceTree = "<group>"; };
+		E9E65D8B26847B4500181AE4 /* String+base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+base64.swift"; sourceTree = "<group>"; };
+		E9E65D8D2684839900181AE4 /* ResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseView.swift; sourceTree = "<group>"; };
+		E9E65D8F2684935F00181AE4 /* UUIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDView.swift; sourceTree = "<group>"; };
+		E9E65D912684BA3500181AE4 /* V1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V1View.swift; sourceTree = "<group>"; };
+		E9E65D932684BA5300181AE4 /* V2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V2View.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E9A6A66D2680E5AB00B3AE55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9E65D8526835F3800181AE4 /* FiskalySDK.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A6A67E2680E5AC00B3AE55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A6A6892680E5AC00B3AE55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E9A6A6672680E5AB00B3AE55 = {
+			isa = PBXGroup;
+			children = (
+				E9A6A6722680E5AB00B3AE55 /* FiskalyExampleApp */,
+				E9A6A6842680E5AC00B3AE55 /* FiskalyExampleAppTests */,
+				E9A6A68F2680E5AC00B3AE55 /* FiskalyExampleAppUITests */,
+				E9A6A6712680E5AB00B3AE55 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E9A6A6712680E5AB00B3AE55 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E9A6A6702680E5AB00B3AE55 /* FiskalyExampleApp.app */,
+				E9A6A6812680E5AC00B3AE55 /* FiskalyExampleAppTests.xctest */,
+				E9A6A68C2680E5AC00B3AE55 /* FiskalyExampleAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E9A6A6722680E5AB00B3AE55 /* FiskalyExampleApp */ = {
+			isa = PBXGroup;
+			children = (
+				E9E65D8A26847B2E00181AE4 /* Extensions */,
+				E9A6831326834FCC000605EF /* FiskalySDK.xcframework */,
+				E9A6A6732680E5AB00B3AE55 /* FiskalyExampleAppApp.swift */,
+				E9A6A6752680E5AB00B3AE55 /* ContentView.swift */,
+				E9E65D912684BA3500181AE4 /* V1View.swift */,
+				E9E65D932684BA5300181AE4 /* V2View.swift */,
+				E9E65D8F2684935F00181AE4 /* UUIDView.swift */,
+				E9E65D8D2684839900181AE4 /* ResponseView.swift */,
+				E9A6A6772680E5AC00B3AE55 /* Assets.xcassets */,
+				E9A6A67C2680E5AC00B3AE55 /* Info.plist */,
+				E9A6A6792680E5AC00B3AE55 /* Preview Content */,
+				E9E65D882683759A00181AE4 /* Fiskalyzer.swift */,
+			);
+			path = FiskalyExampleApp;
+			sourceTree = "<group>";
+		};
+		E9A6A6792680E5AC00B3AE55 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				E9A6A67A2680E5AC00B3AE55 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E9A6A6842680E5AC00B3AE55 /* FiskalyExampleAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				E9A6A6852680E5AC00B3AE55 /* FiskalyExampleAppTests.swift */,
+				E9A6A6872680E5AC00B3AE55 /* Info.plist */,
+			);
+			path = FiskalyExampleAppTests;
+			sourceTree = "<group>";
+		};
+		E9A6A68F2680E5AC00B3AE55 /* FiskalyExampleAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E9A6A6902680E5AC00B3AE55 /* FiskalyExampleAppUITests.swift */,
+				E9A6A6922680E5AC00B3AE55 /* Info.plist */,
+			);
+			path = FiskalyExampleAppUITests;
+			sourceTree = "<group>";
+		};
+		E9E65D8A26847B2E00181AE4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E9E65D8B26847B4500181AE4 /* String+base64.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E9A6A66F2680E5AB00B3AE55 /* FiskalyExampleApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9A6A6952680E5AC00B3AE55 /* Build configuration list for PBXNativeTarget "FiskalyExampleApp" */;
+			buildPhases = (
+				E9A6A66C2680E5AB00B3AE55 /* Sources */,
+				E9A6A66D2680E5AB00B3AE55 /* Frameworks */,
+				E9A6A66E2680E5AB00B3AE55 /* Resources */,
+				E9E65D8726835F3800181AE4 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FiskalyExampleApp;
+			productName = FiskalyExampleApp;
+			productReference = E9A6A6702680E5AB00B3AE55 /* FiskalyExampleApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E9A6A6802680E5AC00B3AE55 /* FiskalyExampleAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9A6A6982680E5AC00B3AE55 /* Build configuration list for PBXNativeTarget "FiskalyExampleAppTests" */;
+			buildPhases = (
+				E9A6A67D2680E5AC00B3AE55 /* Sources */,
+				E9A6A67E2680E5AC00B3AE55 /* Frameworks */,
+				E9A6A67F2680E5AC00B3AE55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E9A6A6832680E5AC00B3AE55 /* PBXTargetDependency */,
+			);
+			name = FiskalyExampleAppTests;
+			productName = FiskalyExampleAppTests;
+			productReference = E9A6A6812680E5AC00B3AE55 /* FiskalyExampleAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E9A6A68B2680E5AC00B3AE55 /* FiskalyExampleAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9A6A69B2680E5AC00B3AE55 /* Build configuration list for PBXNativeTarget "FiskalyExampleAppUITests" */;
+			buildPhases = (
+				E9A6A6882680E5AC00B3AE55 /* Sources */,
+				E9A6A6892680E5AC00B3AE55 /* Frameworks */,
+				E9A6A68A2680E5AC00B3AE55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E9A6A68E2680E5AC00B3AE55 /* PBXTargetDependency */,
+			);
+			name = FiskalyExampleAppUITests;
+			productName = FiskalyExampleAppUITests;
+			productReference = E9A6A68C2680E5AC00B3AE55 /* FiskalyExampleAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E9A6A6682680E5AB00B3AE55 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					E9A6A66F2680E5AB00B3AE55 = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					E9A6A6802680E5AC00B3AE55 = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = E9A6A66F2680E5AB00B3AE55;
+					};
+					E9A6A68B2680E5AC00B3AE55 = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = E9A6A66F2680E5AB00B3AE55;
+					};
+				};
+			};
+			buildConfigurationList = E9A6A66B2680E5AB00B3AE55 /* Build configuration list for PBXProject "FiskalyExampleApp" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E9A6A6672680E5AB00B3AE55;
+			productRefGroup = E9A6A6712680E5AB00B3AE55 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E9A6A66F2680E5AB00B3AE55 /* FiskalyExampleApp */,
+				E9A6A6802680E5AC00B3AE55 /* FiskalyExampleAppTests */,
+				E9A6A68B2680E5AC00B3AE55 /* FiskalyExampleAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E9A6A66E2680E5AB00B3AE55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9A6A67B2680E5AC00B3AE55 /* Preview Assets.xcassets in Resources */,
+				E9A6A6782680E5AC00B3AE55 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A6A67F2680E5AC00B3AE55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A6A68A2680E5AC00B3AE55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E9A6A66C2680E5AB00B3AE55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9E65D8E2684839900181AE4 /* ResponseView.swift in Sources */,
+				E9E65D902684935F00181AE4 /* UUIDView.swift in Sources */,
+				E9E65D942684BA5300181AE4 /* V2View.swift in Sources */,
+				E9E65D892683759A00181AE4 /* Fiskalyzer.swift in Sources */,
+				E9E65D8C26847B4500181AE4 /* String+base64.swift in Sources */,
+				E9A6A6762680E5AB00B3AE55 /* ContentView.swift in Sources */,
+				E9A6A6742680E5AB00B3AE55 /* FiskalyExampleAppApp.swift in Sources */,
+				E9E65D922684BA3500181AE4 /* V1View.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A6A67D2680E5AC00B3AE55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9A6A6862680E5AC00B3AE55 /* FiskalyExampleAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A6A6882680E5AC00B3AE55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9A6A6912680E5AC00B3AE55 /* FiskalyExampleAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E9A6A6832680E5AC00B3AE55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E9A6A66F2680E5AB00B3AE55 /* FiskalyExampleApp */;
+			targetProxy = E9A6A6822680E5AC00B3AE55 /* PBXContainerItemProxy */;
+		};
+		E9A6A68E2680E5AC00B3AE55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E9A6A66F2680E5AB00B3AE55 /* FiskalyExampleApp */;
+			targetProxy = E9A6A68D2680E5AC00B3AE55 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E9A6A6932680E5AC00B3AE55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E9A6A6942680E5AC00B3AE55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E9A6A6962680E5AC00B3AE55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"FiskalyExampleApp/Preview Content\"";
+				DEVELOPMENT_TEAM = MV76L6K35G;
+				ENABLE_BITCODE = NO;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = FiskalyExampleApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.example.FiskalyExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E9A6A6972680E5AC00B3AE55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"FiskalyExampleApp/Preview Content\"";
+				DEVELOPMENT_TEAM = MV76L6K35G;
+				ENABLE_BITCODE = NO;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = FiskalyExampleApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.example.FiskalyExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E9A6A6992680E5AC00B3AE55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BM8FD7M6C6;
+				INFOPLIST_FILE = FiskalyExampleAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.example.FiskalyExampleAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FiskalyExampleApp.app/FiskalyExampleApp";
+			};
+			name = Debug;
+		};
+		E9A6A69A2680E5AC00B3AE55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BM8FD7M6C6;
+				INFOPLIST_FILE = FiskalyExampleAppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.example.FiskalyExampleAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FiskalyExampleApp.app/FiskalyExampleApp";
+			};
+			name = Release;
+		};
+		E9A6A69C2680E5AC00B3AE55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BM8FD7M6C6;
+				INFOPLIST_FILE = FiskalyExampleAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.example.FiskalyExampleAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FiskalyExampleApp;
+			};
+			name = Debug;
+		};
+		E9A6A69D2680E5AC00B3AE55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = BM8FD7M6C6;
+				INFOPLIST_FILE = FiskalyExampleAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fiskaly.example.FiskalyExampleAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FiskalyExampleApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E9A6A66B2680E5AB00B3AE55 /* Build configuration list for PBXProject "FiskalyExampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9A6A6932680E5AC00B3AE55 /* Debug */,
+				E9A6A6942680E5AC00B3AE55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9A6A6952680E5AC00B3AE55 /* Build configuration list for PBXNativeTarget "FiskalyExampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9A6A6962680E5AC00B3AE55 /* Debug */,
+				E9A6A6972680E5AC00B3AE55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9A6A6982680E5AC00B3AE55 /* Build configuration list for PBXNativeTarget "FiskalyExampleAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9A6A6992680E5AC00B3AE55 /* Debug */,
+				E9A6A69A2680E5AC00B3AE55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9A6A69B2680E5AC00B3AE55 /* Build configuration list for PBXNativeTarget "FiskalyExampleAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9A6A69C2680E5AC00B3AE55 /* Debug */,
+				E9A6A69D2680E5AC00B3AE55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E9A6A6682680E5AB00B3AE55 /* Project object */;
+}
