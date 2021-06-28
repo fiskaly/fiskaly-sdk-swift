@@ -13,21 +13,4 @@ public class JsonRpcResponse<T: Codable>: Codable {
         case result
         case error
     }
-
-    public required init(from decoder: Decoder) throws {
-
-        let container   = try decoder.container(keyedBy: CodingKeys.self)
-
-        self.jsonrpc    = try container.decode(String.self, forKey: .jsonrpc)
-        self.id         = try container.decode(String.self, forKey: .id)
-
-        if let result   = try container.decodeIfPresent(T.self, forKey: .result) {
-            self.result = result
-        }
-        if let error    = try container.decodeIfPresent(JsonRpcError.self, forKey: .error) {
-            self.error = error
-        }
-
-    }
-
 }
