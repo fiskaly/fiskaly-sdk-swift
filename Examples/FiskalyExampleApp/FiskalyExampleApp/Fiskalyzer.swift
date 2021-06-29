@@ -37,6 +37,7 @@ class Fiskalyzer : ObservableObject {
     @Published var finishTransactionResponse:RequestResponse?
     @Published var finishTransactionResponseV2:RequestResponse?
     @Published var authenticateResponse:RequestResponse?
+    @Published var authenticationToken:String?
     static var apiKeyVariableName = "API_KEY"
     static var apiSecretVariableName = "API_SECRET"
     init() {
@@ -80,7 +81,7 @@ class Fiskalyzer : ObservableObject {
         }
     }
     
-    func clientRequest(method: String, path: String, query: [String : Any]? = nil, body: Any? = nil, client:FiskalyHttpClient? = nil) -> FiskalySDK.HttpResponse? {
+    func clientRequest(method: String, path: String, query: [String : Any]? = nil, body: Any? = nil, client:FiskalyHttpClient? = nil,headers:[String:String]? = nil) -> FiskalySDK.HttpResponse? {
         let client = client ?? self.client
         do {
             var bodyString = ""
@@ -91,7 +92,9 @@ class Fiskalyzer : ObservableObject {
             if let response = try client?.request(
                 method: method,
                 path: path,
-                query: query, body: bodyString) {
+                query: query,
+                headers: headers,
+                body: bodyString) {
                 self.error = nil
                 return response
             } else {
@@ -128,7 +131,9 @@ class Fiskalyzer : ObservableObject {
 
         if let responseCreateTSS = clientRequest(
             method: "PUT",
-            path: "tss/\(newTssUUID)",client: v2client) {
+            path: "tss/\(newTssUUID)",
+            client: v2client,
+            headers: authHeader) {
             createTSSResponseV2 = RequestResponse(responseCreateTSS)
         }
     }
@@ -170,7 +175,7 @@ class Fiskalyzer : ObservableObject {
         if let responseCreateClient = clientRequest(
             method: "PUT",
             path: "tss/\(tssID)/client/\(newClientUUID)",
-            body: clientBody,client: v2client) {
+            body: clientBody,client: v2client,headers: authHeader) {
             createClientResponseV2 = RequestResponse(responseCreateClient)
         }
 
@@ -214,7 +219,9 @@ class Fiskalyzer : ObservableObject {
         if let responseCreateTransaction = clientRequest(
             method: "PUT",
             path: "tss/\(tssID)/tx/\(newTransactionUUID)",
-            body: transactionBody,client: v2client) {
+            body: transactionBody,
+            client: v2client,
+            headers: authHeader) {
             createTransactionResponseV2 = RequestResponse(responseCreateTransaction)
         }
     }
@@ -279,12 +286,26 @@ class Fiskalyzer : ObservableObject {
             method: "PUT",
             path: "tss/\(tssID)/tx/\(transactionID)",
             query: ["last_revision": "1"],
-            body: transactionFinishBody,client: v2client) {
+            body: transactionFinishBody,
+            client: v2client,
+            headers: authHeader) {
             finishTransactionResponseV2 = RequestResponse(responseFinishTransaction)
         }
     }
     
+    var authHeader:[String:String]? {
+        get {
+            if let authenticationToken = authenticationToken {
+                return ["Authorization": "Bearer \(authenticationToken)"]
+            }
+            return nil
+        }
+    }
+    
     func authenticateV2() {
+        struct AuthenticationResponse : Codable {
+            var accessToken:String
+        }
         //not sure if this is needed
         let authenticateBody = [
             "smaers_url": "https://smaers.fiskaly.com"
@@ -294,8 +315,18 @@ class Fiskalyzer : ObservableObject {
             method: "PUT",
             path: "auth",
             body: authenticateBody,
-            client: v2client) {
+            client: v2client,
+            headers: authHeader) {
             authenticateResponse = RequestResponse(responseAuthenticate)
+            if let data = Data(base64Encoded:responseAuthenticate.body) {
+                let jsonDecoder = JSONDecoder()
+                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+                do {
+                    authenticationToken = (try jsonDecoder.decode(AuthenticationResponse.self, from: data)).accessToken
+                } catch {
+                    self.error = "Error decoding authentication response: \(error.localizedDescription)"
+                }
+            }
         }
     }
 }
