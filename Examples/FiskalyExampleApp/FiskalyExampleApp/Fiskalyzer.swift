@@ -40,6 +40,8 @@ class Fiskalyzer : ObservableObject {
     @Published var authenticationToken:String?
     static var apiKeyVariableName = "API_KEY"
     static var apiSecretVariableName = "API_SECRET"
+    static var apiKeyVariableNameV2 = "V2_API_KEY"
+    static var apiSecretVariableNameV2 = "V2_API_SECRET"
     init() {
         if let apiKey = apiKey, let apiSecret = apiSecret {
         client = try? FiskalyHttpClient(
@@ -47,13 +49,17 @@ class Fiskalyzer : ObservableObject {
             apiSecret: apiSecret,
             baseUrl: "https://kassensichv.io/api/v1/"
         )
+        } else {
+            self.error = "No API key or secret supplied. Set \(Self.apiKeyVariableName) and \(Self.apiSecretVariableName) in the environment variables."
+        }
+        if let apiKey = apiKeyV2, let apiSecret = apiSecretV2 {
         v2client = try? FiskalyHttpClient(
             apiKey: apiKey,
             apiSecret: apiSecret,
-            baseUrl: "https://localhost:3000/api/v2/"
+            baseUrl: "https://sign.fiskaly.dev/api/v2"
         )
         } else {
-            self.error = "No API key or secret supplied. Set \(Self.apiKeyVariableName) and \(Self.apiSecretVariableName) in the environment variables."
+            self.error = "No API key or secret supplied. Set \(Self.apiKeyVariableNameV2) and \(Self.apiSecretVariableNameV2) in the environment variables."
         }
     }
     
@@ -66,6 +72,18 @@ class Fiskalyzer : ObservableObject {
     var apiSecret:String? {
         get {
             return ProcessInfo.processInfo.environment[Self.apiSecretVariableName]
+        }
+    }
+    
+    var apiKeyV2:String? {
+        get {
+            return ProcessInfo.processInfo.environment[Self.apiKeyVariableNameV2]
+        }
+    }
+    
+    var apiSecretV2:String? {
+        get {
+            return ProcessInfo.processInfo.environment[Self.apiSecretVariableNameV2]
         }
     }
     
@@ -308,15 +326,15 @@ class Fiskalyzer : ObservableObject {
         }
         //not sure if this is needed
         let authenticateBody = [
-            "smaers_url": "https://smaers.fiskaly.com"
+            "base_url":"http://backend:3000",
+            "smaers_url":"http://smaers-gateway:8080"
         ]
 
         if let responseAuthenticate = clientRequest(
-            method: "PUT",
+            method: "POST",
             path: "auth",
             body: authenticateBody,
-            client: v2client,
-            headers: authHeader) {
+            client: v2client) {
             authenticateResponse = RequestResponse(responseAuthenticate)
             if let data = Data(base64Encoded:responseAuthenticate.body) {
                 let jsonDecoder = JSONDecoder()
