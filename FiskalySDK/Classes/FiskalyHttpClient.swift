@@ -2,7 +2,7 @@ import Foundation
 
 public class FiskalyHttpClient {
 
-    private var context: String
+    private var context: String = ""
     private let client: RequestClient
 
     /*
@@ -16,16 +16,15 @@ public class FiskalyHttpClient {
                     password: String? = "",
                     organizationId: String? = "",
                     environment: String? = "",
-                    client: RequestClient = FiskalyRequestClient()) throws {
+                    client: RequestClient = FiskalyRequestClient(),
+                    smaersUrl: String? = nil,
+                    miceUrl: String? = nil
+    ) throws {
         self.client = client
-
-        // this needs to be done because xcode cries that self.context is used before be initialized
-
-        self.context = ""
 
         // version is hardcorded because using versionNumber from header file strips patch number
 
-        let contextRequestParams: [String: Any] = [
+        var contextRequestParams: [String: Any] = [
             "api_key": apiKey as Any,
             "api_secret": apiSecret as Any,
             "base_url": baseUrl,
@@ -35,6 +34,13 @@ public class FiskalyHttpClient {
             "environment": environment as Any,
             "sdk_version": "iOS SDK 1.2.100"
         ]
+        
+        //these should only be set for v2
+        if let smaersUrl = smaersUrl, let miceUrl = miceUrl {
+            contextRequestParams["smaers_url"] = smaersUrl
+            contextRequestParams["mice_url"] = miceUrl
+            //contextRequestParams["base_url"] = "http://backend:3000"
+        }
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
         let response = try performJsonRpcRequest(request: request, ResultCreateContext.self)
@@ -196,7 +202,7 @@ public class FiskalyHttpClient {
             throw FiskalyError.sdkError(message: "Client response not decodable into class. \(error), data = \(jsonData)")
         }
 
-        print(response.error?.data?.response.body ?? "NO ERROR")
+        print(response.error?.data?.response.body ?? response.error?.message ?? "NO ERROR")
         return response
 
     }
