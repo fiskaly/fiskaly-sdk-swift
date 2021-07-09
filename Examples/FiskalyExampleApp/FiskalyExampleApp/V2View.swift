@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct V2View: View {
-    @ObservedObject var fiskalyzer:Fiskalyzer
+    @ObservedObject var fiskalyzer:FiskalyzerV2
     @State var expandAuthenticate:Bool = false
     @State var expandTSS:Bool = false
     @State var expandClient:Bool = false
@@ -21,45 +21,37 @@ struct V2View: View {
         ScrollView {
             VStack {
                 Group {
-                    Button("Authenticate") {
-                        fiskalyzer.authenticateV2()
-                        expandAuthenticate = true
-                    }
-                    UUIDView(uuid: $fiskalyzer.transactionUUID, name: "Transaction")
-                    ResponseView(response: $fiskalyzer.authenticateResponse, expanded: $expandAuthenticate, name: "Create Transaction")
-                }
-                Group {
                     Button("Create TSS") {
-                        fiskalyzer.createTSSV2()
+                        fiskalyzer.createTSS()
                         expandTSS = true
                     }
-                    UUIDView(uuid: $fiskalyzer.tssUUIDV2, name: "TSS")
-                    ResponseView(response: $fiskalyzer.createTSSResponseV2, expanded: $expandTSS, name: "Create TSS")
+                    UUIDView(uuid: $fiskalyzer.tssUUID, name: "TSS")
+                    ResponseView(response: $fiskalyzer.createTSSResponse, expanded: $expandTSS, name: "Create TSS")
                 }
                 Group {
                     Button("Create Client") {
-                        fiskalyzer.createClientV2()
+                        fiskalyzer.createClient()
                         expandClient = true
                     }.disabled(fiskalyzer.tssUUID == nil)
-                    UUIDView(uuid: $fiskalyzer.clientUUIDV2, name: "Client")
-                    ResponseView(response: $fiskalyzer.createClientResponseV2, expanded: $expandClient, name: "Create Client")
+                    UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
+                    ResponseView(response: $fiskalyzer.createClientResponse, expanded: $expandClient, name: "Create Client")
                 }
                 
                 Group {
                     Button("Create Transaction") {
-                        fiskalyzer.createTransactionV2()
+                        fiskalyzer.createTransaction()
                         expandTransaction = true
                     }.disabled(fiskalyzer.tssUUID == nil)
-                    UUIDView(uuid: $fiskalyzer.transactionUUIDV2, name: "Transaction")
-                    ResponseView(response: $fiskalyzer.createTransactionResponseV2, expanded: $expandTransaction, name: "Create Transaction")
+                    UUIDView(uuid: $fiskalyzer.transactionUUID, name: "Transaction")
+                    ResponseView(response: $fiskalyzer.createTransactionResponse, expanded: $expandTransaction, name: "Create Transaction")
                 }
                 
                 Group {
                     Button("Finish Transaction") {
-                        fiskalyzer.finishTransactionV2()
+                        fiskalyzer.finishTransaction()
                         expandFinishTransaction = true
-                    }.disabled(fiskalyzer.transactionUUIDV2 == nil)
-                    ResponseView(response: $fiskalyzer.finishTransactionResponseV2, expanded: $expandFinishTransaction, name: "Finish Transaction")
+                    }.disabled(fiskalyzer.transactionUUID == nil)
+                    ResponseView(response: $fiskalyzer.finishTransactionResponse, expanded: $expandFinishTransaction, name: "Finish Transaction")
                 }
             }
         }.frame(maxWidth: .infinity)

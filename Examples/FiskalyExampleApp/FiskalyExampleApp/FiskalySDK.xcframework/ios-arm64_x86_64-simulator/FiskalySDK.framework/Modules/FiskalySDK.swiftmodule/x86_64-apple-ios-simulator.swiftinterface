@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
 // swift-module-flags: -target x86_64-apple-ios12.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name FiskalySDK
 import FiskalySDK.Client
 @_exported import FiskalySDK
@@ -71,16 +71,17 @@ public class HttpResponse : Swift.Codable {
   public func encode(to encoder: Swift.Encoder) throws
   required public init(from decoder: Swift.Decoder) throws
 }
-public struct JsonRpcResponse<T> : Swift.Codable where T : Swift.Decodable, T : Swift.Encodable {
+public class JsonRpcResponse<T> : Swift.Codable where T : Swift.Decodable, T : Swift.Encodable {
   public var jsonrpc: Swift.String
   public var id: Swift.String
   public var result: T?
   public var error: FiskalySDK.JsonRpcError?
+  @objc deinit
   public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  required public init(from decoder: Swift.Decoder) throws
 }
 public class FiskalyHttpClient {
-  public init(apiKey: Swift.String? = "", apiSecret: Swift.String? = "", baseUrl: Swift.String, email: Swift.String? = "", password: Swift.String? = "", organizationId: Swift.String? = "", environment: Swift.String? = "", client: FiskalySDK.RequestClient = FiskalyRequestClient()) throws
+  public init(apiKey: Swift.String? = "", apiSecret: Swift.String? = "", baseUrl: Swift.String, email: Swift.String? = "", password: Swift.String? = "", organizationId: Swift.String? = "", environment: Swift.String? = "", client: FiskalySDK.RequestClient = FiskalyRequestClient(), smaersUrl: Swift.String? = nil, miceUrl: Swift.String? = nil) throws
   public func version() throws -> FiskalySDK.ResultVersion
   public func selfTest() throws -> FiskalySDK.ResultSelfTest
   public func config(debugLevel: Swift.Int?, debugFile: Swift.String?, clientTimeout: Swift.Int?, smaersTimeout: Swift.Int?, httpProxy: Swift.String?) throws -> FiskalySDK.Config
@@ -88,12 +89,13 @@ public class FiskalyHttpClient {
   public func request(method: Swift.String, path: Swift.String = "", query: [Swift.String : Any]? = nil, headers: [Swift.String : Swift.String]? = nil, body: Swift.String = "") throws -> FiskalySDK.HttpResponse
   @objc deinit
 }
-public struct JsonRpcError : Swift.Error, Swift.Codable {
+public class JsonRpcError : Swift.Error, Swift.Codable {
   public var code: Swift.Int
   public var message: Swift.String
   public var data: FiskalySDK.ResultRequest?
+  @objc deinit
   public func encode(to encoder: Swift.Encoder) throws
-  public init(from decoder: Swift.Decoder) throws
+  required public init(from decoder: Swift.Decoder) throws
 }
 extension JsonRpcError : Swift.CustomDebugStringConvertible {
   public var debugDescription: Swift.String {

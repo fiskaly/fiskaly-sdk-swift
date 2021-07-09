@@ -2,7 +2,7 @@
 //  Fiskalyzer.swift
 //  FiskalyExampleApp
 //
-//  Created by Angela Brett on 23.06.21.
+//  Created by Angela Brett on 09.07.21.
 //
 
 import Foundation
@@ -18,100 +18,56 @@ struct RequestResponse {
 }
 
 class Fiskalyzer : ObservableObject {
-    private var client:FiskalyHttpClient?
-    private var v2client:FiskalyHttpClient?
+    var client:FiskalyHttpClient?
     @Published var version:String?
     @Published var error:String?
     @Published var tssUUID:String?
     @Published var createTSSResponse:RequestResponse?
-    @Published var tssUUIDV2:String?
-    @Published var createTSSResponseV2:RequestResponse?
     @Published var clientUUID:String?
     @Published var createClientResponse:RequestResponse?
-    @Published var clientUUIDV2:String?
-    @Published var createClientResponseV2:RequestResponse?
     @Published var transactionUUID:String?
     @Published var createTransactionResponse:RequestResponse?
-    @Published var transactionUUIDV2:String?
-    @Published var createTransactionResponseV2:RequestResponse?
     @Published var finishTransactionResponse:RequestResponse?
-    @Published var finishTransactionResponseV2:RequestResponse?
-    @Published var authenticateResponse:RequestResponse?
-    @Published var authenticationToken:String?
-    static var apiKeyVariableName = "API_KEY"
-    static var apiSecretVariableName = "API_SECRET"
-    static var apiKeyVariableNameV2 = "V2_API_KEY"
-    static var apiSecretVariableNameV2 = "V2_API_SECRET"
-    init() {
+    var apiKeyVariableName:String
+    var apiSecretVariableName:String
+    
+    init(apiKeyVariableName:String,apiSecretVariableName:String) {
+        self.apiKeyVariableName = apiKeyVariableName
+        self.apiSecretVariableName = apiSecretVariableName
         if let apiKey = apiKey, let apiSecret = apiSecret {
-        client = try? FiskalyHttpClient(
-            apiKey: apiKey,
-            apiSecret: apiSecret,
-            baseUrl: "https://kassensichv.io/api/v1/"
-        )
+            client = try? createHttpClient(
+                apiKey: apiKey,
+                apiSecret: apiSecret
+            )
         } else {
-            self.error = "No API key or secret supplied. Set \(Self.apiKeyVariableName) and \(Self.apiSecretVariableName) in the environment variables."
+            self.error = "No API key or secret supplied. Set \(apiKeyVariableName) and \(apiSecretVariableName) in the environment variables."
         }
-        if let apiKey = apiKeyV2, let apiSecret = apiSecretV2 {
-        v2client = try? FiskalyHttpClient(
-            apiKey: apiKey,
-            apiSecret: apiSecret,
-            baseUrl: "https://sign.fiskaly.dev/api/v2"
-        )
-        } else {
-            self.error = "No API key or secret supplied. Set \(Self.apiKeyVariableNameV2) and \(Self.apiSecretVariableNameV2) in the environment variables."
-        }
+    }
+    
+    func createHttpClient(apiKey:String, apiSecret:String) throws -> FiskalyHttpClient {
+        fatalError("createClient needs to be overridden in the subclass")
     }
     
     var apiKey:String? {
         get {
-            return ProcessInfo.processInfo.environment[Self.apiKeyVariableName]
+            return ProcessInfo.processInfo.environment[apiKeyVariableName]
         }
     }
     
     var apiSecret:String? {
         get {
-            return ProcessInfo.processInfo.environment[Self.apiSecretVariableName]
+            return ProcessInfo.processInfo.environment[apiSecretVariableName]
         }
     }
     
-    var apiKeyV2:String? {
-        get {
-            return ProcessInfo.processInfo.environment[Self.apiKeyVariableNameV2]
-        }
-    }
-    
-    var apiSecretV2:String? {
-        get {
-            return ProcessInfo.processInfo.environment[Self.apiSecretVariableNameV2]
-        }
-    }
-    
-    func getVersion() {
+    func clientRequest(method: String, path: String, query: [String : Any]? = nil, body: Any? = nil) -> FiskalySDK.HttpResponse? {
         do {
-            if let response = try client?.version() {
-                version = response.client.version
-            } else {
-                self.error = "Client could not be initialised"
-            }
-        } catch {
-            self.error = error.localizedDescription
-        }
-    }
-    
-    func clientRequest(method: String, path: String, query: [String : Any]? = nil, body: Any? = nil, client:FiskalyHttpClient? = nil,headers:[String:String]? = nil) -> FiskalySDK.HttpResponse? {
-        let client = client ?? self.client
-        do {
-            var bodyString = ""
-            if let body = body,
-               let bodyData = try? JSONSerialization.data(withJSONObject: body) {
-                bodyString = bodyData.base64EncodedString()
-            }
+            let bodyData = try JSONSerialization.data(withJSONObject: body ?? Dictionary<String, Any>())
+            let bodyString = bodyData.base64EncodedString()
             if let response = try client?.request(
                 method: method,
                 path: path,
                 query: query,
-                headers: headers,
                 body: bodyString) {
                 self.error = nil
                 return response
@@ -123,38 +79,8 @@ class Fiskalyzer : ObservableObject {
         }
         return nil
     }
-
     
-    func createTSS() {
-        let newTssUUID = UUID().uuidString
-        self.tssUUID = newTssUUID
-        
-        let tssBody = [
-            "description": "iOS Test TSS",
-            "state": "INITIALIZED"
-        ]
-
-        if let responseCreateTSS = clientRequest(
-            method: "PUT",
-            path: "tss/\(newTssUUID)",
-            body: tssBody) {
-            createTSSResponse = RequestResponse(responseCreateTSS)
-        }
-    }
-    
-    //V2 does not need the state
-    func createTSSV2() {
-        let newTssUUID = UUID().uuidString
-        self.tssUUIDV2 = newTssUUID
-
-        if let responseCreateTSS = clientRequest(
-            method: "PUT",
-            path: "tss/\(newTssUUID)",
-            client: v2client,
-            headers: authHeader) {
-            createTSSResponseV2 = RequestResponse(responseCreateTSS)
-        }
-    }
+    //these methods are exactly the same between V1 and V2
     
     func createClient() {
         guard let tssID = tssUUID else {
@@ -174,29 +100,6 @@ class Fiskalyzer : ObservableObject {
             body: clientBody) {
             createClientResponse = RequestResponse(responseCreateClient)
         }
-
-    }
-    
-    //this is the same as V1
-    func createClientV2() {
-        guard let tssID = tssUUIDV2 else {
-            error = "Can't create client before creating TSS"
-            return
-        }
-        let newClientUUID = UUID().uuidString
-        clientUUIDV2 = newClientUUID
-
-        let clientBody = [
-            "serial_number": "iOS Test Client Serial"
-        ]
-
-        if let responseCreateClient = clientRequest(
-            method: "PUT",
-            path: "tss/\(tssID)/client/\(newClientUUID)",
-            body: clientBody,client: v2client,headers: authHeader) {
-            createClientResponseV2 = RequestResponse(responseCreateClient)
-        }
-
     }
     
     func createTransaction() {
@@ -219,31 +122,7 @@ class Fiskalyzer : ObservableObject {
             createTransactionResponse = RequestResponse(responseCreateTransaction)
         }
     }
-    
-    //this is the same as V1
-    func createTransactionV2() {
-        guard let tssID = tssUUIDV2 else {
-            error = "Can't create transaction before creating TSS"
-            return
-        }
-        let newTransactionUUID = UUID().uuidString
-        transactionUUID = newTransactionUUID
 
-        let transactionBody = [
-            "state": "ACTIVE",
-            "client_id": clientUUIDV2
-        ]
-
-        if let responseCreateTransaction = clientRequest(
-            method: "PUT",
-            path: "tss/\(tssID)/tx/\(newTransactionUUID)",
-            body: transactionBody,
-            client: v2client,
-            headers: authHeader) {
-            createTransactionResponseV2 = RequestResponse(responseCreateTransaction)
-        }
-    }
-    
     func finishTransaction() {
         guard let clientID = clientUUID, let tssID = tssUUID, let transactionID=transactionUUID else {
             error = "Can't finish transaction before creating client, TSS, and transaction"
@@ -276,75 +155,4 @@ class Fiskalyzer : ObservableObject {
         }
     }
     
-    //this is the same as V1
-    func finishTransactionV2() {
-        guard let clientID = clientUUIDV2, let tssID = tssUUIDV2, let transactionID=transactionUUIDV2 else {
-            error = "Can't finish transaction before creating client, TSS, and transaction"
-            return
-        }
-        let transactionFinishBody: [String: Any] = [
-            "state": "FINISHED",
-            "client_id": clientID,
-            "schema": [
-                "standard_v1": [
-                    "receipt": [
-                        "receipt_type": "RECEIPT",
-                        "amounts_per_vat_rate": [
-                            ["vat_rate": "19", "amount": "14.28"]
-                        ],
-                        "amounts_per_payment_type": [
-                            ["payment_type": "NON_CASH", "amount": "14.28"]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-
-        if let responseFinishTransaction = clientRequest(
-            method: "PUT",
-            path: "tss/\(tssID)/tx/\(transactionID)",
-            query: ["last_revision": "1"],
-            body: transactionFinishBody,
-            client: v2client,
-            headers: authHeader) {
-            finishTransactionResponseV2 = RequestResponse(responseFinishTransaction)
-        }
-    }
-    
-    var authHeader:[String:String]? {
-        get {
-            if let authenticationToken = authenticationToken {
-                return ["Authorization": "Bearer \(authenticationToken)"]
-            }
-            return nil
-        }
-    }
-    
-    func authenticateV2() {
-        struct AuthenticationResponse : Codable {
-            var accessToken:String
-        }
-        //not sure if this is needed
-        let authenticateBody = [
-            "base_url":"http://backend:3000",
-            "smaers_url":"http://smaers-gateway:8080"
-        ]
-
-        if let responseAuthenticate = clientRequest(
-            method: "POST",
-            path: "auth",
-            body: authenticateBody,
-            client: v2client) {
-            authenticateResponse = RequestResponse(responseAuthenticate)
-            if let data = Data(base64Encoded:responseAuthenticate.body) {
-                let jsonDecoder = JSONDecoder()
-                jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
-                do {
-                    authenticationToken = (try jsonDecoder.decode(AuthenticationResponse.self, from: data)).accessToken
-                } catch {
-                    self.error = "Error decoding authentication response: \(error.localizedDescription)"
-                }
-            }
-        }
-    }
 }

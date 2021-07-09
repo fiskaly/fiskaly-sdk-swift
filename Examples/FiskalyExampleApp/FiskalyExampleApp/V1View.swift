@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct V1View: View {
-    @ObservedObject var fiskalyzer:Fiskalyzer
+    @ObservedObject var fiskalyzer:FiskalyzerV1
     @State var expandTSS:Bool = false
     @State var expandClient:Bool = false
     @State var expandTransaction:Bool = false
