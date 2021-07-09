@@ -9,87 +9,59 @@ import SwiftUI
 
 struct V2View: View {
     @ObservedObject var fiskalyzer:FiskalyzerV2
-    @State var expandAuthenticate:Bool = false
-    @State var expandTSS:Bool = false
-    @State var expandPersonalizeTSS:Bool = false
-    @State var expandClient:Bool = false
-    @State var expandTransaction:Bool = false
-    @State var expandFinishTransaction:Bool = false
-    @State var expandChangeAdminPIN:Bool = false
-    @State var expandInitializeTSS:Bool = false
-    @State var expandLogoutAdmin:Bool = false
     var body: some View {
         //we need a ScrollView or VStack even when there's only one group, otherwise the individual items in the group get put in their own tabs for some reason.
         VStack {
         fiskalyzer.error.map { Text($0).foregroundColor(.red) }
         ScrollView {
             VStack {
-                Group {
-                    Button("Create TSS") {
-                        fiskalyzer.createTSS()
-                        expandTSS = true
-                    }
+                CallAndResponseView(name: "Create TSS", response: $fiskalyzer.createTSSResponse) {
+                    fiskalyzer.createTSS()
+                } content: {
                     UUIDView(uuid: $fiskalyzer.tssUUID, name: "TSS")
                     Text("TSS PUK: \(fiskalyzer.adminPUK ?? "none")")
-                    ResponseView(response: $fiskalyzer.createTSSResponse, expanded: $expandTSS, name: "Create TSS")
                 }
                 Group {
-                    Group {
-                        Button("Personalize TSS") {
-                            fiskalyzer.personalizeTSS()
-                            expandPersonalizeTSS = true
-                        }
+                    CallAndResponseView(name: "Personalize TSS", response: $fiskalyzer.personalizeTSSResponse) {
+                        fiskalyzer.personalizeTSS()
+                    } content: {
                         Text("TSS State: \(fiskalyzer.tssState ?? "none")")
-                        ResponseView(response: $fiskalyzer.personalizeTSSResponse, expanded: $expandPersonalizeTSS, name: "Personalize TSS")
                     }
-                    Group {
-                        Button("Change Admin PIN") {
-                            fiskalyzer.changeAdminPIN()
-                            expandChangeAdminPIN = true
-                        }
+                    CallAndResponseView(name: "Change Admin PIN", response: $fiskalyzer.changeAdminPINResponse) {
+                        fiskalyzer.changeAdminPIN()
+                    } content: {
                         Text("Admin PIN: \(fiskalyzer.adminPIN ?? "not set")")
-                        ResponseView(response: $fiskalyzer.changeAdminPINResponse, expanded: $expandChangeAdminPIN, name: "Change Admin PIN")
                     }
-                    Group {
-                        Button("Initialize TSS") {
-                            fiskalyzer.initializeTSS()
-                            expandInitializeTSS = true
-                        }
-                        ResponseView(response: $fiskalyzer.initializeTSSResponse, expanded: $expandInitializeTSS, name: "Initialize TSS")
+                    CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
+                        fiskalyzer.initializeTSS()
+                    } content: {
                     }
-                    Group {
-                        Button("Create Client") {
-                            fiskalyzer.createClient()
-                            expandClient = true
-                        }
+                    CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
+                        fiskalyzer.createClient()
+                    } content: {
                         UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
-                        ResponseView(response: $fiskalyzer.createClientResponse, expanded: $expandClient, name: "Create Client")
+                    }
+                    CallAndResponseView(name: "Logout Admin", response: $fiskalyzer.logoutAdminResponse) {
+                        fiskalyzer.logoutAdmin()
+                    } content: {
                     }
                     
-                    Group {
-                        Button("Logout Admin") {
-                            fiskalyzer.logoutAdmin()
-                            expandLogoutAdmin = true
-                        }
-                        ResponseView(response: $fiskalyzer.logoutAdminResponse, expanded: $expandLogoutAdmin, name: "Logout Admin")
-                    }
+                    //todo: authenticate client
                     
-                    Group {
-                        Button("Create Transaction") {
-                            fiskalyzer.createTransaction()
-                            expandTransaction = true
-                        }
+                    CallAndResponseView(name: "Create Transaction", response: $fiskalyzer.createTransactionResponse) {
+                        fiskalyzer.createTransaction()
+                    } content: {
                         UUIDView(uuid: $fiskalyzer.transactionUUID, name: "Transaction")
-                        ResponseView(response: $fiskalyzer.createTransactionResponse, expanded: $expandTransaction, name: "Create Transaction")
                     }
                     
-                    Group {
-                        Button("Finish Transaction") {
-                            fiskalyzer.finishTransaction()
-                            expandFinishTransaction = true
-                        }.disabled(fiskalyzer.transactionUUID == nil)
-                        ResponseView(response: $fiskalyzer.finishTransactionResponse, expanded: $expandFinishTransaction, name: "Finish Transaction")
-                    }
+                    //todo: update transaction
+                    
+                    CallAndResponseView(name: "Finish Transaction", response: $fiskalyzer.finishTransactionResponse) {
+                        fiskalyzer.finishTransaction()
+                    } content: {
+                    }.disabled(fiskalyzer.transactionUUID == nil)
+                    
+                    //todo: authenticate admin again, then disable TSS
                 }.disabled(fiskalyzer.tssUUID == nil)
             }
         }.frame(maxWidth: .infinity)

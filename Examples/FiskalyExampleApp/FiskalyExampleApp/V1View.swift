@@ -9,54 +9,36 @@ import SwiftUI
 
 struct V1View: View {
     @ObservedObject var fiskalyzer:FiskalyzerV1
-    @State var expandTSS:Bool = false
-    @State var expandClient:Bool = false
-    @State var expandTransaction:Bool = false
-    @State var expandFinishTransaction:Bool = false
     var body: some View {
         VStack {
         fiskalyzer.error.map { Text($0).foregroundColor(.red) }
         ScrollView {
         VStack {
-        Button("Get Version") {
-            fiskalyzer.getVersion()
-        }
-        Text("Version \(fiskalyzer.version ?? "unknown")")
-        
-        Group {
-            Button("Create TSS") {
-                fiskalyzer.createTSS()
-                expandTSS = true
+            Button("Get Version") {
+                fiskalyzer.getVersion()
             }
-            UUIDView(uuid: $fiskalyzer.tssUUID, name: "TSS")
-            ResponseView(response: $fiskalyzer.createTSSResponse, expanded: $expandTSS, name: "Create TSS")
-        }
-        Group {
-            Button("Create Client") {
-                fiskalyzer.createClient()
-                expandClient = true
+            Text("Version \(fiskalyzer.version ?? "unknown")")
+            CallAndResponseView(name: "Create TSS", response: $fiskalyzer.createTSSResponse) {
+                fiskalyzer.createTSS()
+            } content: {
+                UUIDView(uuid: $fiskalyzer.tssUUID, name: "TSS")
+            }
+            Group {
+                CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
+                    fiskalyzer.createClient()
+                } content: {
+                    UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
+                }
+                CallAndResponseView(name: "Create Transaction", response: $fiskalyzer.createTransactionResponse) {
+                    fiskalyzer.createTransaction()
+                } content: {
+                    UUIDView(uuid: $fiskalyzer.transactionUUID, name: "Transaction")
+                }
+                CallAndResponseView(name: "Finish Transaction", response: $fiskalyzer.finishTransactionResponse) {
+                    fiskalyzer.finishTransaction()
+                } content: {
+                }.disabled(fiskalyzer.transactionUUID == nil)
             }.disabled(fiskalyzer.tssUUID == nil)
-            UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
-            ResponseView(response: $fiskalyzer.createClientResponse, expanded: $expandClient, name: "Create Client")
-        }
-        
-        Group {
-            Button("Create Transaction") {
-                fiskalyzer.createTransaction()
-                expandTransaction = true
-            }.disabled(fiskalyzer.tssUUID == nil)
-            UUIDView(uuid: $fiskalyzer.transactionUUID, name: "Transaction")
-            ResponseView(response: $fiskalyzer.createTransactionResponse, expanded: $expandTransaction, name: "Create Transaction")
-        }
-        
-        Group {
-            Button("Finish Transaction") {
-                fiskalyzer.finishTransaction()
-                expandFinishTransaction = true
-            }.disabled(fiskalyzer.transactionUUID == nil)
-            ResponseView(response: $fiskalyzer.finishTransactionResponse, expanded: $expandFinishTransaction, name: "Finish Transaction")
-        }
-        
         }
         }.frame(maxWidth: .infinity)
     }
