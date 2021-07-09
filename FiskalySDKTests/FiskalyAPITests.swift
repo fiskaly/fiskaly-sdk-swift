@@ -19,8 +19,8 @@ class FiskalyAPITests: XCTestCase {
     func setUpLogging(methodName:String) {
         //set up debug logging within the client library so we can show more detail in the test log
         
-        //methodName is the full name of the currently running test
-        let testName = methodName.replacingOccurrences(of: "-[\(String(describing: Self.self))", with: "").replacingOccurrences(of: "]", with: "")
+        //methodName is the full name of the currently running test, Objective-C style, e.g. -[FiskalyAPITestsV2 testTransactionRequest], so we trim it down to just e.g. testTransactionRequest
+        let testName = methodName.replacingOccurrences(of: "-[\(String(describing: Self.self)) ", with: "").replacingOccurrences(of: "]", with: "")
         
         logPath = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("fiskaly-tests-\(testName)").appendingPathExtension("log").path
         
