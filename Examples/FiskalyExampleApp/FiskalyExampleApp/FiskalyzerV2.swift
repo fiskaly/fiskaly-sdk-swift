@@ -50,6 +50,7 @@ class FiskalyzerV2 : Fiskalyzer {
                 let responseBody = try JSONSerialization.jsonObject(with: responseBodyData, options: []) as? [String: Any]
                 adminPUK = responseBody?["admin_puk"] as? String
                 adminStatus = "No PIN set"
+                tssState = "CREATED"
             } catch {
                 self.error = "Create TSS response body is not valid JSON: \(error.localizedDescription)"
             }
@@ -115,6 +116,7 @@ class FiskalyzerV2 : Fiskalyzer {
         transactionRevision = 0 //this should be 1 when creating a transaction, but it will be incremented in updateTransaction
         if let response = transactionRequest(tssUUID, transactionUUID, transactionBody) {
             createTransactionResponse = RequestResponse(response)
+            self.transactionUUID = transactionUUID
         }
     }
     
@@ -210,6 +212,7 @@ class FiskalyzerV2 : Fiskalyzer {
     func disableTSS() {
         if let tssUUID = tssUUID {
             disableTSSResponse = setTSSState(tssUUID, state: "DISABLED")
+            self.tssUUID = nil
             adminStatus = "No TSS"
         }
     }

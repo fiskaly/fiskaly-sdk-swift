@@ -20,12 +20,12 @@ struct V2View: View {
                 } content: {
                     UUIDView(uuid: $fiskalyzer.tssUUID, name: "TSS")
                     Text("TSS PUK: \(fiskalyzer.adminPUK ?? "none")")
+                    Text("TSS State: \(fiskalyzer.tssState ?? "none")")
                 }
                 Group {
                     CallAndResponseView(name: "Personalize TSS", response: $fiskalyzer.personalizeTSSResponse) {
                         fiskalyzer.personalizeTSS()
                     } content: {
-                        Text("TSS State: \(fiskalyzer.tssState ?? "none")")
                     }
                     CallAndResponseView(name: "Change Admin PIN", response: $fiskalyzer.changeAdminPINResponse) {
                         fiskalyzer.changeAdminPIN()
