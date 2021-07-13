@@ -37,11 +37,6 @@ struct V2View: View {
                     
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
                     
-                    CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
-                        fiskalyzer.initializeTSS()
-                    } content: {
-                    }
-                    
                     CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
                         fiskalyzer.createClient()
                     } content: {
@@ -55,6 +50,11 @@ struct V2View: View {
                     Group {
                         CallAndResponseView(name: "Authenticate Client", response: $fiskalyzer.authenticateClientResponse) {
                             fiskalyzer.authenticateClient()
+                        } content: {
+                        }
+                        
+                        CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
+                            fiskalyzer.initializeTSS()
                         } content: {
                         }
                         

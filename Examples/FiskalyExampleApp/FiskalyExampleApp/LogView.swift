@@ -11,9 +11,17 @@ struct LogView: View {
     @ObservedObject var fiskalyzer:Fiskalyzer
     var name:String
     var body: some View {
-        ScrollView {
-            Text(fiskalyzer.log).font(.footnote)
-        }.frame(maxWidth: .infinity).navigationBarTitle(Text("Log"), displayMode: .inline).padding([.leading, .trailing], 10).toolbar {
+        ScrollViewReader { scrollView in
+            ScrollView {
+                Text(fiskalyzer.log).font(.footnote).id("log")
+                    .onAppear {
+                        scrollView.scrollTo("log", anchor: .bottom)
+                }
+            }
+        }.frame(maxWidth: .infinity)
+        .navigationBarTitle(Text("Log"), displayMode: .inline)
+        .padding([.leading, .trailing], 10)
+        .toolbar {
             Button(action: {
                 fiskalyzer.clearLog()
             }, label: {

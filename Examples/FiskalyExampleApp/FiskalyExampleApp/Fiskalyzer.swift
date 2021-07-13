@@ -78,6 +78,7 @@ class Fiskalyzer : ObservableObject {
             }
         } catch {
             self.error = error.localizedDescription
+            return (error as? JsonRpcError)?.data?.response
         }
         return nil
     }
