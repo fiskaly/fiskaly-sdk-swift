@@ -11,10 +11,12 @@ struct V2View: View {
     @ObservedObject var fiskalyzer:FiskalyzerV2
     var body: some View {
         //we need a ScrollView or VStack even when there's only one group, otherwise the individual items in the group get put in their own tabs for some reason.
+        NavigationView {
         VStack {
         fiskalyzer.error.map { Text($0).foregroundColor(.red) }
         ScrollView {
             VStack {
+                ShowLogView(fiskalyzer: fiskalyzer)
                 CallAndResponseView(name: "Create TSS", response: $fiskalyzer.createTSSResponse) {
                     fiskalyzer.createTSS()
                 } content: {
@@ -86,6 +88,7 @@ struct V2View: View {
                 }.disabled(fiskalyzer.tssUUID == nil)
             }
         }.frame(maxWidth: .infinity)
+    }.navigationBarTitle("Fiskaly Sign V2")
     }
     }
 }

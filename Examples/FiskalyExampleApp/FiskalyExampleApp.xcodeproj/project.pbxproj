@@ -11,6 +11,8 @@
 		E92FF5582698406700C1CBA8 /* Fiskalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FF5572698406700C1CBA8 /* Fiskalyzer.swift */; };
 		E92FF55A26989D1B00C1CBA8 /* CallAndResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FF55926989D1B00C1CBA8 /* CallAndResponseView.swift */; };
 		E92FF55C269C4A4000C1CBA8 /* AuthenticateAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FF55B269C4A4000C1CBA8 /* AuthenticateAdminView.swift */; };
+		E92FF565269D932100C1CBA8 /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FF564269D932100C1CBA8 /* LogView.swift */; };
+		E92FF567269DAAC200C1CBA8 /* ShowLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92FF566269DAAC200C1CBA8 /* ShowLogView.swift */; };
 		E9A6A6742680E5AB00B3AE55 /* FiskalyExampleAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6A6732680E5AB00B3AE55 /* FiskalyExampleAppApp.swift */; };
 		E9A6A6762680E5AB00B3AE55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6A6752680E5AB00B3AE55 /* ContentView.swift */; };
 		E9A6A6782680E5AC00B3AE55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9A6A6772680E5AC00B3AE55 /* Assets.xcassets */; };
@@ -63,6 +65,8 @@
 		E92FF5572698406700C1CBA8 /* Fiskalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fiskalyzer.swift; sourceTree = "<group>"; };
 		E92FF55926989D1B00C1CBA8 /* CallAndResponseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallAndResponseView.swift; sourceTree = "<group>"; };
 		E92FF55B269C4A4000C1CBA8 /* AuthenticateAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateAdminView.swift; sourceTree = "<group>"; };
+		E92FF564269D932100C1CBA8 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		E92FF566269DAAC200C1CBA8 /* ShowLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLogView.swift; sourceTree = "<group>"; };
 		E9A6831326834FCC000605EF /* FiskalySDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = FiskalySDK.xcframework; sourceTree = "<group>"; };
 		E9A6A6702680E5AB00B3AE55 /* FiskalyExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiskalyExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9A6A6732680E5AB00B3AE55 /* FiskalyExampleAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiskalyExampleAppApp.swift; sourceTree = "<group>"; };
@@ -142,6 +146,8 @@
 				E92FF55B269C4A4000C1CBA8 /* AuthenticateAdminView.swift */,
 				E92FF55926989D1B00C1CBA8 /* CallAndResponseView.swift */,
 				E9E65D8F2684935F00181AE4 /* UUIDView.swift */,
+				E92FF566269DAAC200C1CBA8 /* ShowLogView.swift */,
+				E92FF564269D932100C1CBA8 /* LogView.swift */,
 				E9E65D8D2684839900181AE4 /* ResponseView.swift */,
 				E9A6A6772680E5AC00B3AE55 /* Assets.xcassets */,
 				E9A6A67C2680E5AC00B3AE55 /* Info.plist */,
@@ -317,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E92FF567269DAAC200C1CBA8 /* ShowLogView.swift in Sources */,
 				E9E65D8E2684839900181AE4 /* ResponseView.swift in Sources */,
 				E9E65D902684935F00181AE4 /* UUIDView.swift in Sources */,
 				E9E65D942684BA5300181AE4 /* V2View.swift in Sources */,
@@ -324,6 +331,7 @@
 				E9E65D8C26847B4500181AE4 /* String+base64.swift in Sources */,
 				E92FF55C269C4A4000C1CBA8 /* AuthenticateAdminView.swift in Sources */,
 				E9A6A6762680E5AB00B3AE55 /* ContentView.swift in Sources */,
+				E92FF565269D932100C1CBA8 /* LogView.swift in Sources */,
 				E92FF55626983FEB00C1CBA8 /* FiskalyzerV2.swift in Sources */,
 				E92FF55A26989D1B00C1CBA8 /* CallAndResponseView.swift in Sources */,
 				E92FF5582698406700C1CBA8 /* Fiskalyzer.swift in Sources */,

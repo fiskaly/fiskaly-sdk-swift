@@ -39,11 +39,13 @@ class Fiskalyzer : ObservableObject {
                 apiKey: apiKey,
                 apiSecret: apiSecret
             )
+            setUpLogging()
         } else {
             self.error = "No API key or secret supplied. Set \(apiKeyVariableName) and \(apiSecretVariableName) in the environment variables."
         }
     }
     
+
     func createHttpClient(apiKey:String, apiSecret:String) throws -> FiskalyHttpClient {
         fatalError("createClient needs to be overridden in the subclass")
     }
@@ -102,5 +104,43 @@ class Fiskalyzer : ObservableObject {
         }
     }
     
+    // MARK: Logging
+    
+    private var logPath:String?
+    var log:String {
+        get {
+            do {
+                if let logPath = logPath, FileManager.default.fileExists(atPath: logPath) {
+                    return try String(contentsOfFile: logPath)
+                } else {
+                    return ""
+                }
+            } catch {
+                return "Could not load log: \(error.localizedDescription)"
+            }
+        }
+    }
+    
+    func clearLog() {
+        if let logPath=logPath, FileManager.default.fileExists(atPath: logPath) {
+            try? FileManager.default.removeItem(atPath: logPath)
+            objectWillChange.send()
+        }
+    }
+    
+    private func setUpLogging() {
+        logPath = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("fiskaly-example-app").appendingPathExtension("log").path
+        do {
+        let _ = try client?.config(
+            debugLevel: 3,
+            debugFile: logPath,
+            clientTimeout: 1500,
+            smaersTimeout: 1500,
+            httpProxy: "")
+        } catch {
+            print("Error setting up logging at \(logPath ?? ""): \(error.localizedDescription)")
+        }
+        print("Client log is at \(logPath ?? "")")
+    }
     
 }
