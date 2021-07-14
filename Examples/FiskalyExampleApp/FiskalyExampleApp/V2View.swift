@@ -16,7 +16,6 @@ struct V2View: View {
         fiskalyzer.error.map { Text($0).foregroundColor(.red) }
         ScrollView {
             VStack {
-                ShowLogView(fiskalyzer: fiskalyzer)
                 CallAndResponseView(name: "Create TSS", response: $fiskalyzer.createTSSResponse) {
                     fiskalyzer.createTSS()
                 } content: {
@@ -37,6 +36,11 @@ struct V2View: View {
                     
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
                     
+                    CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
+                        fiskalyzer.initializeTSS()
+                    } content: {
+                    }
+
                     CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
                         fiskalyzer.createClient()
                     } content: {
@@ -50,11 +54,6 @@ struct V2View: View {
                     Group {
                         CallAndResponseView(name: "Authenticate Client", response: $fiskalyzer.authenticateClientResponse) {
                             fiskalyzer.authenticateClient()
-                        } content: {
-                        }
-                        
-                        CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
-                            fiskalyzer.initializeTSS()
                         } content: {
                         }
                         
@@ -88,7 +87,9 @@ struct V2View: View {
                 }.disabled(fiskalyzer.tssUUID == nil)
             }
         }.frame(maxWidth: .infinity)
-    }.navigationBarTitle("Fiskaly Sign V2")
+    }.navigationBarTitle("Fiskaly Sign V2").toolbar {
+        ShowLogView(fiskalyzer: fiskalyzer)
+    }
     }
     }
 }

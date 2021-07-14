@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MobileCoreServices
 
 struct LogView: View {
     @ObservedObject var fiskalyzer:Fiskalyzer
@@ -22,11 +23,19 @@ struct LogView: View {
         .navigationBarTitle(Text("Log"), displayMode: .inline)
         .padding([.leading, .trailing], 10)
         .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
             Button(action: {
                 fiskalyzer.clearLog()
             }, label: {
                 Image(systemName:"trash").accessibility(hint: Text("clears the log"))
             })
+            Button(action: {
+                UIPasteboard.general.setValue(fiskalyzer.log,
+                                              forPasteboardType: kUTTypePlainText as String)
+            }, label: {
+                Image(systemName:"doc.on.doc")
+            })
+            }
         }
     }
 }

@@ -15,7 +15,6 @@ struct V1View: View {
         fiskalyzer.error.map { Text($0).foregroundColor(.red) }
         ScrollView {
         VStack {
-            ShowLogView(fiskalyzer: fiskalyzer)
             Button("Get Version") {
                 fiskalyzer.getVersion()
             }
@@ -43,7 +42,9 @@ struct V1View: View {
             }.disabled(fiskalyzer.tssUUID == nil)
         }
         }.frame(maxWidth: .infinity)
-    }.navigationBarTitle("Fiskaly Sign V1")
+        }.navigationBarTitle("Fiskaly Sign V1").toolbar {
+            ShowLogView(fiskalyzer: fiskalyzer)
+        }
     }
     }
 }
