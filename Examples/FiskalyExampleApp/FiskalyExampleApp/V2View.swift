@@ -16,6 +16,13 @@ struct V2View: View {
         fiskalyzer.error.map { Text($0).foregroundColor(.red) }
         ScrollView {
             VStack {
+                NavigationLink(
+                    destination: ListTSSView(fiskalyzer: fiskalyzer)) {
+                    HStack {
+                        Image(systemName: "list.bullet")
+                        Text("List TSS")
+                    }
+                }.padding()
                 CallAndResponseView(name: "Create TSS", response: $fiskalyzer.createTSSResponse) {
                     fiskalyzer.createTSS()
                 } content: {
@@ -46,7 +53,13 @@ struct V2View: View {
                     } content: {
                         UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
                     }
-                    
+                    CallAndResponseView(name: "List Clients", response: $fiskalyzer.listClientsResponse) {
+                        fiskalyzer.listClients()
+                    } content: {
+                        List(fiskalyzer.clientList, id:\._id) { client in
+                            Text("\(client._id)").font(.body.smallCaps()).padding()
+                        }
+                    }
                     CallAndResponseView(name: "Logout Admin", response: $fiskalyzer.logoutAdminResponse) {
                         fiskalyzer.logoutAdmin()
                     } content: {

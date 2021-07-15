@@ -22,6 +22,10 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var authenticateClientResponse:RequestResponse?
     @Published var authenticateAdminResponse:RequestResponse?
     @Published var disableTSSResponse:RequestResponse?
+    @Published var TSSList:[TSS] = []
+    @Published var listTSSResponse:RequestResponse?
+    @Published var clientList:[Client] = []
+    @Published var listClientsResponse:RequestResponse?
 
     override func createHttpClient(apiKey: String, apiSecret: String) throws -> FiskalyHttpClient {
         return try FiskalyHttpClient(
@@ -42,6 +46,9 @@ class FiskalyzerV2 : Fiskalyzer {
             method: "PUT",
             path: "tss/\(newTssUUID)") {
             createTSSResponse = RequestResponse(responseCreateTSS)
+            guard responseCreateTSS.status == 200 else {
+                return
+            }
             guard let responseBodyData = Data(base64Encoded: responseCreateTSS.body) else {
                 error = "Create TSS response body is not valid base64"
                 return
@@ -188,14 +195,18 @@ class FiskalyzerV2 : Fiskalyzer {
         }
     }
     
+    fileprivate func authenticateClient(_ tssUUID: String, _ clientUUID: String) {
+        if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/client/\(clientUUID)/auth") {
+            authenticateClientResponse = RequestResponse(response)
+        }
+    }
+    
     func authenticateClient() {
         guard let clientUUID=clientUUID, let tssUUID=tssUUID else {
             error = "Can't authenticate client before creating TSS and client"
             return
         }
-        if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/client/\(clientUUID)/auth") {
-            authenticateClientResponse = RequestResponse(response)
-        }
+        authenticateClient(tssUUID, clientUUID)
     }
     
     func authenticateAdmin() {
@@ -211,19 +222,73 @@ class FiskalyzerV2 : Fiskalyzer {
     
     func disableTSS() {
         if let tssUUID = tssUUID {
-            disableTSSResponse = setTSSState(tssUUID, state: "DISABLED")
+            disableTSS(id: tssUUID)
             self.tssUUID = nil
             adminStatus = "No TSS"
         }
     }
     
+    func disableTSS(id:String) {
+        disableTSSResponse = setTSSState(id, state: "DISABLED")
+    }
+    
+    //runs 'List TSS', puts the raw response in listTSSResponse and puts the TSS UUIDs and states in TSSList
+    func listTSS() {
+        if let response = clientRequest(method: "GET", path: "tss") {
+            listTSSResponse = RequestResponse(response)
+            if response.status == 200 {
+                if let data = Data(base64Encoded:response.body) {
+                    do {
+                        TSSList = try JSONDecoder().decode(ListOfTSS.self, from: data).data
+                    } catch {
+                        self.error = "Could not decode list of TSS: \(error.localizedDescription)"
+                    }
+                }
+            }
+        }
+    }
+    
+    func listClients() {
+        guard let tssUUID = tssUUID else {
+            error = "Can't list clients without a TSS"
+            return
+        }
+        listClients(of: tssUUID)
+    }
+    
+    func listClients(of tss:String) {
+        if let response = clientRequest(method: "GET", path: "tss/\(tss)/client") {
+            listClientsResponse = RequestResponse(response)
+            if let data = Data(base64Encoded:response.body) {
+                do {
+                    clientList = try JSONDecoder().decode(ListOfClients.self, from: data).data
+                } catch {
+                    self.error = "Could not decode list of Clients: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+    
+    //while the other disableTSS just runs the Disable TSS command on the TSS you're currently working with (which requires you to have run Authenticate Client first)
+    //this version runs all the necessary steps to disable an arbitrary TSS. It runs all the necessary steps before disabling it, so it can be  It's useful when you forget to disable a TSS after using it and run up against the 'Limit of active TSS reached' error.
+    func disableTSS(_ tss:TSS) {
+        //todo: move the TSS to state Initialized if possible, if it isn't already
+        listClients(of: tss._id)
+        if let clientID = clientList.first?._id {
+            authenticateClient(tss._id, clientID)
+            if (authenticateClientResponse?.status == 200) {
+                disableTSS(id: tss._id)
+            }
+        }
+    }
+    
     func setTSSState(_ tssUUID:String,state:String) -> RequestResponse? {
-        let disableTSSBody = [
+        let setTSSStateBody = [
             "state" : state
         ]
         if let response = clientRequest(method: "PATCH",
                                                     path: "tss/\(tssUUID)",
-                                                    body: disableTSSBody
+                                                    body: setTSSStateBody
         ) {
             tssState = state
             return RequestResponse(response)
