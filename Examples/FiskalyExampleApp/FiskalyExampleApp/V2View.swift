@@ -34,7 +34,6 @@ struct V2View: View {
                     Group {
                         CallAndResponseView(name: "Personalize TSS", response: $fiskalyzer.personalizeTSSResponse) {
                             fiskalyzer.personalizeTSS()
-                        } content: {
                         }
                         CallAndResponseView(name: "Change Admin PIN", response: $fiskalyzer.changeAdminPINResponse) {
                             fiskalyzer.changeAdminPIN()
@@ -46,17 +45,14 @@ struct V2View: View {
                         
                         CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
                             fiskalyzer.initializeTSS()
-                        } content: {
                         }
                         
                         CallAndResponseView(name: "Retrieve TSS", response: $fiskalyzer.retrieveTSSResponse) {
                             fiskalyzer.retrieveTSS()
-                        } content: {
                         }
                         
                         CallAndResponseView(name: "Retrieve TSS Metadata", response: $fiskalyzer.retrieveTSSMetadataResponse) {
                             fiskalyzer.retrieveTSSMetadata()
-                        } content: {
                         }
 
                         CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
@@ -68,7 +64,6 @@ struct V2View: View {
                     Group {
                         CallAndResponseView(name: "Update Client", response: $fiskalyzer.updateClientResponse) {
                             fiskalyzer.updateClient()
-                        } content: {
                         }
                         
                         AuthenticateClientView(fiskalyzer: fiskalyzer)
@@ -83,18 +78,15 @@ struct V2View: View {
                         
                         CallAndResponseView(name: "Deregister Client 2", response: $fiskalyzer.deregisterClient2Response) {
                             fiskalyzer.deregisterClient2()
-                        } content: {
                         }
                         
                         CallAndResponseView(name: "Register Client 2 Again", response: $fiskalyzer.registerClient2AgainResponse) {
                             fiskalyzer.registerClient2Again()
-                        } content: {
                         }
                     }.disabled(fiskalyzer.clientUUID == nil)
 
                     CallAndResponseView(name: "Logout Admin", response: $fiskalyzer.logoutAdminResponse) {
                         fiskalyzer.logoutAdmin()
-                    } content: {
                     }
                     
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
@@ -110,7 +102,6 @@ struct V2View: View {
                     Group {
                         CallAndResponseView(name: "Retrieve Client", response: $fiskalyzer.retrieveClientResponse) {
                             fiskalyzer.retrieveClient()
-                        } content: {
                         }
                         AuthenticateClientView(fiskalyzer: fiskalyzer)
                         
@@ -124,39 +115,32 @@ struct V2View: View {
                         Group {
                             CallAndResponseView(name: "Update Transaction", response: $fiskalyzer.updateTransactionResponse) {
                                 fiskalyzer.updateTransaction()
-                            } content: {
                             }
                             
                             CallAndResponseView(name: "Finish Transaction", response: $fiskalyzer.finishTransactionResponse) {
                                 fiskalyzer.finishTransaction()
-                            } content: {
                             }
                             CallAndResponseView(name: "Retrieve Transaction", response: $fiskalyzer.retrieveTransactionResponse) {
                                 fiskalyzer.retrieveTransaction()
-                            } content: {
                             }
                             
                             CallAndResponseView(name: "Retrieve Signed Log of Transaction", response: $fiskalyzer.retrieveSignedLogOfTransactionResponse) {
                                 fiskalyzer.retrieveSignedLogOfTransaction()
-                            } content: {
                             }
                             
                         }.disabled(fiskalyzer.transactionUUID == nil)
                         CallAndResponseView(name: "List Transactions of Client", response: $fiskalyzer.listTransactionsOfClientResponse) {
                             fiskalyzer.listTransactionsOfClient()
-                        } content: {
                         }
                     }.disabled(fiskalyzer.clientUUID == nil)
                     CallAndResponseView(name: "List Transactions of TSS", response: $fiskalyzer.listTransactionsOfTSSResponse) {
                         fiskalyzer.listTransactionsOfTSS()
-                    } content: {
                     }
                     
                 }.disabled(fiskalyzer.tssUUID == nil)
                 
                 CallAndResponseView(name: "List All Transactions", response: $fiskalyzer.listAllTransactionsResponse) {
                     fiskalyzer.listAllTransactions()
-                } content: {
                 }
                     //todo: Trigger Export
                     //todo: Retrieve Export
@@ -170,7 +154,6 @@ struct V2View: View {
                     
                     CallAndResponseView(name: "Disable TSS", response: $fiskalyzer.disableTSSResponse) {
                         fiskalyzer.disableTSS()
-                    } content: {
                     }
                 }.disabled(fiskalyzer.tssUUID == nil)
             }

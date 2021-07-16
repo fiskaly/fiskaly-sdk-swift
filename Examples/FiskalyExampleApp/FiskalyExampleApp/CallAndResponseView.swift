@@ -17,7 +17,7 @@ struct CallAndResponseView<Content>: View where Content : View {
     @Binding var response:RequestResponse?
     @State var expanded:Bool = false
     let action: () -> Void
-    @ViewBuilder var content: () -> Content
+    let content: () -> Content?
     @Environment(\.isEnabled) var isEnabled
     private var status:ActionStatus {
         get {
@@ -53,6 +53,12 @@ struct CallAndResponseView<Content>: View where Content : View {
             return .orange
         }
     }
+    init(name:String, response: Binding<RequestResponse?>, action:@escaping ()->(),@ViewBuilder content: @escaping () -> Content) {
+        self.name = name
+        self._response = response
+        self.action = action
+        self.content = content
+    }
     
     var body: some View {
         
@@ -75,5 +81,11 @@ struct CallAndResponseView<Content>: View where Content : View {
             RoundedRectangle(cornerRadius: 25.0).stroke(color(for: status), style: StrokeStyle(lineWidth: 3))
         )
         .padding([.bottom,.leading,.trailing])
+    }
+}
+
+extension CallAndResponseView where Content == EmptyView {
+    init(name:String, response: Binding<RequestResponse?>, action:@escaping ()->()) {
+        self.init(name: name, response: response, action: action, content: { EmptyView() })
     }
 }
