@@ -13,7 +13,7 @@ struct AuthenticateAdminView : View {
         CallAndResponseView(name: "Authenticate Admin", response: $fiskalyzer.authenticateAdminResponse) {
             fiskalyzer.authenticateAdmin()
         } content: {
-            Text("Admin status: \(fiskalyzer.adminStatus)")
-        }
+            Text("Admin status: \(fiskalyzer.adminStatus.rawValue)")
+        }.disabled(fiskalyzer.adminStatus == .noPIN || fiskalyzer.adminStatus == .noTSS) //it's fine to authenticate admin again if we're already logged in
     }
 }

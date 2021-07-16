@@ -31,28 +31,74 @@ struct V2View: View {
                     Text("TSS State: \(fiskalyzer.tssState ?? "none")")
                 }
                 Group {
-                    CallAndResponseView(name: "Personalize TSS", response: $fiskalyzer.personalizeTSSResponse) {
-                        fiskalyzer.personalizeTSS()
-                    } content: {
+                    Group {
+                        CallAndResponseView(name: "Personalize TSS", response: $fiskalyzer.personalizeTSSResponse) {
+                            fiskalyzer.personalizeTSS()
+                        } content: {
+                        }
+                        CallAndResponseView(name: "Change Admin PIN", response: $fiskalyzer.changeAdminPINResponse) {
+                            fiskalyzer.changeAdminPIN()
+                        } content: {
+                            Text("Admin PIN: \(fiskalyzer.adminPIN ?? "not set")")
+                        }
+                        
+                        AuthenticateAdminView(fiskalyzer: fiskalyzer)
+                        
+                        CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
+                            fiskalyzer.initializeTSS()
+                        } content: {
+                        }
+                        
+                        CallAndResponseView(name: "Retrieve TSS", response: $fiskalyzer.retrieveTSSResponse) {
+                            fiskalyzer.retrieveTSS()
+                        } content: {
+                        }
+                        
+                        CallAndResponseView(name: "Retrieve TSS Metadata", response: $fiskalyzer.retrieveTSSMetadataResponse) {
+                            fiskalyzer.retrieveTSSMetadata()
+                        } content: {
+                        }
+
+                        CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
+                            fiskalyzer.createClient()
+                        } content: {
+                            UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
+                        }
                     }
-                    CallAndResponseView(name: "Change Admin PIN", response: $fiskalyzer.changeAdminPINResponse) {
-                        fiskalyzer.changeAdminPIN()
+                    Group {
+                        CallAndResponseView(name: "Update Client", response: $fiskalyzer.updateClientResponse) {
+                            fiskalyzer.updateClient()
+                        } content: {
+                        }
+                        
+                        AuthenticateClientView(fiskalyzer: fiskalyzer)
+                        
+                        AuthenticateAdminView(fiskalyzer: fiskalyzer)
+                        
+                        CallAndResponseView(name: "Register Client 2", response: $fiskalyzer.registerClient2Response) {
+                            fiskalyzer.registerClient2()
+                        } content: {
+                        }
+                        
+                        CallAndResponseView(name: "Deregister Client 2", response: $fiskalyzer.deregisterClient2Response) {
+                            fiskalyzer.deregisterClient2()
+                        } content: {
+                        }
+                        
+                        CallAndResponseView(name: "Register Client 2 again", response: $fiskalyzer.registerClient2Response) {
+                            fiskalyzer.registerClient2()
+                        } content: {
+                        }
+                    }.disabled(fiskalyzer.clientUUID == nil)
+
+                    CallAndResponseView(name: "Logout Admin", response: $fiskalyzer.logoutAdminResponse) {
+                        fiskalyzer.logoutAdmin()
                     } content: {
-                        Text("Admin PIN: \(fiskalyzer.adminPIN ?? "not set")")
                     }
                     
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
                     
-                    CallAndResponseView(name: "Initialize TSS", response: $fiskalyzer.initializeTSSResponse) {
-                        fiskalyzer.initializeTSS()
-                    } content: {
-                    }
-
-                    CallAndResponseView(name: "Create Client", response: $fiskalyzer.createClientResponse) {
-                        fiskalyzer.createClient()
-                    } content: {
-                        UUIDView(uuid: $fiskalyzer.clientUUID, name: "Client")
-                    }
+                    
                     CallAndResponseView(name: "List Clients", response: $fiskalyzer.listClientsResponse) {
                         fiskalyzer.listClients()
                     } content: {
@@ -60,15 +106,12 @@ struct V2View: View {
                             Text("\(client._id)").font(.body.smallCaps()).padding()
                         }
                     }
-                    CallAndResponseView(name: "Logout Admin", response: $fiskalyzer.logoutAdminResponse) {
-                        fiskalyzer.logoutAdmin()
-                    } content: {
-                    }
                     Group {
-                        CallAndResponseView(name: "Authenticate Client", response: $fiskalyzer.authenticateClientResponse) {
-                            fiskalyzer.authenticateClient()
+                        CallAndResponseView(name: "Retrieve Client", response: $fiskalyzer.retrieveClientResponse) {
+                            fiskalyzer.retrieveClient()
                         } content: {
                         }
+                        AuthenticateClientView(fiskalyzer: fiskalyzer)
                         
                         CallAndResponseView(name: "Create Transaction", response: $fiskalyzer.createTransactionResponse) {
                             fiskalyzer.createTransaction()
@@ -87,9 +130,33 @@ struct V2View: View {
                                 fiskalyzer.finishTransaction()
                             } content: {
                             }
+                            CallAndResponseView(name: "Retrieve Transaction", response: $fiskalyzer.retrieveTransactionResponse) {
+                                fiskalyzer.retrieveTransaction()
+                            } content: {
+                            }
+                            
+                            CallAndResponseView(name: "Retrieve Signed Log of Transaction", response: $fiskalyzer.retrieveSignedLogOfTransactionResponse) {
+                                fiskalyzer.retrieveSignedLogOfTransaction()
+                            } content: {
+                            }
+                            
                         }.disabled(fiskalyzer.transactionUUID == nil)
+                        CallAndResponseView(name: "List of Transactions of Client", response: $fiskalyzer.listOfTransactionsOfClientResponse) {
+                            fiskalyzer.listTransactionsOfClient()
+                        } content: {
+                        }
                     }.disabled(fiskalyzer.clientUUID == nil)
-                    
+                    CallAndResponseView(name: "List all Transactions", response: $fiskalyzer.listAllTransactionsResponse) {
+                        fiskalyzer.listAllTransactions()
+                    } content: {
+                    }
+                    //todo: Trigger Export
+                    //todo: Retrieve Export
+                    //todo: List All Exports
+                    //todo: List All Exports of a TSS
+                    //todo: Retrieve Export File
+                    //todo: Retrieve Metadata of an Export
+                    //todo: Update Metadata of an Export
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
                     
                     CallAndResponseView(name: "Disable TSS", response: $fiskalyzer.disableTSSResponse) {

@@ -8,11 +8,18 @@
 import Foundation
 import FiskalySDK
 
+enum AdminStatus : String {
+    case noTSS = "No TSS"
+    case noPIN = "No PIN set"
+    case loggedOut = "Logged out"
+    case loggedIn = "Logged in"
+}
+
 class FiskalyzerV2 : Fiskalyzer {
     @Published var adminPUK:String?
     @Published var tssState:String?
     @Published var adminPIN:String?
-    @Published var adminStatus:String = "No TSS"
+    @Published var adminStatus:AdminStatus = .noTSS
     @Published var transactionRevision:Int = 0
     @Published var changeAdminPINResponse:RequestResponse?
     @Published var personalizeTSSResponse:RequestResponse?
@@ -22,6 +29,16 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var authenticateClientResponse:RequestResponse?
     @Published var authenticateAdminResponse:RequestResponse?
     @Published var disableTSSResponse:RequestResponse?
+    @Published var retrieveTSSResponse:RequestResponse?
+    @Published var retrieveTSSMetadataResponse:RequestResponse?
+    @Published var updateClientResponse:RequestResponse?
+    @Published var registerClient2Response:RequestResponse?
+    @Published var deregisterClient2Response:RequestResponse?
+    @Published var retrieveClientResponse:RequestResponse?
+    @Published var retrieveTransactionResponse:RequestResponse?
+    @Published var retrieveSignedLogOfTransactionResponse:RequestResponse?
+    @Published var listOfTransactionsOfClientResponse:RequestResponse?
+    @Published var listAllTransactionsResponse:RequestResponse?
     @Published var TSSList:[TSS] = []
     @Published var listTSSResponse:RequestResponse?
     @Published var clientList:[Client] = []
@@ -56,7 +73,7 @@ class FiskalyzerV2 : Fiskalyzer {
             do {
                 let responseBody = try JSONSerialization.jsonObject(with: responseBodyData, options: []) as? [String: Any]
                 adminPUK = responseBody?["admin_puk"] as? String
-                adminStatus = "No PIN set"
+                adminStatus = .noPIN
                 tssState = "CREATED"
                 //now we don't care about the response for disabling the last TSS; it would just be confusing when we get to that step again with this TSS.
                 disableTSSResponse = nil
@@ -88,7 +105,7 @@ class FiskalyzerV2 : Fiskalyzer {
             ]
             if let response = clientRequest(method: "PATCH", path: "tss/\(tssUUID)/admin", body: changeAdminPinBody) {
                 changeAdminPINResponse = RequestResponse(response)
-                adminStatus = "Logged out"
+                adminStatus = .loggedOut
             }
         }
     }
@@ -97,7 +114,7 @@ class FiskalyzerV2 : Fiskalyzer {
         if let tssUUID = tssUUID {
             if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/logout", body: nil) {
                 logoutAdminResponse = RequestResponse(response)
-                adminStatus = "Logged out"
+                adminStatus = .loggedOut
                 authenticateAdminResponse = nil //this is just so that when we get to the second 'authenticate admin' step, it won't look like it's already been done.
             }
         }
@@ -218,7 +235,7 @@ class FiskalyzerV2 : Fiskalyzer {
             return
         }
         if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/auth", body: ["admin_pin":adminPIN]) {
-            adminStatus = "Logged in"
+            adminStatus = .loggedIn
             authenticateAdminResponse = RequestResponse(response)
         }
     }
@@ -227,7 +244,7 @@ class FiskalyzerV2 : Fiskalyzer {
         if let tssUUID = tssUUID {
             disableTSS(id: tssUUID)
             self.tssUUID = nil
-            adminStatus = "No TSS"
+            adminStatus = .noTSS
             //remove the responses for the other steps so that it's clearer where we're up to if we go through the process again
             reset()
         }
@@ -242,6 +259,16 @@ class FiskalyzerV2 : Fiskalyzer {
         authenticateClientResponse = nil
         authenticateAdminResponse = nil
         listClientsResponse = nil
+        retrieveTSSResponse = nil
+        retrieveTSSMetadataResponse = nil
+        updateClientResponse = nil
+        registerClient2Response = nil
+        deregisterClient2Response = nil
+        retrieveClientResponse = nil
+        retrieveTransactionResponse = nil
+        retrieveSignedLogOfTransactionResponse = nil
+        listOfTransactionsOfClientResponse = nil
+        listAllTransactionsResponse = nil
         adminPUK = nil
         adminPIN = nil
         tssState = nil
@@ -274,6 +301,46 @@ class FiskalyzerV2 : Fiskalyzer {
             return
         }
         listClients(of: tssUUID)
+    }
+    
+    func retrieveTSS() {
+        //todo
+    }
+    
+    func retrieveTSSMetadata() {
+        //todo
+    }
+    
+    func updateClient() {
+        //todo
+    }
+    
+    func registerClient2() {
+        //todo
+    }
+    
+    func deregisterClient2() {
+        //todo
+    }
+    
+    func retrieveClient() {
+        //todo
+    }
+    
+    func retrieveTransaction() {
+        //todo
+    }
+    
+    func retrieveSignedLogOfTransaction() {
+        //todo
+    }
+    
+    func listTransactionsOfClient() {
+        //todo
+    }
+    
+    func listAllTransactions() {
+        //todo
     }
     
     func listClients(of tss:String) {
