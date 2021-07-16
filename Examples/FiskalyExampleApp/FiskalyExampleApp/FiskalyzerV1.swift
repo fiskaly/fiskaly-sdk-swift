@@ -40,7 +40,7 @@ class FiskalyzerV1 : Fiskalyzer {
         ]
 
         if let responseCreateTSS = clientRequest(
-            method: "PUT",
+            method: .put,
             path: "tss/\(newTssUUID)",
             body: tssBody) {
             createTSSResponse = RequestResponse(responseCreateTSS)
@@ -61,7 +61,7 @@ class FiskalyzerV1 : Fiskalyzer {
         ]
 
         if let responseCreateTransaction = clientRequest(
-            method: "PUT",
+            method: .put,
             path: "tss/\(tssID)/tx/\(newTransactionUUID)",
             body: transactionBody) {
             createTransactionResponse = RequestResponse(responseCreateTransaction)
@@ -92,7 +92,7 @@ class FiskalyzerV1 : Fiskalyzer {
         ]
 
         if let responseFinishTransaction = clientRequest(
-            method: "PUT",
+            method: .put,
             path: "tss/\(tssID)/tx/\(transactionID)",
             query: ["last_revision": "1"],
             body: transactionFinishBody) {

@@ -78,6 +78,7 @@ struct V2View: View {
                         CallAndResponseView(name: "Register Client 2", response: $fiskalyzer.registerClient2Response) {
                             fiskalyzer.registerClient2()
                         } content: {
+                            UUIDView(uuid: $fiskalyzer.clientUUID2, name: "Client 2")
                         }
                         
                         CallAndResponseView(name: "Deregister Client 2", response: $fiskalyzer.deregisterClient2Response) {
@@ -85,8 +86,8 @@ struct V2View: View {
                         } content: {
                         }
                         
-                        CallAndResponseView(name: "Register Client 2 again", response: $fiskalyzer.registerClient2Response) {
-                            fiskalyzer.registerClient2()
+                        CallAndResponseView(name: "Register Client 2 Again", response: $fiskalyzer.registerClient2AgainResponse) {
+                            fiskalyzer.registerClient2Again()
                         } content: {
                         }
                     }.disabled(fiskalyzer.clientUUID == nil)
@@ -141,15 +142,22 @@ struct V2View: View {
                             }
                             
                         }.disabled(fiskalyzer.transactionUUID == nil)
-                        CallAndResponseView(name: "List of Transactions of Client", response: $fiskalyzer.listOfTransactionsOfClientResponse) {
+                        CallAndResponseView(name: "List Transactions of Client", response: $fiskalyzer.listTransactionsOfClientResponse) {
                             fiskalyzer.listTransactionsOfClient()
                         } content: {
                         }
                     }.disabled(fiskalyzer.clientUUID == nil)
-                    CallAndResponseView(name: "List all Transactions", response: $fiskalyzer.listAllTransactionsResponse) {
-                        fiskalyzer.listAllTransactions()
+                    CallAndResponseView(name: "List Transactions of TSS", response: $fiskalyzer.listTransactionsOfTSSResponse) {
+                        fiskalyzer.listTransactionsOfTSS()
                     } content: {
                     }
+                    
+                }.disabled(fiskalyzer.tssUUID == nil)
+                
+                CallAndResponseView(name: "List All Transactions", response: $fiskalyzer.listAllTransactionsResponse) {
+                    fiskalyzer.listAllTransactions()
+                } content: {
+                }
                     //todo: Trigger Export
                     //todo: Retrieve Export
                     //todo: List All Exports
@@ -157,13 +165,13 @@ struct V2View: View {
                     //todo: Retrieve Export File
                     //todo: Retrieve Metadata of an Export
                     //todo: Update Metadata of an Export
+                Group {
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
                     
                     CallAndResponseView(name: "Disable TSS", response: $fiskalyzer.disableTSSResponse) {
                         fiskalyzer.disableTSS()
                     } content: {
                     }
-                    
                 }.disabled(fiskalyzer.tssUUID == nil)
             }
         }.frame(maxWidth: .infinity)

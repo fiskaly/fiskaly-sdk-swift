@@ -17,6 +17,13 @@ struct RequestResponse {
     }
 }
 
+enum RequestMethod : String {
+    case get = "GET"
+    case put = "PUT"
+    case patch = "PATCH"
+    case post = "POST"
+}
+
 class Fiskalyzer : ObservableObject {
     var client:FiskalyHttpClient?
     @Published var version:String?
@@ -24,6 +31,7 @@ class Fiskalyzer : ObservableObject {
     @Published var tssUUID:String?
     @Published var createTSSResponse:RequestResponse?
     @Published var clientUUID:String?
+    @Published var clientUUID2:String?
     @Published var createClientResponse:RequestResponse?
     @Published var transactionUUID:String?
     @Published var createTransactionResponse:RequestResponse?
@@ -62,12 +70,12 @@ class Fiskalyzer : ObservableObject {
         }
     }
     
-    func clientRequest(method: String, path: String, query: [String : Any]? = nil, body: Any? = nil) -> FiskalySDK.HttpResponse? {
+    func clientRequest(method: RequestMethod, path: String, query: [String : Any]? = nil, body: Any? = nil) -> FiskalySDK.HttpResponse? {
         do {
             let bodyData = try JSONSerialization.data(withJSONObject: body ?? Dictionary<String, Any>())
             let bodyString = bodyData.base64EncodedString()
             if let response = try client?.request(
-                method: method,
+                method: method.rawValue,
                 path: path,
                 query: query,
                 body: bodyString) {
@@ -98,7 +106,7 @@ class Fiskalyzer : ObservableObject {
         ]
 
         if let responseCreateClient = clientRequest(
-            method: "PUT",
+            method: .put,
             path: "tss/\(tssID)/client/\(newClientUUID)",
             body: clientBody) {
             createClientResponse = RequestResponse(responseCreateClient)

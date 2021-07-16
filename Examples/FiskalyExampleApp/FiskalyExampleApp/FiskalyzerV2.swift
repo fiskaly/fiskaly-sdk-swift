@@ -34,10 +34,12 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var updateClientResponse:RequestResponse?
     @Published var registerClient2Response:RequestResponse?
     @Published var deregisterClient2Response:RequestResponse?
+    @Published var registerClient2AgainResponse:RequestResponse?
     @Published var retrieveClientResponse:RequestResponse?
     @Published var retrieveTransactionResponse:RequestResponse?
     @Published var retrieveSignedLogOfTransactionResponse:RequestResponse?
-    @Published var listOfTransactionsOfClientResponse:RequestResponse?
+    @Published var listTransactionsOfClientResponse:RequestResponse?
+    @Published var listTransactionsOfTSSResponse:RequestResponse?
     @Published var listAllTransactionsResponse:RequestResponse?
     @Published var TSSList:[TSS] = []
     @Published var listTSSResponse:RequestResponse?
@@ -60,7 +62,7 @@ class FiskalyzerV2 : Fiskalyzer {
         self.tssUUID = newTssUUID
 
         if let responseCreateTSS = clientRequest(
-            method: "PUT",
+            method: .put,
             path: "tss/\(newTssUUID)") {
             createTSSResponse = RequestResponse(responseCreateTSS)
             guard responseCreateTSS.status == 200 else {
@@ -103,7 +105,7 @@ class FiskalyzerV2 : Fiskalyzer {
                 "admin_puk": adminPUK,
                 "new_admin_pin": adminPIN
             ]
-            if let response = clientRequest(method: "PATCH", path: "tss/\(tssUUID)/admin", body: changeAdminPinBody) {
+            if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/admin", body: changeAdminPinBody) {
                 changeAdminPINResponse = RequestResponse(response)
                 adminStatus = .loggedOut
             }
@@ -112,7 +114,7 @@ class FiskalyzerV2 : Fiskalyzer {
     
     func logoutAdmin() {
         if let tssUUID = tssUUID {
-            if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/logout", body: nil) {
+            if let response = clientRequest(method: .post, path: "tss/\(tssUUID)/admin/logout", body: nil) {
                 logoutAdminResponse = RequestResponse(response)
                 adminStatus = .loggedOut
                 authenticateAdminResponse = nil //this is just so that when we get to the second 'authenticate admin' step, it won't look like it's already been done.
@@ -124,7 +126,7 @@ class FiskalyzerV2 : Fiskalyzer {
     fileprivate func transactionRequest(_ tssUUID: String, _ transactionUUID: String, _ updateTransactionBody: [String : Any]) -> HttpResponse? {
         transactionRevision += 1
         return clientRequest(
-            method: "PUT",
+            method: .put,
             path: "tss/\(tssUUID)/tx/\(transactionUUID)",
             query: ["tx_revision": transactionRevision],
             body: updateTransactionBody)
@@ -216,7 +218,7 @@ class FiskalyzerV2 : Fiskalyzer {
     }
     
     fileprivate func authenticateClient(_ tssUUID: String, _ clientUUID: String) {
-        if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/client/\(clientUUID)/auth") {
+        if let response = clientRequest(method: .post, path: "tss/\(tssUUID)/client/\(clientUUID)/auth") {
             authenticateClientResponse = RequestResponse(response)
         }
     }
@@ -231,10 +233,10 @@ class FiskalyzerV2 : Fiskalyzer {
     
     func authenticateAdmin() {
         guard let tssUUID = tssUUID, let adminPIN = adminPIN else {
-            error = "Can't authenticate as amin before creating TSS and setting Admin PIN"
+            error = "Can't authenticate as admin before creating TSS and setting Admin PIN"
             return
         }
-        if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/auth", body: ["admin_pin":adminPIN]) {
+        if let response = clientRequest(method: .post, path: "tss/\(tssUUID)/admin/auth", body: ["admin_pin":adminPIN]) {
             adminStatus = .loggedIn
             authenticateAdminResponse = RequestResponse(response)
         }
@@ -264,14 +266,19 @@ class FiskalyzerV2 : Fiskalyzer {
         updateClientResponse = nil
         registerClient2Response = nil
         deregisterClient2Response = nil
+        registerClient2AgainResponse = nil
         retrieveClientResponse = nil
         retrieveTransactionResponse = nil
         retrieveSignedLogOfTransactionResponse = nil
-        listOfTransactionsOfClientResponse = nil
+        listTransactionsOfClientResponse = nil
+        listTransactionsOfTSSResponse = nil
         listAllTransactionsResponse = nil
         adminPUK = nil
         adminPIN = nil
         tssState = nil
+        tssUUID = nil
+        clientUUID = nil
+        clientUUID2 = nil
         super.reset()
     }
     
@@ -281,7 +288,7 @@ class FiskalyzerV2 : Fiskalyzer {
     
     //runs 'List TSS', puts the raw response in listTSSResponse and puts the TSS UUIDs and states in TSSList
     func listTSS() {
-        if let response = clientRequest(method: "GET", path: "tss") {
+        if let response = clientRequest(method: .get, path: "tss") {
             listTSSResponse = RequestResponse(response)
             if response.status == 200 {
                 if let data = Data(base64Encoded:response.body) {
@@ -304,47 +311,148 @@ class FiskalyzerV2 : Fiskalyzer {
     }
     
     func retrieveTSS() {
-        //todo
+        guard let tssUUID = tssUUID else {
+            error = "Can't retrieve TSS before creating TSS"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)") {
+            retrieveTSSResponse = RequestResponse(response)
+        }
     }
     
     func retrieveTSSMetadata() {
-        //todo
+        guard let tssUUID = tssUUID else {
+            error = "Can't retrieve TSS metadata before creating TSS"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/metadata") {
+            retrieveTSSMetadataResponse = RequestResponse(response)
+        }
     }
     
     func updateClient() {
-        //todo
+        guard let clientUUID=clientUUID, let tssUUID=tssUUID else {
+            error = "Can't update client before creating TSS and client"
+            return
+        }
+        let body: [String: Any] = [
+            "state": "REGISTERED",
+            "metadata": [
+                "custom_field": "custom_value_2"
+            ]
+        ]
+        if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/client/\(clientUUID)",body: body) {
+            authenticateClientResponse = RequestResponse(response)
+        }
+    }
+    
+    fileprivate func registerClient(_ clientUUID: String, _ tssUUID: String) -> RequestResponse? {
+        let body: [String: Any] = [
+            "serial_number": "ERS \(clientUUID)",
+            "metadata": [
+                "custom_field": "client 2"
+            ]
+        ]
+        if let response = clientRequest(method: .put, path: "tss/\(tssUUID)/client/\(clientUUID)",body: body) {
+             return RequestResponse(response)
+        }
+        return nil
     }
     
     func registerClient2() {
-        //todo
+        guard let tssUUID=tssUUID else {
+            error = "Can't register client 2 before creating TSS"
+            return
+        }
+        let newUUID = UUID().uuidString
+        clientUUID2 = newUUID
+        registerClient2Response = registerClient(newUUID, tssUUID)
     }
     
     func deregisterClient2() {
-        //todo
+        guard let tssUUID = tssUUID, let clientUUID2 = clientUUID2 else {
+            error = "Can't deregister client 2 before creating TSS and registering client 2"
+            return
+        }
+        let body: [String: Any] = [
+            "state":"DEREGISTERED"
+        ]
+        if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/client/\(clientUUID2)",body: body) {
+            deregisterClient2Response = RequestResponse(response)
+        }
+    }
+    
+    func registerClient2Again() {
+        guard let tssUUID=tssUUID, let clientUUID2=clientUUID2 else {
+            error = "Can't register client 2 again before creating TSS and registering client 2 the first time"
+            return
+        }
+        let body: [String: Any] = [
+            "state":"REGISTERED"
+        ]
+        if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/client/\(clientUUID2)",body: body) {
+            registerClient2Response = RequestResponse(response)
+        }
     }
     
     func retrieveClient() {
-        //todo
+        guard let tssUUID = tssUUID, let clientUUID = clientUUID else {
+            error = "Can't retrieve client before creating TSS and client"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/client/\(clientUUID)") {
+            retrieveClientResponse = RequestResponse(response)
+        }
     }
     
     func retrieveTransaction() {
-        //todo
+        guard let tssUUID = tssUUID, let transactionUUID = transactionUUID else {
+            error = "Can't retrieve transaction before creating TSS and transaction"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/tx/\(transactionUUID)") {
+            retrieveTransactionResponse = RequestResponse(response)
+        }
     }
     
     func retrieveSignedLogOfTransaction() {
-        //todo
+        guard let tssUUID = tssUUID, let transactionUUID = transactionUUID else {
+            error = "Can't retrieve signed log of transaction before creating TSS and transaction"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/tx/\(transactionUUID)/log",query: ["tx_revision":transactionRevision]) {
+            retrieveSignedLogOfTransactionResponse = RequestResponse(response)
+        }
     }
     
     func listTransactionsOfClient() {
-        //todo
+        guard let tssUUID = tssUUID, let clientUUID = clientUUID else {
+            error = "Can't list transactions of client before creating TSS and client"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/client/\(clientUUID)/tx") {
+            listTransactionsOfClientResponse = RequestResponse(response)
+        }
+    }
+    
+    func listTransactionsOfTSS() {
+        guard let tssUUID = tssUUID else {
+            error = "Can't list transactions of TSS before creating TSS"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/tx") {
+            listTransactionsOfTSSResponse = RequestResponse(response)
+        }
     }
     
     func listAllTransactions() {
-        //todo
+        if let response = clientRequest(method: .get, path: "tx") {
+            listAllTransactionsResponse = RequestResponse(response)
+        }
     }
     
     func listClients(of tss:String) {
-        if let response = clientRequest(method: "GET", path: "tss/\(tss)/client") {
+        if let response = clientRequest(method: .get, path: "tss/\(tss)/client") {
             listClientsResponse = RequestResponse(response)
             if let data = Data(base64Encoded:response.body) {
                 do {
@@ -373,7 +481,7 @@ class FiskalyzerV2 : Fiskalyzer {
         let setTSSStateBody = [
             "state" : state
         ]
-        if let response = clientRequest(method: "PATCH",
+        if let response = clientRequest(method: .patch,
                                                     path: "tss/\(tssUUID)",
                                                     body: setTSSStateBody
         ) {
