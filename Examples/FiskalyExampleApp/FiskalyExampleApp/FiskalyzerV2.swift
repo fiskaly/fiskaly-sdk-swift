@@ -58,6 +58,8 @@ class FiskalyzerV2 : Fiskalyzer {
                 adminPUK = responseBody?["admin_puk"] as? String
                 adminStatus = "No PIN set"
                 tssState = "CREATED"
+                //now we don't care about the response for disabling the last TSS; it would just be confusing when we get to that step again with this TSS.
+                disableTSSResponse = nil
             } catch {
                 self.error = "Create TSS response body is not valid JSON: \(error.localizedDescription)"
             }
@@ -96,6 +98,7 @@ class FiskalyzerV2 : Fiskalyzer {
             if let response = clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/logout", body: nil) {
                 logoutAdminResponse = RequestResponse(response)
                 adminStatus = "Logged out"
+                authenticateAdminResponse = nil //this is just so that when we get to the second 'authenticate admin' step, it won't look like it's already been done.
             }
         }
     }
@@ -225,7 +228,24 @@ class FiskalyzerV2 : Fiskalyzer {
             disableTSS(id: tssUUID)
             self.tssUUID = nil
             adminStatus = "No TSS"
+            //remove the responses for the other steps so that it's clearer where we're up to if we go through the process again
+            reset()
         }
+    }
+    
+    override func reset() {
+        changeAdminPINResponse = nil
+        personalizeTSSResponse = nil
+        initializeTSSResponse = nil
+        logoutAdminResponse = nil
+        updateTransactionResponse = nil
+        authenticateClientResponse = nil
+        authenticateAdminResponse = nil
+        listClientsResponse = nil
+        adminPUK = nil
+        adminPIN = nil
+        tssState = nil
+        super.reset()
     }
     
     func disableTSS(id:String) {

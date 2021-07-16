@@ -46,25 +46,34 @@ struct CallAndResponseView<Content>: View where Content : View {
         case .unavailable:
             return .secondary
         case .successful:
-            return .green
+            return .green.opacity(self.isEnabled ? 1 : 0.5)
         case .unsuccessful:
-            return .red
+            return .red.opacity(self.isEnabled ? 1 : 0.5)
         case .available:
             return .orange
         }
     }
     
     var body: some View {
-        Button(action: {
-            action()
-            expanded = true
-        }) {
-            HStack(spacing: 10) {
-                Image(systemName: statusIconName(for:status)).accentColor(color(for: status))
-                Text(name)
+        
+        VStack {
+            Button(action: {
+                action()
+                expanded = true
+            }) {
+                HStack(spacing: 10) {
+                    Image(systemName: statusIconName(for:status)).accentColor(color(for: status))
+                    Text(name)
+                }
             }
+            Spacer()
+            content()
+            ResponseView(response: $response, expanded: $expanded, name: name)
         }
-        content()
-        ResponseView(response: $response, expanded: $expanded, name: name)
+        .padding(.top, 10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 25.0).stroke(color(for: status), style: StrokeStyle(lineWidth: 3))
+        )
+        .padding([.bottom,.leading,.trailing])
     }
 }

@@ -144,4 +144,14 @@ class Fiskalyzer : ObservableObject {
         print("Client log is at \(logPath ?? "")")
     }
     
+    func reset() {
+        self.tssUUID = nil
+        createTSSResponse = nil
+        clientUUID = nil
+        createClientResponse = nil
+        transactionUUID = nil
+        createTransactionResponse = nil
+        finishTransactionResponse = nil
+    }
+    
 }

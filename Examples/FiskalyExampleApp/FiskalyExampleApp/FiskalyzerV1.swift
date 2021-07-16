@@ -70,7 +70,7 @@ class FiskalyzerV1 : Fiskalyzer {
 
     func finishTransaction() {
         guard let clientID = clientUUID, let tssID = tssUUID, let transactionID=transactionUUID else {
-            error = "Can't finish transaction before creating client, TSS, and transaction"
+            error = "Can't finish transaction before creating TSS, client, and transaction"
             return
         }
         let transactionFinishBody: [String: Any] = [
