@@ -33,6 +33,7 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var retrieveTSSMetadataResponse:RequestResponse?
     @Published var updateClientResponse:RequestResponse?
     @Published var registerClient2Response:RequestResponse?
+    @Published var clientUUID2:String?
     @Published var deregisterClient2Response:RequestResponse?
     @Published var registerClient2AgainResponse:RequestResponse?
     @Published var retrieveClientResponse:RequestResponse?
@@ -42,6 +43,7 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var listTransactionsOfTSSResponse:RequestResponse?
     @Published var listAllTransactionsResponse:RequestResponse?
     @Published var triggerExportResponse:RequestResponse?
+    @Published var exportUUID:String?
     @Published var retrieveExportResponse:RequestResponse?
     @Published var listAllExportsResponse:RequestResponse?
     @Published var listExportsOfTSSResponse:RequestResponse?
@@ -220,8 +222,6 @@ class FiskalyzerV2 : Fiskalyzer {
         ]
         if let response = transactionRequest(tssUUID, transactionUUID, finishTransactionBody) {
             finishTransactionResponse = RequestResponse(response)
-            //we can't do anything else with this transaction, so we may as well set it to nil so we don't try to
-            self.transactionUUID = nil
         }
     }
     
@@ -357,7 +357,7 @@ class FiskalyzerV2 : Fiskalyzer {
             ]
         ]
         if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/client/\(clientUUID)",body: body) {
-            authenticateClientResponse = RequestResponse(response)
+            updateClientResponse = RequestResponse(response)
         }
     }
     
@@ -406,7 +406,7 @@ class FiskalyzerV2 : Fiskalyzer {
             "state":"REGISTERED"
         ]
         if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/client/\(clientUUID2)",body: body) {
-            registerClient2Response = RequestResponse(response)
+            registerClient2AgainResponse = RequestResponse(response)
         }
     }
     
@@ -467,31 +467,81 @@ class FiskalyzerV2 : Fiskalyzer {
     }
     
     func triggerExport() {
-        //todo
+        guard let tssUUID = tssUUID else {
+            error = "Can't trigger export before creating TSS"
+            return
+        }
+        let newUUID = UUID().uuidString
+        self.exportUUID = newUUID
+        
+        if let response = clientRequest(method: .put, path: "tss/\(tssUUID)/export/\(newUUID)") {
+            triggerExportResponse = RequestResponse(response)
+        }
     }
     
     func retrieveExport() {
-        //todo
+        guard let tssUUID = tssUUID, let exportUUID = exportUUID else {
+            error = "Can't retrieve export before creating TSS and triggering export"
+            return
+        }
+        
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/export/\(exportUUID)") {
+            retrieveExportResponse = RequestResponse(response)
+        }
     }
     
     func listAllExports() {
-        //todo
+        if let response = clientRequest(method: .get, path: "export") {
+            listAllExportsResponse = RequestResponse(response)
+        }
     }
     
     func listExportsOfTSS() {
-        //todo
+        guard let tssUUID = tssUUID else {
+            error = "Can't list exports of TSS before creating TSS"
+            return
+        }
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/export") {
+            listExportsOfTSSResponse = RequestResponse(response)
+        }
     }
     
     func retrieveExportFile() {
-        //todo
+        guard let tssUUID = tssUUID, let exportUUID = exportUUID else {
+            error = "Can't retrieve export file before creating TSS and triggering export"
+            return
+        }
+        
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/export/\(exportUUID)/file") {
+            retrieveExportFileResponse = RequestResponse(response)
+        }
     }
     
     func retrieveExportMetadata() {
-        //todo
+        guard let tssUUID = tssUUID, let exportUUID = exportUUID else {
+            error = "Can't retrieve export metadata before creating TSS and triggering export"
+            return
+        }
+        
+        if let response = clientRequest(method: .get, path: "tss/\(tssUUID)/export/\(exportUUID)/metadata") {
+            retrieveExportMetadataResponse = RequestResponse(response)
+        }
     }
     
     func updateExportMetadata() {
-        //todo
+        guard let tssUUID = tssUUID, let exportUUID = exportUUID else {
+            error = "Can't update export metadata before creating TSS and triggering export"
+            return
+        }
+        
+        let body = [
+            "my_property_1": "1234",
+            "my_property_2": "https://my-internal-system/path/to/resource/1234"
+            ]
+        
+        if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/export/\(exportUUID)/metadata", body: body) {
+            updateExportMetadataResponse = RequestResponse(response)
+        }
     }
     
     func listClients(of tss:String) {

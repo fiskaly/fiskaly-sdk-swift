@@ -31,7 +31,6 @@ class Fiskalyzer : ObservableObject {
     @Published var tssUUID:String?
     @Published var createTSSResponse:RequestResponse?
     @Published var clientUUID:String?
-    @Published var clientUUID2:String?
     @Published var createClientResponse:RequestResponse?
     @Published var transactionUUID:String?
     @Published var createTransactionResponse:RequestResponse?
