@@ -150,6 +150,28 @@ struct V2View: View {
                     //todo: Retrieve Metadata of an Export
                     //todo: Update Metadata of an Export
                 Group {
+                    CallAndResponseView(name: "Trigger Export", response: $fiskalyzer.triggerExportResponse) {
+                        fiskalyzer.triggerExport()
+                    }
+                    CallAndResponseView(name: "Retrieve Export", response: $fiskalyzer.retrieveExportResponse) {
+                        fiskalyzer.retrieveExport()
+                    }
+                    CallAndResponseView(name: "List All Exports", response: $fiskalyzer.listAllExportsResponse) {
+                        fiskalyzer.listAllExports()
+                    }
+                    CallAndResponseView(name: "List Exports of TSS", response: $fiskalyzer.listExportsOfTSSResponse) {
+                        fiskalyzer.listExportsOfTSS()
+                    }
+                    CallAndResponseView(name: "Retrieve Export File", response: $fiskalyzer.retrieveExportFileResponse) {
+                        fiskalyzer.retrieveExportFile()
+                    }
+                    CallAndResponseView(name: "Retrieve Export Metadata", response: $fiskalyzer.retrieveExportMetadataResponse) {
+                        fiskalyzer.retrieveExportMetadata()
+                    }
+                    CallAndResponseView(name: "Update Export Metadata", response: $fiskalyzer.updateExportMetadataResponse) {
+                        fiskalyzer.updateExportMetadata()
+                    }
+                    
                     AuthenticateAdminView(fiskalyzer: fiskalyzer)
                     
                     CallAndResponseView(name: "Disable TSS", response: $fiskalyzer.disableTSSResponse) {

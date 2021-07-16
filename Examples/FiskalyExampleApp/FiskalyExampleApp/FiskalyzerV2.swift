@@ -41,6 +41,14 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var listTransactionsOfClientResponse:RequestResponse?
     @Published var listTransactionsOfTSSResponse:RequestResponse?
     @Published var listAllTransactionsResponse:RequestResponse?
+    @Published var triggerExportResponse:RequestResponse?
+    @Published var retrieveExportResponse:RequestResponse?
+    @Published var listAllExportsResponse:RequestResponse?
+    @Published var listExportsOfTSSResponse:RequestResponse?
+    @Published var retrieveExportFileResponse:RequestResponse?
+    @Published var retrieveExportMetadataResponse:RequestResponse?
+    @Published var updateExportMetadataResponse:RequestResponse?
+    
     @Published var TSSList:[TSS] = []
     @Published var listTSSResponse:RequestResponse?
     @Published var clientList:[Client] = []
@@ -273,6 +281,13 @@ class FiskalyzerV2 : Fiskalyzer {
         listTransactionsOfClientResponse = nil
         listTransactionsOfTSSResponse = nil
         listAllTransactionsResponse = nil
+        triggerExportResponse = nil
+        retrieveExportResponse = nil
+        listAllExportsResponse = nil
+        listExportsOfTSSResponse = nil
+        retrieveExportFileResponse = nil
+        retrieveExportMetadataResponse = nil
+        updateExportMetadataResponse = nil
         adminPUK = nil
         adminPIN = nil
         tssState = nil
@@ -449,6 +464,34 @@ class FiskalyzerV2 : Fiskalyzer {
         if let response = clientRequest(method: .get, path: "tx") {
             listAllTransactionsResponse = RequestResponse(response)
         }
+    }
+    
+    func triggerExport() {
+        //todo
+    }
+    
+    func retrieveExport() {
+        //todo
+    }
+    
+    func listAllExports() {
+        //todo
+    }
+    
+    func listExportsOfTSS() {
+        //todo
+    }
+    
+    func retrieveExportFile() {
+        //todo
+    }
+    
+    func retrieveExportMetadata() {
+        //todo
+    }
+    
+    func updateExportMetadata() {
+        //todo
     }
     
     func listClients(of tss:String) {
