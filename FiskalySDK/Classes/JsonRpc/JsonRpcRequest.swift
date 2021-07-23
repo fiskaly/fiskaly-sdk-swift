@@ -22,10 +22,11 @@ public class JsonRpcRequest: CustomStringConvertible {
             "params": self.params,
             "id": self.id
         ]
-        let data = try? JSONSerialization.data(withJSONObject: requestDictionary)
-        let utf8string = String(data: data!, encoding: .utf8)
-        return utf8string!
-
+        if let data = try? JSONSerialization.data(withJSONObject: requestDictionary) {
+            let utf8string = String(data: data, encoding: .utf8)
+            return utf8string ?? "Could not create utf8 string"
+        }
+        return "Could not serialize to JSON"
     }
 
 }

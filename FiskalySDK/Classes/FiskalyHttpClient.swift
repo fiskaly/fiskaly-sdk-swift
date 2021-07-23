@@ -189,7 +189,7 @@ public class FiskalyHttpClient {
 
         let jsonData = try client.invoke(request: request)
         guard let data = jsonData.data(using: .utf8) else {
-            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
+            throw FiskalyError.sdkError(message: "Client response not encodeable into data: \(jsonData)")
         }
 
         let response: JsonRpcResponse<T>
@@ -199,10 +199,10 @@ public class FiskalyHttpClient {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             response = try decoder.decode(JsonRpcResponse<T>.self, from: data)
         } catch {
-            throw FiskalyError.sdkError(message: "Client response not decodable into class.")
+            throw FiskalyError.sdkError(message: "Client response not in expected format. Error: \(error.localizedDescription)\nResponse: \(jsonData)")
         }
 
-        print(response.error?.data?.response.body ?? response.error?.message ?? "NO ERROR")
+        print(response.error?.data?.response.body ?? response.error?.debugDescription ?? "NO ERROR")
         return response
 
     }
