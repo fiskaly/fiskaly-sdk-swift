@@ -26,7 +26,6 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var initializeTSSResponse:RequestResponse?
     @Published var logoutAdminResponse:RequestResponse?
     @Published var updateTransactionResponse:RequestResponse?
-    @Published var authenticateClientResponse:RequestResponse?
     @Published var authenticateAdminResponse:RequestResponse?
     @Published var disableTSSResponse:RequestResponse?
     @Published var retrieveTSSResponse:RequestResponse?
@@ -60,9 +59,9 @@ class FiskalyzerV2 : Fiskalyzer {
         return try FiskalyHttpClient(
             apiKey: apiKey,
             apiSecret: apiSecret,
-            baseUrl: "https://sign.fiskaly.dev/api/v2",
+            baseUrl: "https://kassensichv.fiskaly.dev/api/v2",
             smaersUrl: "http://smaers-gateway:8080",
-            miceUrl: "https://mice.fiskaly.dev"
+            miceUrl: "https://kassensichv-middleware.fiskaly.dev"
         )
     }
     
@@ -225,20 +224,6 @@ class FiskalyzerV2 : Fiskalyzer {
         }
     }
     
-    fileprivate func authenticateClient(_ tssUUID: String, _ clientUUID: String) {
-        if let response = clientRequest(method: .post, path: "tss/\(tssUUID)/client/\(clientUUID)/auth") {
-            authenticateClientResponse = RequestResponse(response)
-        }
-    }
-    
-    func authenticateClient() {
-        guard let clientUUID=clientUUID, let tssUUID=tssUUID else {
-            error = "Can't authenticate client before creating TSS and client"
-            return
-        }
-        authenticateClient(tssUUID, clientUUID)
-    }
-    
     func authenticateAdmin() {
         guard let tssUUID = tssUUID, let adminPIN = adminPIN else {
             error = "Can't authenticate as admin before creating TSS and setting Admin PIN"
@@ -266,7 +251,6 @@ class FiskalyzerV2 : Fiskalyzer {
         initializeTSSResponse = nil
         logoutAdminResponse = nil
         updateTransactionResponse = nil
-        authenticateClientResponse = nil
         authenticateAdminResponse = nil
         listClientsResponse = nil
         retrieveTSSResponse = nil
@@ -561,13 +545,7 @@ class FiskalyzerV2 : Fiskalyzer {
     //this version runs all the necessary steps to disable an arbitrary TSS. It runs all the necessary steps before disabling it, so it can be  It's useful when you forget to disable a TSS after using it and run up against the 'Limit of active TSS reached' error.
     func disableTSS(_ tss:TSS) {
         //todo: move the TSS to state Initialized if possible, if it isn't already
-        listClients(of: tss._id)
-        if let clientID = clientList.first?._id {
-            authenticateClient(tss._id, clientID)
-            if (authenticateClientResponse?.status == 200) {
-                disableTSS(id: tss._id)
-            }
-        }
+        disableTSS(id: tss._id)
     }
     
     func setTSSState(_ tssUUID:String,state:String) -> RequestResponse? {

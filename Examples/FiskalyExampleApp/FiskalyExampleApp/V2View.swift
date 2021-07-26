@@ -66,8 +66,6 @@ struct V2View: View {
                             fiskalyzer.updateClient()
                         }
                         
-                        AuthenticateClientView(fiskalyzer: fiskalyzer)
-                        
                         AuthenticateAdminView(fiskalyzer: fiskalyzer)
                         
                         CallAndResponseView(name: "Register Client 2", response: $fiskalyzer.registerClient2Response) {
@@ -103,7 +101,6 @@ struct V2View: View {
                         CallAndResponseView(name: "Retrieve Client", response: $fiskalyzer.retrieveClientResponse) {
                             fiskalyzer.retrieveClient()
                         }
-                        AuthenticateClientView(fiskalyzer: fiskalyzer)
                         
                         CallAndResponseView(name: "Create Transaction", response: $fiskalyzer.createTransactionResponse) {
                             fiskalyzer.createTransaction()

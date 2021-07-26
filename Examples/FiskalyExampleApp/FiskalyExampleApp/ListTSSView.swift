@@ -37,8 +37,6 @@ struct ListTSSView: View {
                 }.frame(minHeight: 50)
             }.frame(minHeight: 150, maxHeight: .infinity)
             UUIDView(uuid: $disabledTSS, name: "Results from disabling TSS")
-            ResponseView(response: $fiskalyzer.listClientsResponse,expanded: $expandDisableTSSResponse, name: "List Clients")
-            ResponseView(response: $fiskalyzer.authenticateClientResponse,expanded: $expandDisableTSSResponse, name: "Authenticate Client")
             ResponseView(response: $fiskalyzer.disableTSSResponse,expanded: $expandDisableTSSResponse, name: "Disable TSS")
         }
         }

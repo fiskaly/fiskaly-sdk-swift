@@ -42,11 +42,20 @@ class Fiskalyzer : ObservableObject {
         self.apiKeyVariableName = apiKeyVariableName
         self.apiSecretVariableName = apiSecretVariableName
         if let apiKey = apiKey, let apiSecret = apiSecret {
-            client = try? createHttpClient(
-                apiKey: apiKey,
-                apiSecret: apiSecret
-            )
-            setUpLogging()
+            do {
+                client = try createHttpClient(
+                    apiKey: apiKey,
+                    apiSecret: apiSecret
+                )
+                setUpLogging()
+            } catch let createClientError {
+                self.error = "Could not create client: \(createClientError.localizedDescription)"
+                if let error = createClientError as? JsonRpcError {
+                    self.error = error.data?.response.body
+                    print("error response = \(error.data?.response.body ?? "nothing")")
+                }
+                
+            }
         } else {
             self.error = "No API key or secret supplied. Set \(apiKeyVariableName) and \(apiSecretVariableName) in the environment variables."
         }
