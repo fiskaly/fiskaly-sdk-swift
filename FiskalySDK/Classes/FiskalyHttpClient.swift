@@ -17,7 +17,6 @@ public class FiskalyHttpClient {
                     organizationId: String? = "",
                     environment: String? = "",
                     client: RequestClient = FiskalyRequestClient(),
-                    smaersUrl: String? = nil,
                     miceUrl: String? = nil
     ) throws {
         self.client = client
@@ -35,11 +34,9 @@ public class FiskalyHttpClient {
             "sdk_version": "iOS SDK 1.2.100"
         ]
         
-        //these should only be set for v2
-        if let smaersUrl = smaersUrl, let miceUrl = miceUrl {
-            contextRequestParams["smaers_url"] = smaersUrl
+        //this should only be set for v2
+        if let miceUrl = miceUrl {
             contextRequestParams["mice_url"] = miceUrl
-            //contextRequestParams["base_url"] = "http://backend:3000"
         }
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)

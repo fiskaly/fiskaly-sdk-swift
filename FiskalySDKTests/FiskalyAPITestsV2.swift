@@ -15,9 +15,8 @@ class FiskalyAPITestsV2: FiskalyAPITests {
         client = try FiskalyHttpClient(
             apiKey: ProcessInfo.processInfo.environment["V2_API_KEY"]!,
             apiSecret: ProcessInfo.processInfo.environment["V2_API_SECRET"]!,
-            baseUrl: "https://sign.fiskaly.dev/api/v2",
-            smaersUrl: "http://smaers-gateway:8080",
-            miceUrl: "https://mice.fiskaly.dev"
+           baseUrl: "https://kassensichv.fiskaly.dev/api/v2",
+            miceUrl: "https://kassensichv-middleware.fiskaly.dev"
         )
         
         setUpLogging(methodName: self.name)
@@ -46,7 +45,7 @@ class FiskalyAPITestsV2: FiskalyAPITests {
         let authenticateBody = [
             "api_key": ProcessInfo.processInfo.environment["V2_API_KEY"]!,
             "api_secret": ProcessInfo.processInfo.environment["V2_API_SECRET"],
-            "base_url":"http://backend:3000",
+            //"base_url":"http://backend:3000",
             "smaers_url":"http://smaers-gateway:8080"
         ]
         
