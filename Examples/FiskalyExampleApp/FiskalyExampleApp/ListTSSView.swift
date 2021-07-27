@@ -15,13 +15,14 @@ struct ListTSSView: View {
     var body: some View {
         ScrollView {
         VStack {
+            fiskalyzer.error.map { Text($0).foregroundColor(.red) }
             //todo: maybe put this stuff into sections of the TSS list so the list can expand to its full height
             ResponseView(response: $fiskalyzer.listTSSResponse,expanded: $expandListTSSResponse, name: "List TSS").onAppear() {
                 fiskalyzer.listTSS()
                 expandListTSSResponse = true
             }
             Text("TSS found:").font(.headline)
-            Text("Disable any with status INITIALIZED to avoid 'Limit of active TSS reached' errors.").font(.footnote).padding()
+            Text("Disable any with status CREATED, UNINITIALIZED, or INITIALIZED to avoid 'Limit of active TSS reached' errors.").font(.footnote).padding()
             List(fiskalyzer.TSSList, id: \._id) { tss in
                 VStack {
                     Text("\(tss._id)").font(.body.smallCaps()).padding(5)
@@ -32,7 +33,7 @@ struct ListTSSView: View {
                             fiskalyzer.disableTSS(tss)
                             disabledTSS = tss._id
                             expandDisableTSSResponse = true
-                        }.disabled(tss.state != "INITIALIZED").multilineTextAlignment(.trailing)
+                        }.disabled(!fiskalyzer.canDisable(tss)).multilineTextAlignment(.trailing)
                     }
                 }.frame(minHeight: 50)
             }.frame(minHeight: 150, maxHeight: .infinity)

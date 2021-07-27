@@ -81,7 +81,7 @@ public class JsonRpcResponse<T> : Swift.Codable where T : Swift.Decodable, T : S
   required public init(from decoder: Swift.Decoder) throws
 }
 public class FiskalyHttpClient {
-  public init(apiKey: Swift.String? = "", apiSecret: Swift.String? = "", baseUrl: Swift.String, email: Swift.String? = "", password: Swift.String? = "", organizationId: Swift.String? = "", environment: Swift.String? = "", client: FiskalySDK.RequestClient = FiskalyRequestClient(), smaersUrl: Swift.String? = nil, miceUrl: Swift.String? = nil) throws
+  public init(apiKey: Swift.String? = "", apiSecret: Swift.String? = "", baseUrl: Swift.String, email: Swift.String? = "", password: Swift.String? = "", organizationId: Swift.String? = "", environment: Swift.String? = "", client: FiskalySDK.RequestClient = FiskalyRequestClient(), miceUrl: Swift.String? = nil) throws
   public func version() throws -> FiskalySDK.ResultVersion
   public func selfTest() throws -> FiskalySDK.ResultSelfTest
   public func config(debugLevel: Swift.Int?, debugFile: Swift.String?, clientTimeout: Swift.Int?, smaersTimeout: Swift.Int?, httpProxy: Swift.String?) throws -> FiskalySDK.Config

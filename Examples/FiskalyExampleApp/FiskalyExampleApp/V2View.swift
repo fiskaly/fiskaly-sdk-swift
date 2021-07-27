@@ -13,7 +13,7 @@ struct V2View: View {
         //we need a ScrollView or VStack even when there's only one group, otherwise the individual items in the group get put in their own tabs for some reason.
         NavigationView {
         VStack {
-        fiskalyzer.error.map { Text($0).foregroundColor(.red) }
+            fiskalyzer.error.map { Text($0).foregroundColor(.red) }.padding([.leading, .trailing], 10)
         ScrollView {
             VStack {
                 NavigationLink(

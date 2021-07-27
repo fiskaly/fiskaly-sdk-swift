@@ -54,69 +54,103 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var listTSSResponse:RequestResponse?
     @Published var clientList:[Client] = []
     @Published var listClientsResponse:RequestResponse?
+    
+    var keepLastTSSID = false
 
     override func createHttpClient(apiKey: String, apiSecret: String) throws -> FiskalyHttpClient {
         return try FiskalyHttpClient(
             apiKey: apiKey,
             apiSecret: apiSecret,
             baseUrl: "https://kassensichv.fiskaly.dev/api/v2",
-            smaersUrl: "http://smaers-gateway:8080",
             miceUrl: "https://kassensichv-middleware.fiskaly.dev"
         )
     }
     
     //V2 does not set the state when creating the TSS; it sets it later. However, it does need to get the admin PUK at this step in order to set the Admin PIN and authenticate.
-    func createTSS() {
-        let newTssUUID = UUID().uuidString
-        self.tssUUID = newTssUUID
-
-        if let responseCreateTSS = clientRequest(
+    fileprivate func createTSS(_ newTssUUID: String) {
+        guard let responseCreateTSS = clientRequest(
             method: .put,
-            path: "tss/\(newTssUUID)") {
-            createTSSResponse = RequestResponse(responseCreateTSS)
-            guard responseCreateTSS.status == 200 else {
-                return
-            }
-            guard let responseBodyData = Data(base64Encoded: responseCreateTSS.body) else {
-                error = "Create TSS response body is not valid base64"
-                return
-            }
-            do {
-                let responseBody = try JSONSerialization.jsonObject(with: responseBodyData, options: []) as? [String: Any]
-                adminPUK = responseBody?["admin_puk"] as? String
-                adminStatus = .noPIN
-                tssState = "CREATED"
-                //now we don't care about the response for disabling the last TSS; it would just be confusing when we get to that step again with this TSS.
-                disableTSSResponse = nil
-            } catch {
-                self.error = "Create TSS response body is not valid JSON: \(error.localizedDescription)"
-            }
+            path: "tss/\(newTssUUID)") else {
+            return
         }
+        createTSSResponse = RequestResponse(responseCreateTSS)
+        guard responseCreateTSS.status == 200 else {
+            return
+        }
+        guard let responseBodyData = Data(base64Encoded: responseCreateTSS.body) else {
+            error = "Create TSS response body is not valid base64"
+            return
+        }
+        do {
+            let responseBody = try JSONSerialization.jsonObject(with: responseBodyData, options: []) as? [String: Any]
+            if let puk = responseBody?["admin_puk"] as? String {
+                saveAdminPUK(puk, for: newTssUUID)
+                adminPUK = puk
+            }
+            adminStatus = .noPIN
+            tssState = "CREATED"
+            //now we don't care about the response for disabling the last TSS; it would just be confusing when we get to that step again with this TSS.
+            disableTSSResponse = nil
+        } catch {
+            self.error = "Create TSS response body is not valid JSON: \(error.localizedDescription)"
+        }
+    }
+    
+    func createTSS() {
+        var newTssUUID = UUID().uuidString
+        if (keepLastTSSID) {
+            newTssUUID = self.tssUUID ?? newTssUUID
+            keepLastTSSID = false
+        }
+        self.tssUUID = newTssUUID
+        //todo: return stuff like adminPUK, tssState, etc. and set it here, so that recreating a TSS in order to disable it doesn't mean forgetting about whatever else we're doing with a TSS on the main screen.
+        createTSS(newTssUUID)
+        if createTSSResponse == nil {
+            //there may have been an http timeout, but the TSS was still created.
+            //Next time the user tries to create a TSS, we should use the same UUID so we can get a response and use the TSS.
+            keepLastTSSID = true
+        }
+    }
+    
+    fileprivate func personalizeTSS(id: String) {
+        personalizeTSSResponse = setTSSState(id, state: "UNINITIALIZED")
     }
     
     func personalizeTSS() {
         if let tssUUID = tssUUID {
-            personalizeTSSResponse = setTSSState(tssUUID, state: "UNINITIALIZED")
+            personalizeTSS(id:tssUUID)
         }
+    }
+    
+    fileprivate func initializeTSS(id: String) {
+        initializeTSSResponse = setTSSState(id, state: "INITIALIZED")
     }
     
     func initializeTSS() {
         if let tssUUID = tssUUID {
-            initializeTSSResponse = setTSSState(tssUUID, state: "INITIALIZED")
+            initializeTSS(id:tssUUID)
+        }
+    }
+    
+    fileprivate func changeAdminPIN(_ adminPUK: String, _ tssUUID: String) {
+        //this has to be at least 6 characters, but there are no other restrictions
+        let newAdminPIN = String((0..<10).map{ _ in "0123456789".randomElement()!})
+        adminPIN = newAdminPIN
+        let changeAdminPinBody = [
+            "admin_puk": adminPUK,
+            "new_admin_pin": newAdminPIN
+        ]
+        if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/admin", body: changeAdminPinBody) {
+            changeAdminPINResponse = RequestResponse(response)
+            adminStatus = .loggedOut
+            saveAdminPIN(newAdminPIN,for:tssUUID)
         }
     }
     
     func changeAdminPIN() {
         if let tssUUID = tssUUID {
-            //this has to be at least 6 characters, but there are no other restrictions
-            adminPIN = String((0..<10).map{ _ in "0123456789".randomElement()!})
-            let changeAdminPinBody = [
-                "admin_puk": adminPUK,
-                "new_admin_pin": adminPIN
-            ]
-            if let response = clientRequest(method: .patch, path: "tss/\(tssUUID)/admin", body: changeAdminPinBody) {
-                changeAdminPINResponse = RequestResponse(response)
-                adminStatus = .loggedOut
+            if let adminPUK = adminPUK {
+                changeAdminPIN(adminPUK, tssUUID)
             }
         }
     }
@@ -224,15 +258,19 @@ class FiskalyzerV2 : Fiskalyzer {
         }
     }
     
+    fileprivate func authenticateAdmin(_ tssUUID: String, pin adminPIN: String) {
+        if let response = clientRequest(method: .post, path: "tss/\(tssUUID)/admin/auth", body: ["admin_pin":adminPIN]) {
+            adminStatus = .loggedIn
+            authenticateAdminResponse = RequestResponse(response)
+        }
+    }
+    
     func authenticateAdmin() {
         guard let tssUUID = tssUUID, let adminPIN = adminPIN else {
             error = "Can't authenticate as admin before creating TSS and setting Admin PIN"
             return
         }
-        if let response = clientRequest(method: .post, path: "tss/\(tssUUID)/admin/auth", body: ["admin_pin":adminPIN]) {
-            adminStatus = .loggedIn
-            authenticateAdminResponse = RequestResponse(response)
-        }
+        authenticateAdmin(tssUUID, pin:adminPIN)
     }
     
     func disableTSS() {
@@ -541,11 +579,66 @@ class FiskalyzerV2 : Fiskalyzer {
         }
     }
     
+    func canDisable(_ tss:TSS) -> Bool {
+        return ["CREATED","INITIALIZED","UNINITIALIZED"].contains(tss.state)
+    }
+    
+    func adminPUKKey(for tss:String) -> String {
+        return "Admin PUK for TSS \(tss)"
+    }
+    
+    func saveAdminPUK(_ puk:String, for tss:String) {
+        UserDefaults.standard.setValue(puk, forKey: adminPUKKey(for:tss))
+    }
+    
+    func adminPUK(for tss:String) -> String? {
+        return UserDefaults.standard.string(forKey: adminPUKKey(for:tss))
+    }
+    
+    func adminPINKey(for tss:String) -> String {
+        return "Admin PIN for TSS \(tss)"
+    }
+    
+    func saveAdminPIN(_ pin:String, for tss:String) {
+        UserDefaults.standard.setValue(pin, forKey: adminPINKey(for:tss))
+    }
+    
+    func adminPIN(for tss:String) -> String? {
+        return UserDefaults.standard.string(forKey: adminPINKey(for:tss))
+    }
+    
     //while the other disableTSS just runs the Disable TSS command on the TSS you're currently working with (which requires you to have run Authenticate Client first)
     //this version runs all the necessary steps to disable an arbitrary TSS. It runs all the necessary steps before disabling it, so it can be  It's useful when you forget to disable a TSS after using it and run up against the 'Limit of active TSS reached' error.
     func disableTSS(_ tss:TSS) {
-        //todo: move the TSS to state Initialized if possible, if it isn't already
-        disableTSS(id: tss._id)
+        //TSS must be in state UNINITIALIZED or INITIALIZED to transition to DISABLED. If it is in state CREATED, we can personalize it first to move it to UNINITIALIZED.
+        if (tss.state == "CREATED") {
+            //if this TSS is created but we don't know the PUK for it (because the original response timed out or we didn't save the PUK) then we can create it again. The create command is idempotent so it should return the PUK without any other side effects.
+            if adminPUK(for:tss._id) == nil {
+                createTSS(tss._id)
+            }
+            personalizeTSS(id: tss._id)
+            guard personalizeTSSResponse?.status == 200 else {
+                self.error = "Could not personalize TSS"
+                return
+            }
+            //change PIN
+            guard let puk = adminPUK(for:tss._id) else {
+                self.error = "Could not get PUK for TSS"
+                return
+            }
+            changeAdminPIN(puk, tss._id)
+        }
+        if let pin = adminPIN(for:tss._id) {
+            authenticateAdmin(tss._id, pin: pin)
+            guard authenticateAdminResponse?.status == 200 else {
+                self.error = "Could not authenticate admin"
+                return
+            }
+            disableTSS(id: tss._id)
+        } else {
+            self.error = "Admin PIN for this TSS is not known"
+        }
+        listTSS()
     }
     
     func setTSSState(_ tssUUID:String,state:String) -> RequestResponse? {
