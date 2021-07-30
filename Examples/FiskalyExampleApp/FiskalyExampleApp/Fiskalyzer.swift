@@ -151,8 +151,8 @@ class Fiskalyzer : ObservableObject {
         let _ = try client?.config(
             debugLevel: 3,
             debugFile: logPath,
-            clientTimeout: 1500,
-            smaersTimeout: 1500,
+            clientTimeout: 15000,
+            smaersTimeout: 15000,
             httpProxy: "")
         } catch {
             print("Error setting up logging at \(logPath ?? ""): \(error.localizedDescription)")
