@@ -11,6 +11,8 @@ struct ListTSSView: View {
     @ObservedObject var fiskalyzer:FiskalyzerV2
     @State var expandListTSSResponse:Bool = false
     @State var expandDisableTSSResponse:Bool = false
+    @State var expandPersonalizeTSSResponse:Bool = false
+    @State var expandChangeAdminPINResponse:Bool = false
     @State var disabledTSS:String? = nil
     var body: some View {
         List {
@@ -26,7 +28,7 @@ struct ListTSSView: View {
             Section(header:
             VStack {
                 Text("TSS found").font(.headline)
-                Text("Disable any with status CREATED, UNINITIALIZED, or INITIALIZED to avoid 'Limit of active TSS reached' errors.").font(.footnote).padding()
+                Text("To avoid 'Limit of active TSS reached' errors when creating a TSS, tap 'Disable' to move a TSS to the DISABLED state so you can create a new one, or tap 'Use' to use the existing TSS for operations on the main screen instead of creating a new TSS.").font(.footnote).padding()
             }) {
                 ForEach(fiskalyzer.TSSList, id: \._id) { tss in
                     VStack {
@@ -38,7 +40,14 @@ struct ListTSSView: View {
                                 fiskalyzer.disableTSS(tss)
                                 disabledTSS = tss._id
                                 expandDisableTSSResponse = true
-                            }.disabled(!fiskalyzer.canDisable(tss)).multilineTextAlignment(.trailing)
+                                //these other steps don't always need to be taken, so we don't need to expand them unless they were.
+                                expandPersonalizeTSSResponse = fiskalyzer.personalizeTSSResponse != nil
+                                expandChangeAdminPINResponse = fiskalyzer.changeAdminPINResponse != nil
+                            }.disabled(!fiskalyzer.canDisable(tss)).multilineTextAlignment(.trailing).buttonStyle(BorderlessButtonStyle())
+                            Spacer()
+                            Button("Use") {
+                                fiskalyzer.use(tss: tss)
+                            }.disabled(!fiskalyzer.canUse(tss)).multilineTextAlignment(.leading).buttonStyle(BorderlessButtonStyle())
                         }
                     }.frame(minHeight: 50)
                 }
@@ -46,6 +55,8 @@ struct ListTSSView: View {
             Section(header: Text("Disable TSS").font(.headline)) {
                 VStack {
                     UUIDView(uuid: $disabledTSS, name: "TSS")
+                    ResponseView(response: $fiskalyzer.personalizeTSSResponse,expanded: $expandPersonalizeTSSResponse, name: "Personalize TSS")
+                    ResponseView(response: $fiskalyzer.changeAdminPINResponse,expanded: $expandChangeAdminPINResponse, name: "Change Admin PIN")
                     ResponseView(response: $fiskalyzer.disableTSSResponse,expanded: $expandDisableTSSResponse, name: "Disable TSS")
                 }
             }.textCase(nil)

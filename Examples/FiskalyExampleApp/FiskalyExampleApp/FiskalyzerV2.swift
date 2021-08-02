@@ -55,6 +55,14 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var clientList:[Client] = []
     @Published var listClientsResponse:RequestResponse?
     
+    public func use(tss:TSS) {
+        tssUUID = tss._id
+        tssState = tss.state
+        adminPUK = adminPUK(for:tss._id)
+        adminPIN = adminPIN(for:tss._id)
+        adminStatus = adminPIN == nil ? .noPIN : .loggedOut
+    }
+    
     var keepLastTSSID = false
 
     override func createHttpClient(apiKey: String, apiSecret: String) throws -> FiskalyHttpClient {
@@ -581,6 +589,10 @@ class FiskalyzerV2 : Fiskalyzer {
     
     func canDisable(_ tss:TSS) -> Bool {
         return ["CREATED","INITIALIZED","UNINITIALIZED"].contains(tss.state)
+    }
+    
+    func canUse(_ tss:TSS) -> Bool {
+        return tss.state != "DISABLED"
     }
     
     func adminPUKKey(for tss:String) -> String {
