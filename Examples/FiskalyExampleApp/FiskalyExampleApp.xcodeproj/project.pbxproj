@@ -141,19 +141,10 @@
 		E9A6A6722680E5AB00B3AE55 /* FiskalyExampleApp */ = {
 			isa = PBXGroup;
 			children = (
+				E9CD37F326BAD30B00AFD4FB /* Views */,
 				E9E65D8A26847B2E00181AE4 /* Extensions */,
 				E9A6831326834FCC000605EF /* FiskalySDK.xcframework */,
 				E9A6A6732680E5AB00B3AE55 /* FiskalyExampleAppApp.swift */,
-				E9A6A6752680E5AB00B3AE55 /* ContentView.swift */,
-				E9E65D912684BA3500181AE4 /* V1View.swift */,
-				E9E65D932684BA5300181AE4 /* V2View.swift */,
-				E92FF568269ED5B200C1CBA8 /* ListTSSView.swift */,
-				E92FF55B269C4A4000C1CBA8 /* AuthenticateAdminView.swift */,
-				E92FF55926989D1B00C1CBA8 /* CallAndResponseView.swift */,
-				E9E65D8F2684935F00181AE4 /* UUIDView.swift */,
-				E92FF566269DAAC200C1CBA8 /* ShowLogView.swift */,
-				E92FF564269D932100C1CBA8 /* LogView.swift */,
-				E9E65D8D2684839900181AE4 /* ResponseView.swift */,
 				E9A6A6772680E5AC00B3AE55 /* Assets.xcassets */,
 				E9A6A67C2680E5AC00B3AE55 /* Info.plist */,
 				E9A6A6792680E5AC00B3AE55 /* Preview Content */,
@@ -189,6 +180,23 @@
 				E9A6A6922680E5AC00B3AE55 /* Info.plist */,
 			);
 			path = FiskalyExampleAppUITests;
+			sourceTree = "<group>";
+		};
+		E9CD37F326BAD30B00AFD4FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E9A6A6752680E5AB00B3AE55 /* ContentView.swift */,
+				E9E65D912684BA3500181AE4 /* V1View.swift */,
+				E9E65D932684BA5300181AE4 /* V2View.swift */,
+				E92FF568269ED5B200C1CBA8 /* ListTSSView.swift */,
+				E92FF55B269C4A4000C1CBA8 /* AuthenticateAdminView.swift */,
+				E92FF55926989D1B00C1CBA8 /* CallAndResponseView.swift */,
+				E9E65D8F2684935F00181AE4 /* UUIDView.swift */,
+				E92FF566269DAAC200C1CBA8 /* ShowLogView.swift */,
+				E92FF564269D932100C1CBA8 /* LogView.swift */,
+				E9E65D8D2684839900181AE4 /* ResponseView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E9E65D8A26847B2E00181AE4 /* Extensions */ = {

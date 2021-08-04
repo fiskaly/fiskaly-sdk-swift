@@ -60,6 +60,6 @@ struct ListTSSView: View {
                     ResponseView(response: $fiskalyzer.disableTSSResponse,expanded: $expandDisableTSSResponse, name: "Disable TSS")
                 }
             }.textCase(nil)
-        }.listStyle(GroupedListStyle())
+        }.listStyle(GroupedListStyle()).navigationBarTitle(Text("List TSS"), displayMode: .inline)
     }
 }
