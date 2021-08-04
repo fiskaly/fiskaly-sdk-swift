@@ -7,9 +7,16 @@
 
 import Foundation
 
+public enum TSSState : String, Codable {
+    case created = "CREATED"
+    case uninitialized = "UNINITIALIZED"
+    case initialized = "INITIALIZED"
+    case disabled = "DISABLED"
+}
+
 struct TSS : Codable {
     var _id:String
-    var state:String
+    var state:TSSState
 }
 
 struct ListOfTSS : Codable {

@@ -99,6 +99,10 @@ class Fiskalyzer : ObservableObject {
         return nil
     }
     
+    func canCreateClient() -> Bool {
+        return tssUUID != nil
+    }
+    
     //these methods are exactly the same between V1 and V2
     
     func createClient() {

@@ -34,7 +34,7 @@ struct ListTSSView: View {
                     VStack {
                         Text("\(tss._id)").font(.body.smallCaps()).padding(5)
                         HStack {
-                            Text(tss.state).multilineTextAlignment(.leading)
+                            Text(tss.state.rawValue).multilineTextAlignment(.leading)
                             Spacer()
                             Button("Disable") {
                                 fiskalyzer.disableTSS(tss)
