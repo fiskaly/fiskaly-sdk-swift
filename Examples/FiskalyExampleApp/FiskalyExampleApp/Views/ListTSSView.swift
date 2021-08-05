@@ -34,6 +34,8 @@ struct ListTSSView: View {
                     VStack {
                         Text("\(tss._id)").font(.body.smallCaps()).padding(5)
                         HStack {
+                            Image(systemName: "checkmark").opacity(fiskalyzer.tssUUID == tss._id ? 1.0 : 0).accessibility(hidden: fiskalyzer.tssUUID != tss._id)
+                            Spacer()
                             Text(tss.state.rawValue).multilineTextAlignment(.leading)
                             Spacer()
                             Button("Disable") {

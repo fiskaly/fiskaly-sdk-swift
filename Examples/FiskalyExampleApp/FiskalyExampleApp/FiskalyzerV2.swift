@@ -56,15 +56,24 @@ class FiskalyzerV2 : Fiskalyzer {
     @Published var listClientsResponse:RequestResponse?
     
     public func use(tss:TSS) {
+        resetTSSSpecificData()
         tssUUID = tss._id
         tssState = tss.state
         adminPUK = adminPUK(for:tss._id)
         adminPIN = adminPIN(for:tss._id)
         adminStatus = adminPIN == nil ? .noPIN : .loggedOut
         if adminPUK == nil && adminPIN == nil {
-            //try creating it again to get the PUK
-            createTSS(tss._id)
-            adminPUK = adminPUK(for:tss._id)
+            if (tss.state == .created) {
+                //try creating it again to get the PUK
+                createTSS(tss._id)
+                if createTSSResponse?.status == 200 {
+                    adminPUK = adminPUK(for:tss._id)
+                } else {
+                    error = "The PUK for this TSS is not known, and attempting to retrieve it by issuing another create TSS command failed. Some operations will not be available."
+                }
+            } else {
+                error = "The PUK for this TSS is not known. Some operations will not be available."
+            }
         }
         objectWillChange.send()
     }
@@ -82,11 +91,6 @@ class FiskalyzerV2 : Fiskalyzer {
     
     //V2 does not set the state when creating the TSS; it sets it later. However, it does need to get the admin PUK at this step in order to set the Admin PIN and authenticate.
     fileprivate func createTSS(_ newTssUUID: String) {
-        //reset these in case they are set up for a previous TSS
-        adminPUK = nil
-        adminPIN = nil
-        tssState = nil
-        adminStatus = .noTSS
         guard let responseCreateTSS = clientRequest(
             method: .put,
             path: "tss/\(newTssUUID)") else {
@@ -124,6 +128,8 @@ class FiskalyzerV2 : Fiskalyzer {
         if (keepLastTSSID) {
             newTssUUID = self.tssUUID ?? newTssUUID
             keepLastTSSID = false
+        } else {
+            resetTSSSpecificData()
         }
         self.tssUUID = newTssUUID
         //todo: return stuff like adminPUK, tssState, etc. and set it here, so that recreating a TSS in order to disable it doesn't mean forgetting about whatever else we're doing with a TSS on the main screen.
@@ -807,6 +813,17 @@ class FiskalyzerV2 : Fiskalyzer {
         return nil
     }
     
+    //all of this is specific to one TSS, so if we switch to another TSS we can't use it.
+    fileprivate func resetTSSSpecificData() {
+        tssUUID = nil
+        adminPUK = nil
+        adminPIN = nil
+        adminStatus = .noTSS
+        tssState = nil
+        tssUUID = nil
+        clientUUID = nil
+        clientUUID2 = nil
+    }
     
     override func reset() {
         changeAdminPINResponse = nil
@@ -835,12 +852,7 @@ class FiskalyzerV2 : Fiskalyzer {
         retrieveExportFileResponse = nil
         retrieveExportMetadataResponse = nil
         updateExportMetadataResponse = nil
-        adminPUK = nil
-        adminPIN = nil
-        tssState = nil
-        tssUUID = nil
-        clientUUID = nil
-        clientUUID2 = nil
+        resetTSSSpecificData()
         super.reset()
     }
 }
