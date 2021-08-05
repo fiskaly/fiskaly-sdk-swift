@@ -61,6 +61,11 @@ class FiskalyzerV2 : Fiskalyzer {
         adminPUK = adminPUK(for:tss._id)
         adminPIN = adminPIN(for:tss._id)
         adminStatus = adminPIN == nil ? .noPIN : .loggedOut
+        if adminPUK == nil && adminPIN == nil {
+            //try creating it again to get the PUK
+            createTSS(tss._id)
+            adminPUK = adminPUK(for:tss._id)
+        }
         objectWillChange.send()
     }
     
@@ -70,8 +75,8 @@ class FiskalyzerV2 : Fiskalyzer {
         return try FiskalyHttpClient(
             apiKey: apiKey,
             apiSecret: apiSecret,
-            baseUrl: "https://kassensichv.fiskaly.dev/api/v2",
-            miceUrl: "https://kassensichv-middleware.fiskaly.dev"
+            baseUrl: "https://kassensichv.fiskaly.com/api/v2",
+            miceUrl: "https://kassensichv-middleware.fiskaly.com"
         )
     }
     
@@ -191,7 +196,7 @@ class FiskalyzerV2 : Fiskalyzer {
     }
     
     func canChangeAdminPIN() -> Bool {
-        return tssUUID != nil && tssState == .initialized && adminPUK != nil
+        return tssUUID != nil && [.uninitialized, .initialized].contains(tssState) && adminPUK != nil
     }
     
     func changeAdminPIN() {
@@ -346,7 +351,7 @@ class FiskalyzerV2 : Fiskalyzer {
     func canAuthenticateAdmin() -> Bool {
         return tssUUID != nil &&
             adminPIN != nil &&
-            tssState == .initialized
+            [.uninitialized, .initialized].contains(tssState)
         //it's okay to authenticate admin again if we're already logged in, so no need to check adminStatus
     }
     
@@ -790,7 +795,7 @@ class FiskalyzerV2 : Fiskalyzer {
     
     func setTSSState(_ tssUUID:String,state:TSSState) -> RequestResponse? {
         let setTSSStateBody = [
-            "state" : state
+            "state" : state.rawValue
         ]
         if let response = clientRequest(method: .patch,
                                                     path: "tss/\(tssUUID)",
