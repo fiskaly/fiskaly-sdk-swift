@@ -77,6 +77,11 @@ class FiskalyzerV2 : Fiskalyzer {
     
     //V2 does not set the state when creating the TSS; it sets it later. However, it does need to get the admin PUK at this step in order to set the Admin PIN and authenticate.
     fileprivate func createTSS(_ newTssUUID: String) {
+        //reset these in case they are set up for a previous TSS
+        adminPUK = nil
+        adminPIN = nil
+        tssState = nil
+        adminStatus = .noTSS
         guard let responseCreateTSS = clientRequest(
             method: .put,
             path: "tss/\(newTssUUID)") else {
@@ -199,7 +204,8 @@ class FiskalyzerV2 : Fiskalyzer {
     
     //This operation can be called safely even if no admin is authenticated, so no need to check adminStatus
     func canLogoutAdmin() -> Bool {
-        return tssUUID != nil
+        return tssUUID != nil &&
+            tssState == .initialized
     }
     
     func logoutAdmin() {
@@ -227,6 +233,7 @@ class FiskalyzerV2 : Fiskalyzer {
     //since we never set the status of the main client to anything other than "REGISTERED", we don't need to check for this.
     func canCreateTransaction() -> Bool {
         return tssUUID != nil &&
+            tssState == .initialized &&
             clientUUID != nil &&
             adminStatus == .loggedIn
     }
@@ -248,8 +255,11 @@ class FiskalyzerV2 : Fiskalyzer {
         }
     }
     
+    // A DISABLED TSS can no longer be used for signing transactions, but the export of data remains possible.
+    //An INITIALIZED TSS can be used for signing transactions.
     func canUpdateTransaction() -> Bool {
         return tssUUID != nil &&
+            tssState == .initialized &&
             clientUUID != nil &&
         transactionUUID != nil
     }
@@ -335,7 +345,8 @@ class FiskalyzerV2 : Fiskalyzer {
     
     func canAuthenticateAdmin() -> Bool {
         return tssUUID != nil &&
-            adminPIN != nil
+            adminPIN != nil &&
+            tssState == .initialized
         //it's okay to authenticate admin again if we're already logged in, so no need to check adminStatus
     }
     
@@ -357,10 +368,10 @@ class FiskalyzerV2 : Fiskalyzer {
     func disableTSS() {
         if let tssUUID = tssUUID {
             disableTSS(id: tssUUID)
-            self.tssUUID = nil
+            //self.tssUUID = nil
             adminStatus = .noTSS
             //remove the responses for the other steps so that it's clearer where we're up to if we go through the process again
-            reset()
+            //reset()
         }
     }
     
@@ -716,7 +727,7 @@ class FiskalyzerV2 : Fiskalyzer {
     }
     
     func canUse(_ tss:TSS) -> Bool {
-        return tss.state != .disabled
+        return true //was tss.state != .disabled, but some actions (e.g. exports, retrieve TSS, list clients or transactions) are still possible with a disabled TSS
     }
     
     func adminPUKKey(for tss:String) -> String {
