@@ -1,3 +1,3 @@
 # FiskalyClient
 
-A description of this package.
+An HTTP client to simplify access to Fiskaly APIs.
