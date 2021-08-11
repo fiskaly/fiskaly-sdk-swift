@@ -16,6 +16,6 @@ public class JsonRpcError: Error, Codable {
 extension JsonRpcError: CustomDebugStringConvertible {
 
     public var debugDescription: String {
-        return "JSON RPC error \(code): \(message)\n\(data?.context ?? "no context")"
+        return "JSON RPC error \(code): \(message)\n\(data?.response.body ?? "no response body")"
     }
 }
