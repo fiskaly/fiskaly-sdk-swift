@@ -26,7 +26,7 @@ class FiskalyAPITests: XCTestCase {
         let response = try client.request(
             method: "GET",
             path: "/organizations")
-        XCTAssertEqual(response.status, 200)
+            XCTAssertEqual(response.status, 200)
     }
 
     func testTransactionRequest() throws {
