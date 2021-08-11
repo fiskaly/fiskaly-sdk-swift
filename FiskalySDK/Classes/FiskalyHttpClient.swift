@@ -2,7 +2,7 @@ import Foundation
 
 public class FiskalyHttpClient {
 
-    private var context: String
+    private var context: String = ""
     private let client: RequestClient
 
     /*
@@ -16,16 +16,14 @@ public class FiskalyHttpClient {
                     password: String? = "",
                     organizationId: String? = "",
                     environment: String? = "",
-                    client: RequestClient = FiskalyRequestClient()) throws {
+                    client: RequestClient = FiskalyRequestClient(),
+                    miceUrl: String? = nil
+    ) throws {
         self.client = client
-
-        // this needs to be done because xcode cries that self.context is used before be initialized
-
-        self.context = ""
 
         // version is hardcorded because using versionNumber from header file strips patch number
 
-        let contextRequestParams: [String: Any] = [
+        var contextRequestParams: [String: Any] = [
             "api_key": apiKey as Any,
             "api_secret": apiSecret as Any,
             "base_url": baseUrl,
@@ -35,6 +33,11 @@ public class FiskalyHttpClient {
             "environment": environment as Any,
             "sdk_version": "iOS SDK 1.2.100"
         ]
+        
+        //this should only be set for v2
+        if let miceUrl = miceUrl {
+            contextRequestParams["mice_url"] = miceUrl
+        }
 
         let request = JsonRpcRequest(method: "create-context", params: contextRequestParams)
         let response = try performJsonRpcRequest(request: request, ResultCreateContext.self)
@@ -183,7 +186,7 @@ public class FiskalyHttpClient {
 
         let jsonData = try client.invoke(request: request)
         guard let data = jsonData.data(using: .utf8) else {
-            throw FiskalyError.sdkError(message: "Client response not decodeable into JSON.")
+            throw FiskalyError.sdkError(message: "Client response not encodable into JSON.")
         }
 
         let response: JsonRpcResponse<T>
@@ -193,10 +196,10 @@ public class FiskalyHttpClient {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             response = try decoder.decode(JsonRpcResponse<T>.self, from: data)
         } catch {
-            throw FiskalyError.sdkError(message: "Client response not decodable into class.")
+            throw FiskalyError.sdkError(message: "Client response not decodable into class. \(error), data = \(jsonData)")
         }
 
-        print(response.error?.data?.response.body ?? "NO ERROR")
+        print(response.error?.data?.response.body ?? response.error?.message ?? "NO ERROR")
         return response
 
     }

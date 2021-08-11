@@ -15,10 +15,10 @@ jobs:
       - name: Checkout 
         uses: actions/checkout@v1
 
-      - name: Force Xcode 11.3
+      - name: Force Xcode 12
         run: |
           sudo xcode-select \
-                  -switch /Applications/XCode_11.3.app
+                  -switch /Applications/XCode_12.app
 
       - name: Xcode version
         run: /usr/bin/xcodebuild -version
