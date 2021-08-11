@@ -40,25 +40,6 @@ class FiskalyAPITestsV2: FiskalyAPITests {
                                                     )
     }
     
-    //This is actually done by the client so doesn't need to be done here.
-    func testV2Authentication() throws {
-        let authenticateBody = [
-            "api_key": ProcessInfo.processInfo.environment["V2_API_KEY"]!,
-            "api_secret": ProcessInfo.processInfo.environment["V2_API_SECRET"],
-            //"base_url":"http://backend:3000",
-            "smaers_url":"http://smaers-gateway:8080"
-        ]
-        
-        let authBodyData = try? JSONSerialization.data(withJSONObject: authenticateBody)
-        let authBodyEncoded = authBodyData?.base64EncodedString()
-        
-        let responseAuthenticate = try client.request(
-            method: "POST",
-            path: "auth",
-            body: authBodyEncoded!)
-        XCTAssertEqual(responseAuthenticate.status, 200)
-    }
-    
     //This is basically an end-to-end test rather than a unit test, but most of these steps won't work without the previous ones
     //todo: add some mocking so we can test the individual steps without the server, keys, etc.
     func testTransactionRequest() throws {
