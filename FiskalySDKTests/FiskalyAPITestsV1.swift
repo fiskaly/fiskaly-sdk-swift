@@ -23,7 +23,7 @@ class FiskalyAPITestsV1: FiskalyAPITests {
             path: "/tss")
         XCTAssertEqual(response.status, 200)
     }
-//this does not seem to work with the new client; it apparently can't create a context with just email and password
+    
     func testManagementRequest() throws {
         let client = try FiskalyHttpClient(
             apiKey: "",
