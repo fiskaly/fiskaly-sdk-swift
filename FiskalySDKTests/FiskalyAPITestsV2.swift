@@ -15,8 +15,8 @@ class FiskalyAPITestsV2: FiskalyAPITests {
         client = try FiskalyHttpClient(
             apiKey: ProcessInfo.processInfo.environment["V2_API_KEY"]!,
             apiSecret: ProcessInfo.processInfo.environment["V2_API_SECRET"]!,
-           baseUrl: "https://kassensichv.fiskaly.dev/api/v2",
-            miceUrl: "https://kassensichv-middleware.fiskaly.dev"
+           baseUrl: "https://kassensichv.fiskaly.com/api/v2",
+            miceUrl: "https://kassensichv-middleware.fiskaly.com"
         )
         
         setUpLogging(methodName: self.name)
@@ -38,25 +38,6 @@ class FiskalyAPITestsV2: FiskalyAPITests {
                                                     path: "tss/\(tssUUID)",
                                                     body: disableTSSBody
                                                     )
-    }
-    
-    //This is actually done by the client so doesn't need to be done here.
-    func testV2Authentication() throws {
-        let authenticateBody = [
-            "api_key": ProcessInfo.processInfo.environment["V2_API_KEY"]!,
-            "api_secret": ProcessInfo.processInfo.environment["V2_API_SECRET"],
-            //"base_url":"http://backend:3000",
-            "smaers_url":"http://smaers-gateway:8080"
-        ]
-        
-        let authBodyData = try? JSONSerialization.data(withJSONObject: authenticateBody)
-        let authBodyEncoded = authBodyData?.base64EncodedString()
-        
-        let responseAuthenticate = try client.request(
-            method: "POST",
-            path: "auth",
-            body: authBodyEncoded!)
-        XCTAssertEqual(responseAuthenticate.status, 200)
     }
     
     //This is basically an end-to-end test rather than a unit test, but most of these steps won't work without the previous ones
@@ -122,9 +103,6 @@ class FiskalyAPITestsV2: FiskalyAPITests {
         
         // logout admin
         let _ = try clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/logout", body: nil)
-        
-        // authenticate client
-        let _ = try clientRequest(method: "POST", path: "tss/\(tssUUID)/client/\(clientUUID)/auth")
 
         // create Transaction
 
