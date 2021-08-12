@@ -15,8 +15,8 @@ class FiskalyAPITestsV2: FiskalyAPITests {
         client = try FiskalyHttpClient(
             apiKey: ProcessInfo.processInfo.environment["V2_API_KEY"]!,
             apiSecret: ProcessInfo.processInfo.environment["V2_API_SECRET"]!,
-           baseUrl: "https://kassensichv.fiskaly.dev/api/v2",
-            miceUrl: "https://kassensichv-middleware.fiskaly.dev"
+           baseUrl: "https://kassensichv.fiskaly.com/api/v2",
+            miceUrl: "https://kassensichv-middleware.fiskaly.com"
         )
         
         setUpLogging(methodName: self.name)
@@ -103,9 +103,6 @@ class FiskalyAPITestsV2: FiskalyAPITests {
         
         // logout admin
         let _ = try clientRequest(method: "POST", path: "tss/\(tssUUID)/admin/logout", body: nil)
-        
-        // authenticate client
-        let _ = try clientRequest(method: "POST", path: "tss/\(tssUUID)/client/\(clientUUID)/auth")
 
         // create Transaction
 
