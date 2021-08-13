@@ -13,8 +13,8 @@ import XCTest
 
 //Superclass that sets up the client to have verbose logging and outputs the logging from the client into the console so you have more detail if a test fails.
 class FiskalyAPITests: XCTestCase {
-    var client:FiskalyHttpClient!
-    private var logPath:String!
+    var client:FiskalyHttpClient?
+    private var logPath:String?
 
     func setUpLogging(methodName:String) {
         //set up debug logging within the client library so we can show more detail in the test log
@@ -22,16 +22,17 @@ class FiskalyAPITests: XCTestCase {
         //methodName is the full name of the currently running test, Objective-C style, e.g. -[FiskalyAPITestsV2 testTransactionRequest], so we trim it down to just e.g. testTransactionRequest
         let testName = methodName.replacingOccurrences(of: "-[\(String(describing: Self.self)) ", with: "").replacingOccurrences(of: "]", with: "")
         
-        logPath = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("fiskaly-tests-\(testName)").appendingPathExtension("log").path
+        let path = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("fiskaly-tests-\(testName)").appendingPathExtension("log").path
+        logPath = path
         
         do {
             //remove the previous log for this test so we can just show the results for this run
-            if FileManager.default.fileExists(atPath: logPath) {
-                try FileManager.default.removeItem(atPath: logPath)
+            if FileManager.default.fileExists(atPath: path) {
+                try FileManager.default.removeItem(atPath: path)
             }
             
             //set up client logging for this test
-            let _ = try client.config(
+            let _ = try client?.config(
                 debugLevel: 3,
                 debugFile: logPath,
                 clientTimeout: 1500,
@@ -45,8 +46,10 @@ class FiskalyAPITests: XCTestCase {
     }
     func showClientLog() {
         //now show all the logging from the client during this test
-        if let logContents = try? String(contentsOfFile: logPath) {
-            print("Log contents: \(logContents)")
+        if let logPath = logPath {
+            if let logContents = try? String(contentsOfFile: logPath) {
+                print("Log contents: \(logContents)")
+            }
         }
     }
     

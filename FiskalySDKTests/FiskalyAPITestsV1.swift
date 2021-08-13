@@ -4,13 +4,16 @@ import XCTest
 class FiskalyAPITestsV1: FiskalyAPITests {
     
     override func setUpWithError() throws {
+        if let apiKey=ProcessInfo.processInfo.environment["API_KEY"], let apiSecret=ProcessInfo.processInfo.environment["API_SECRET"] {
         client = try FiskalyHttpClient(
-            apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
-            apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
+            apiKey: apiKey,
+            apiSecret: apiSecret,
             baseUrl: "https://kassensichv.io/api/v1/"
         )
-        
         setUpLogging(methodName: self.name)
+        } else {
+            print("FiskalyAPITestsV1 not running because API_KEY and API_SECRET were not set.")
+        }
     }
     
     override func tearDown() {
@@ -18,6 +21,9 @@ class FiskalyAPITestsV1: FiskalyAPITests {
     }
 
     func testKassensichvRequest() throws {
+        guard let client=client else {
+            return
+        }
         let response = try client.request(
             method: "GET",
             path: "/tss")
@@ -25,21 +31,27 @@ class FiskalyAPITestsV1: FiskalyAPITests {
     }
     
     func testManagementRequest() throws {
-        let client = try FiskalyHttpClient(
-            apiKey: "",
-            apiSecret: "",
-            baseUrl: "https://dashboard.fiskaly.com/api/v0/",
-            email: ProcessInfo.processInfo.environment["EMAIL"]!,
-            password: ProcessInfo.processInfo.environment["PASSWORD"]!
-        )
-        let response = try client.request(
-            method: "GET",
-            path: "/organizations")
-            XCTAssertEqual(response.status, 200)
+        if let email=ProcessInfo.processInfo.environment["EMAIL"], let password=ProcessInfo.processInfo.environment["PASSWORD"] {
+            let client = try FiskalyHttpClient(
+                apiKey: "",
+                apiSecret: "",
+                baseUrl: "https://dashboard.fiskaly.com/api/v0/",
+                email: email,
+                password:password
+            )
+            let response = try client.request(
+                method: "GET",
+                path: "/organizations")
+                XCTAssertEqual(response.status, 200)
+        } else {
+            print("testManagementRequest not running because EMAIL and PASSWORD were not set.")
+        }
     }
 
     func testTransactionRequest() throws {
-
+        guard let client=client else {
+            return
+        }
         // create TSS
 
         let tssUUID = UUID().uuidString
@@ -122,10 +134,12 @@ class FiskalyAPITestsV1: FiskalyAPITests {
     }
 
     func testQueryArray() throws {
+        guard let client=client else {
+            return
+        }
         let query: [String: Any] = [
             "states": ["INITIALIZED", "DISABLED"]
         ]
-
         let response = try client.request(
             method: "GET",
             path: "/tss",
