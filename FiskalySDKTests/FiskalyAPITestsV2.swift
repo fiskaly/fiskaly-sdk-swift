@@ -12,14 +12,18 @@ import XCTest
 class FiskalyAPITestsV2: FiskalyAPITests {
     
     override func setUpWithError() throws {
-        client = try FiskalyHttpClient(
-            apiKey: ProcessInfo.processInfo.environment["V2_API_KEY"]!,
-            apiSecret: ProcessInfo.processInfo.environment["V2_API_SECRET"]!,
-           baseUrl: "https://kassensichv.fiskaly.com/api/v2",
-            miceUrl: "https://kassensichv-middleware.fiskaly.com"
-        )
-        
-        setUpLogging(methodName: self.name)
+        if let apiKey=ProcessInfo.processInfo.environment["V2_API_KEY"], let apiSecret=ProcessInfo.processInfo.environment["V2_API_SECRET"] {
+            client = try FiskalyHttpClient(
+                apiKey: apiKey,
+                apiSecret: apiSecret,
+               baseUrl: "https://kassensichv.fiskaly.com/api/v2",
+                miceUrl: "https://kassensichv-middleware.fiskaly.com"
+            )
+            
+            setUpLogging(methodName: self.name)
+        } else {
+            print("FiskalyAPITestsV2 not running because V2_API_KEY and V2_API_SECRET were not set.")
+        }
     }
     
     override func tearDown() {
@@ -43,8 +47,9 @@ class FiskalyAPITestsV2: FiskalyAPITests {
     //This is basically an end-to-end test rather than a unit test, but most of these steps won't work without the previous ones
     //todo: add some mocking so we can test the individual steps without the server, keys, etc.
     func testTransactionRequest() throws {
-        
-        //try clientRequest(method: "h", path: "hkh")
+        guard client != nil else {
+            return
+        }
 
         // create TSS
 
