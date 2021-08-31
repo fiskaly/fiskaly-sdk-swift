@@ -1,138 +1,72 @@
+//
+//  FiskalyAPITests.swift
+//  FiskalySDKTests
+//
+//  Created by Angela Brett on 07.07.21.
+//  Copyright © 2021 fiskaly. All rights reserved.
+//
+
+import Foundation
+
 import XCTest
 @testable import FiskalySDK
 
+//Superclass that sets up the client to have verbose logging and outputs the logging from the client into the console so you have more detail if a test fails.
 class FiskalyAPITests: XCTestCase {
+    var client:FiskalyHttpClient?
+    private var logPath:String?
 
-    func testKassensichvRequest() throws {
-        let client = try FiskalyHttpClient(
-            apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
-            apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
-            baseUrl: "https://kassensichv.io/api/v1/"
-        )
+    func setUpLogging(methodName:String) {
+        //set up debug logging within the client library so we can show more detail in the test log
+        
+        //methodName is the full name of the currently running test, Objective-C style, e.g. -[FiskalyAPITestsV2 testTransactionRequest], so we trim it down to just e.g. testTransactionRequest
+        let testName = methodName.replacingOccurrences(of: "-[\(String(describing: Self.self)) ", with: "").replacingOccurrences(of: "]", with: "")
+        
+        let path = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("fiskaly-tests-\(testName)").appendingPathExtension("log").path
+        logPath = path
+        
+        do {
+            //remove the previous log for this test so we can just show the results for this run
+            if FileManager.default.fileExists(atPath: path) {
+                try FileManager.default.removeItem(atPath: path)
+            }
+            
+            //set up client logging for this test
+            let _ = try client?.config(
+                debugLevel: 3,
+                debugFile: logPath,
+                clientTimeout: 1500,
+                smaersTimeout: 1500,
+                httpProxy: "")
+            print("Client log is at \(logPath ?? "")")
+        } catch {
+            print("Could not set up client logging: \(error)")
+            //we can still continue with the test in this case
+        }
+    }
+    func showClientLog() {
+        //now show all the logging from the client during this test
+        if let logPath = logPath {
+            if let logContents = try? String(contentsOfFile: logPath) {
+                print("Log contents: \(logContents)")
+            }
+        }
+    }
+    
+    func clientRequest(method: String, path: String, query: [String : Any]? = nil, body: Any? = nil, headers:[String:String]? = nil) throws -> FiskalySDK.HttpResponse {
+        guard let client = self.client else {
+            throw FiskalyError.sdkError(message: "Client could not be initialised")
+        }
+        
+        let bodyData = try JSONSerialization.data(withJSONObject: body ?? Dictionary<String, Any>())
+        let bodyString = bodyData.base64EncodedString()
         let response = try client.request(
-            method: "GET",
-            path: "/tss")
+            method: method,
+            path: path,
+            query: query,
+            headers: headers,
+            body: bodyString)
         XCTAssertEqual(response.status, 200)
+        return response
     }
-
-    func testManagementRequest() throws {
-        let client = try FiskalyHttpClient(
-            apiKey: "",
-            apiSecret: "",
-            baseUrl: "https://dashboard.fiskaly.com/api/v0/",
-            email: ProcessInfo.processInfo.environment["EMAIL"]!,
-            password: ProcessInfo.processInfo.environment["PASSWORD"]!
-        )
-        let response = try client.request(
-            method: "GET",
-            path: "/organizations")
-            XCTAssertEqual(response.status, 200)
-    }
-
-    func testTransactionRequest() throws {
-        let client = try FiskalyHttpClient(
-            apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
-            apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
-            baseUrl: "https://kassensichv.io/api/v1/"
-        )
-
-        // create TSS
-
-        let tssUUID = UUID().uuidString
-
-        let tssBody = [
-            "description": "iOS Test TSS",
-            "state": "INITIALIZED"
-        ]
-        let tssBodyData = try? JSONSerialization.data(withJSONObject: tssBody)
-        let tssBodyEncoded = tssBodyData?.base64EncodedString()
-
-        let responseCreateTSS = try client.request(
-            method: "PUT",
-            path: "tss/\(tssUUID)",
-            body: tssBodyEncoded!)
-        XCTAssertEqual(responseCreateTSS.status, 200)
-
-        // create Client
-
-        let clientUUID = UUID().uuidString
-
-        let clientBody = [
-            "serial_number": "iOS Test Client Serial"
-        ]
-        let clientBodyData = try? JSONSerialization.data(withJSONObject: clientBody)
-        let clientBodyEncoded = clientBodyData?.base64EncodedString()
-
-        let responseCreateClient = try client.request(
-            method: "PUT",
-            path: "tss/\(tssUUID)/client/\(clientUUID)",
-            body: clientBodyEncoded!)
-        XCTAssertEqual(responseCreateClient.status, 200)
-
-        // create Transaction
-
-        let transactionUUID = UUID().uuidString
-
-        let transactionBody = [
-            "state": "ACTIVE",
-            "client_id": clientUUID
-        ]
-        let transactionBodyData = try? JSONSerialization.data(withJSONObject: transactionBody)
-        let transactionBodyEncoded = transactionBodyData?.base64EncodedString()
-
-        let responseCreateTransaction = try client.request(
-            method: "PUT",
-            path: "tss/\(tssUUID)/tx/\(transactionUUID)",
-            body: transactionBodyEncoded!)
-        XCTAssertEqual(responseCreateTransaction.status, 200)
-
-        // finish Transaction
-
-        let transactionFinishBody: [String: Any] = [
-            "state": "FINISHED",
-            "client_id": clientUUID,
-            "schema": [
-                "standard_v1": [
-                    "receipt": [
-                        "receipt_type": "RECEIPT",
-                        "amounts_per_vat_rate": [
-                            ["vat_rate": "19", "amount": "14.28"]
-                        ],
-                        "amounts_per_payment_type": [
-                            ["payment_type": "NON_CASH", "amount": "14.28"]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-        let transactionFinishBodyData = try? JSONSerialization.data(withJSONObject: transactionFinishBody)
-        let transactionFinishBodyEncoded = transactionFinishBodyData?.base64EncodedString()
-
-        let responseFinishTransaction = try client.request(
-            method: "PUT",
-            path: "tss/\(tssUUID)/tx/\(transactionUUID)",
-            query: ["last_revision": "1"],
-            body: transactionFinishBodyEncoded!)
-        XCTAssertEqual(responseFinishTransaction.status, 200)
-    }
-
-    func testQueryArray() throws {
-        let client = try FiskalyHttpClient(
-            apiKey: ProcessInfo.processInfo.environment["API_KEY"]!,
-            apiSecret: ProcessInfo.processInfo.environment["API_SECRET"]!,
-            baseUrl: "https://kassensichv.io/api/v1/"
-        )
-
-        let query: [String: Any] = [
-            "states": ["INITIALIZED", "DISABLED"]
-        ]
-
-        let response = try client.request(
-            method: "GET",
-            path: "/tss",
-            query: query)
-        XCTAssertEqual(response.status, 200)
-
-    }
-
 }
